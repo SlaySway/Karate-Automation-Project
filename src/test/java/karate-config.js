@@ -12,6 +12,7 @@ function fn() {
 		 EXTERNAL_SCH_COOKIE : 'https://login-qa.scholastic.com',
 		 EXTERNAL_SCH_COOKIE_BASE : 'https://login-qa.scholastic.com',
 		 EXTERNAL_SCH_COOKIE_TARGET : 'https://login-qa.scholastic.com',
+		 CMDM_QA_URL : 'https://qa-internal.api.scholastic.com',
 	}
 	
 	if (env == 'qa') {
@@ -22,6 +23,7 @@ function fn() {
 		config.EXTERNAL_SCH_COOKIE = 'https://login-qa.scholastic.com';
 		 config.EXTERNAL_SCH_COOKIE_BASE = 'https://login-qa.scholastic.com';
 		 config.EXTERNAL_SCH_COOKIE_TARGET = 'https://login-qa.scholastic.com';
+		 config.CMDM_QA_URL = 'https://qa-internal.api.scholastic.com';
 		
 	} else if (env == 'dev') {
 		

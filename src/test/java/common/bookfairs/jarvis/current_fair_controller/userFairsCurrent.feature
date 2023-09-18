@@ -1,5 +1,6 @@
 #Author: Ravindra Pallerla
-@currentFairsTest
+
+@userCurrentFairsTest
 Feature: userCurrentFairs API automation tests
 
   Background: Set config

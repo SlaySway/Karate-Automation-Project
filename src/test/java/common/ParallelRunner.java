@@ -29,7 +29,7 @@ public class ParallelRunner {
 				.outputCucumberJson(true)
 				.outputJunitXml(true)
 				.configDir("src/test/java")
-				.tags("@fairsCurrentettingsTest, @currentFairsTest").parallel(10);
+				.tags("@fairsCurrentettingsTest, @coChairsTest").parallel(10);
 
 		System.out.println("Total Feature => " + results.getFeaturesTotal());
 		System.out.println("Total Scenarios => " + results.getScenariosTotal());
