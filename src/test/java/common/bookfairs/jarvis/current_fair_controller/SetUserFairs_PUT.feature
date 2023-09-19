@@ -1,10 +1,10 @@
 #Author: Ravindra Pallerla
 
-@userCurrentFairsTest
-Feature: userCurrentFairs API automation tests
+@setUserFairsTest
+Feature: SetUserFairs API automation tests
 
   Background: Set config
-    * string userCurrentFairsUrl = "/bookfairs-jarvis/api/user/fairs/current"
+    * string setUserFairsUrl = "/bookfairs-jarvis/api/user/fairs/current"
 
   Scenario Outline: Validate when fairid is missing
     * def reqBody =
@@ -13,7 +13,7 @@ Feature: userCurrentFairs API automation tests
           "fairId": '<FAIR_ID>'
       }
       """
-    * def Response = call read('classpath:utils/RunnerHelper.feature@currentFairsTarget'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', jsonInput : '#(reqBody)'}
+    * def Response = call read('classpath:common/bookfairs/jarvis/current_fair_controller/CurrentFairRunnerHelper.feature@setUserFairsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', jsonInput : '#(reqBody)'}
     Then match Response.StatusCode == 400
     And print Response.ResponseString
 
@@ -29,7 +29,7 @@ Feature: userCurrentFairs API automation tests
           "fairId": '<FAIR_ID>'
       }
       """
-    * def Response = call read('classpath:utils/RunnerHelper.feature@currentFairsTarget'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', jsonInput : '#(reqBody)'}
+    * def Response = call read('classpath:common/bookfairs/jarvis/current_fair_controller/CurrentFairRunnerHelper.feature@setUserFairsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', jsonInput : '#(reqBody)'}
     Then match Response.StatusCode == 403
     And print Response.ResponseString
 
@@ -44,7 +44,7 @@ Feature: userCurrentFairs API automation tests
       {
       }
       """
-    * def Response = call read('classpath:utils/RunnerHelper.feature@currentFairsTarget'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', jsonInput : '#(reqBody)'}
+    * def Response = call read('classpath:common/bookfairs/jarvis/current_fair_controller/CurrentFairRunnerHelper.feature@setUserFairsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', jsonInput : '#(reqBody)'}
     Then match Response.StatusCode == 400
     And print Response.ResponseString
 
@@ -60,7 +60,7 @@ Feature: userCurrentFairs API automation tests
           "fairId": '<FAIR_ID>'
       }
       """
-    * def Response = call read('classpath:utils/RunnerHelper.feature@currentFairsTarget'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', jsonInput : '#(reqBody)'}
+    * def Response = call read('classpath:common/bookfairs/jarvis/current_fair_controller/CurrentFairRunnerHelper.feature@setUserFairsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', jsonInput : '#(reqBody)'}
     Then match Response.StatusCode == 204
     And print Response.ResponseString
 

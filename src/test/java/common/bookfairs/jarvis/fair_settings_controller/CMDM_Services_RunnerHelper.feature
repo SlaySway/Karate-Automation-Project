@@ -1,15 +1,15 @@
 #Author: Ravindra Pallerla
 
 @ignore
-Feature: Runner helper for running CMDM services
+Feature: Runner helper for running CMDM Fair services
 
   Background: Set config
-    * string fairsUri = "/cmdm/fair-service/v1/fairs"
+    * string cmdmGetFairsUri = "/cmdm/fair-service/v1/fairs"
 
-  @FairsServiceRunner
+  @cmdmgetFairsRunner
   Scenario: Run cmdm fairs service
     * def PathParams = {fairId : '#(FAIRID)'}
-    Given url CMDM_QA_URL + fairsUri
+    Given url CMDM_QA_URL + cmdmGetFairsUri
     And path PathParams.fairId
     And headers {Content-Type : 'application/json', Authorization: 'Bearer 3dIx0ZzA49dKFMQmZKEPnz3aUWesIafl'}
     And method get

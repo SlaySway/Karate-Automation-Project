@@ -1,6 +1,7 @@
 #Author: Ravindra Pallerla
-@coChairsTest
-Feature: co-chairs API automation tests
+
+@setCoChairsTest
+Feature: SetCoChairs API automation tests
 
   Background: Set config
     * string coCharisUri = "/bookfairs-jarvis/api/private/fairs/current/settings/co-chairs"
@@ -60,16 +61,17 @@ Feature: co-chairs API automation tests
        {
          "firstName": '<CC_FIRSTNAME>',
          "lastName": '<CC_LASTNAME>',
-         "email": '<CC_EMAIL>',
-         "salesforceId": '<SF_ID>'
+         "email": '<CC_EMAIL>'
        }
       ]
       }
       """
-    * def ResponseDataMap = call read('classpath:utils/RunnerHelper.feature@coChairsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>', Input_Body : '#(inputBody)'}
-    Then match ResponseDataMap.StatusCode == 204
+    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/cochair_controller/CoChairRunnerHelper.feature@coChairsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>', Input_Body : '#(inputBody)'}
+    Then match ResponseDataMap.StatusCode == 200
     And print ResponseDataMap.ResponseString
 
     Examples: 
-      | USER_NAME                           | PASSWORD | FAIR_ID | CC_FIRSTNAME | CC_LASTNAME | CC_EMAIL          | SF_ID |
-      | sdevineni-consultant@scholastic.com | passw0rd | 5441592 | Jimmy        | Kies        | jimmyk@qatest.com | E5    |
+      | USER_NAME                           | PASSWORD | FAIR_ID | CC_FIRSTNAME | CC_LASTNAME | CC_EMAIL             |
+      | sdevineni-consultant@scholastic.com | passw0rd | 5734325 | Jimmy        | Kies        | jimmyk@qatest.com    |
+      | sdevineni-consultant@scholastic.com | passw0rd | 5734325 | Jo           | Kies        | jokies@qatest.com    |
+      | sdevineni-consultant@scholastic.com | passw0rd | 5734325 | QA           | Testing     | qatesting@qatest.com |
