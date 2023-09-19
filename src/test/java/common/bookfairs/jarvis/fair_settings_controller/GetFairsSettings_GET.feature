@@ -1,5 +1,4 @@
 #Author: Ravindra Pallerla
-
 @getFairsSettingsTest
 Feature: GetfairsSettings API automation tests
 
@@ -35,7 +34,7 @@ Feature: GetfairsSettings API automation tests
       | sdevineni-consultant@scholastic.com | passw0rd | 5383023 |
       | sdevineni-consultant@scholastic.com | passw0rd | 5734325 |
 
-  Scenario Outline: Validate bookfairAccountId
+  Scenario Outline: Validate bookfairAccountId is matching with cmdm bookFairId
     * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@getFairsSettingsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
     * def CMDMResponseDataMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/CMDM_Services_RunnerHelper.feature@cmdmgetFairsRunner'){FAIRID : '<FAIR_ID>'}
     Then match ResponseDataMap.BFAcctId == CMDMResponseDataMap.BFAccountId
@@ -74,7 +73,7 @@ Feature: GetfairsSettings API automation tests
       | sdevineni-consultant@scholastic.com | passw0rd | 5209377 |
 
   Scenario Outline: Validate fairType 'tabletop'
-     * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@getFairsSettingsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
+    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@getFairsSettingsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
     Then match ResponseDataMap.FairType == 'tabletop'
 
     Examples: 
@@ -88,7 +87,7 @@ Feature: GetfairsSettings API automation tests
       | sdevineni-consultant@scholastic.com | passw0rd | 5414061 |
 
   Scenario Outline: Validate fairType 'bogo case'
-     * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@getFairsSettingsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
+    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@getFairsSettingsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
     Then match ResponseDataMap.FairType == 'bogo case'
 
     Examples: 
@@ -100,7 +99,7 @@ Feature: GetfairsSettings API automation tests
       | sdevineni-consultant@scholastic.com | passw0rd | 5603785 |
 
   Scenario Outline: Validate fairType 'bogo tabletop'
-     * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@getFairsSettingsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
+    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@getFairsSettingsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
     Then match ResponseDataMap.FairType == 'bogo tabletop'
 
     Examples: 
@@ -109,7 +108,7 @@ Feature: GetfairsSettings API automation tests
       | sdevineni-consultant@scholastic.com | passw0rd | 5644037 |
 
   Scenario Outline: Validate fairType 'Virtual'
-     * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@getFairsSettingsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
+    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@getFairsSettingsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
     Then match ResponseDataMap.FairType == 'Virtual'
 
     Examples: 
@@ -120,10 +119,14 @@ Feature: GetfairsSettings API automation tests
       | sdevineni-consultant@scholastic.com | passw0rd | 5731008 |
 
   Scenario Outline: Validate fairType 'discounted 25%'
-     * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@getFairsSettingsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
+    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@getFairsSettingsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
     Then match ResponseDataMap.FairType == 'discounted 25%'
 
     Examples: 
       | USER_NAME              | PASSWORD | FAIR_ID |
-      | mtodaro@scholastic.com | passw0rd | 5782057 |
       | mtodaro@scholastic.com | passw0rd | 5782058 |
+      | mtodaro@scholastic.com | passw0rd | 5782061 |
+      | mtodaro@scholastic.com | passw0rd | 5782060 |
+      | mtodaro@scholastic.com | passw0rd | 5782056 |
+      | mtodaro@scholastic.com | passw0rd | 5782055 |
+      | mtodaro@scholastic.com | passw0rd | 5782053 |
