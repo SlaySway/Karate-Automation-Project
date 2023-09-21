@@ -16,3 +16,14 @@ Feature: Helper for running fair-settings-controller apis
     And path pathParams.bookFairId
     And method GET
     Then def SBF_JARVIS = "SBF_JARVIS=" + responseCookies.SBF_JARVIS.value
+
+    # Input: SCHL
+    # Output: response.SBF_JARVIS
+    @AltBeginFairSessionRunner
+    Scenario: Run GetFairSettings api with no other endpoint calls
+      Given url BOOKFAIRS_JARVIS_URL + beginFairSessionUri
+      And headers {Content-Type : 'application/json', Cookie : '#(SCHL)'}
+      And def pathParams = {bookFairId : '#(FAIR_ID)'}
+      And path pathParams.bookFairId
+      And method GET
+      Then def SBF_JARVIS = "SBF_JARVIS=" + responseCookies.SBF_JARVIS.value
