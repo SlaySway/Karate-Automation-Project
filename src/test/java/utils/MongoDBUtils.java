@@ -11,12 +11,12 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 import com.mongodb.client.model.Projections;
 
-public class MangoDBUtils {
+public class MongoDBUtils {
 
 	private String clientURL;
 	private MongoClient mongoClient;
 
-	public MangoDBUtils(String clientURL, String databaseName, String collectionName) {
+	public MongoDBUtils(String clientURL, String databaseName, String collectionName) {
 		super();
 		this.clientURL = clientURL;
 		connectToACollection(databaseName, collectionName);

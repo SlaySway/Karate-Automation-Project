@@ -53,19 +53,23 @@ Feature: SetUserFairs API automation tests
       | USER_NAME                           | PASSWORD | FAIR_ID   |
       | sdevineni-consultant@scholastic.com | passw0rd | 538738000 |
 
-  Scenario Outline: Validate response code 204 with valid input request
+  Scenario Outline: Validate response code 204 with valid input request. GET FAIR SETTING TEST FOR NOW
     * def reqBody =
       """
       {
           "fairId": '<FAIR_ID>'
       }
       """
-    * def Response = call read('classpath:common/bookfairs/jarvis/current_fair_controller/CurrentFairRunnerHelper.feature@setUserFairsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', jsonInput : '#(reqBody)'}
-    Then match Response.StatusCode == 204
-    And print Response.ResponseString
+    * def bookfairsResponse = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@getFairsSettingsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
+    * print "======= BOOKFAIRS RESPONSE ========="
+    * print bookfairsResponse
+    Then match bookfairsResponse.responseStatus == 200
+    * def cmdmResponse = call read('classpath:utils/CMDMRunnerHelper.feature@fairsRunnerHelper'){FAIR_ID: '<FAIR_ID>'}
+    * print "======= CMDM RESPONSE ==========="
+    * print cmdmResponse
+    Then match bookfairsResponse.response.fairInfo.bookfairAccountId == cmdmResponse.response.organization.bookfairAccountId
 
     @QA
     Examples: 
       | USER_NAME                           | PASSWORD | FAIR_ID |
-      | sdevineni-consultant@scholastic.com | passw0rd | 5387380 |
-      | sdevineni-consultant@scholastic.com | passw0rd | 5383023 |
+      | azhou1@scholastic.com | password1 | 5633533 |

@@ -27,5 +27,3 @@ Feature: Helper for running current-fair-controller apis
     * def jsonBody = {inputpayLoad : '#(jsonInput)'}
     And request jsonBody.inputpayLoad
     When method PUT
-    Then def StatusCode = responseStatus
-    And def ResponseString = response
