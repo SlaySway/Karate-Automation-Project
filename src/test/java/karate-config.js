@@ -38,6 +38,9 @@ function fn() {
 		config.BOOKFAIRS_JARVIS_URL = 'author';
 		config.BOOKFAIRS_JARVIS_TARGET = 'authorpassword';
 		config.BOOKFAIRS_JARVIS_BASE= '';
+		config.BOOKFAIRS_CONTENT_URL = '';
+        config.BOOKFAIRS_CONTENT_BASE = '';
+        config.BOOKFAIRS_CONTENT_TARGET = '';
 		config.EXTERNAL_SCH_COOKIE_URL = '';
 		
 	} else if (env == 'stage') {
@@ -45,6 +48,9 @@ function fn() {
 		config.BOOKFAIRS_JARVIS_URL = 'author';
 		config.BOOKFAIRS_JARVIS_TARGET = 'authorpassword';
 		config.BOOKFAIRS_JARVIS_BASE= '';
+		config.BOOKFAIRS_CONTENT_URL = '';
+        config.BOOKFAIRS_CONTENT_BASE = '';
+        config.BOOKFAIRS_CONTENT_TARGET = '';
 		config.EXTERNAL_SCH_COOKIE = '';
 		
 	} else if (env == 'prod') {
@@ -52,6 +58,9 @@ function fn() {
 		config.BOOKFAIRS_JARVIS_URL = 'author';
 		config.BOOKFAIRS_JARVIS_TARGET = 'authorpassword';
 		config.BOOKFAIRS_JARVIS_BASE= '';
+	    config.BOOKFAIRS_CONTENT_URL = '';
+        config.BOOKFAIRS_CONTENT_BASE = '';
+        config.BOOKFAIRS_CONTENT_TARGET = '';
 		config.EXTERNAL_SCH_COOKIE = '';
 	}
 
