@@ -1,13 +1,14 @@
 
-Feature:Helper for running FairDetails api
+@ignore @report=true
+Feature:Helper for running fair-detail api
 
   Background: Set config
-    * string GETContentFairDetail = "/api/fairdetail"
+    * string getContentFairDetail = "/bookfairs-content/api/fairdetail"
 
-  @GETContentFairDetail
+  @getContentFairDetailRunner
   Scenario:Run GetFairDetail API
-    Given url BOOKFAIRS_CONTENT_URL + GETContentFairDetail
-    Given header Authorization = 'Bearer '+contentAccessToken
+    Given url BOOKFAIRS_CONTENT_URL + getContentFairDetail
+    Given header Authorization = 'Bearer '+CONTENT_ACCESS_TOKEN
     And def pathParams = {bookFairId : '#(FAIRID)'}
     And path pathParams.bookFairId
     And method get

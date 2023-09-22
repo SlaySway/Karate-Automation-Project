@@ -9,14 +9,14 @@ function fn() {
 		 BOOKFAIRS_JARVIS_URL: 'https://bookfairs-jarvis.qa.apps.scholastic.tech',
 		 BOOKFAIRS_JARVIS_BASE: 'https://bookfairs-jarvis.qa.apps.scholastic.tech',
 		 BOOKFAIRS_JARVIS_TARGET: 'https://bookfairs-jarvis.qa.apps.scholastic.tech',
-		 BOOKFAIRS_CONTENT_URL: 'https://bookfairs-content.qa.apps.scholastic.tech/bookfairs-content',
-		 BOOKFAIRS_CONTENT_BASE: 'https://bookfairs-content.qa.apps.scholastic.tech/bookfairs-content',
-		 BOOKFAIRS_CONTENT_TARGET: 'https://bookfairs-content.qa.apps.scholastic.tech/bookfairs-content',
+		 BOOKFAIRS_CONTENT_URL: 'https://bookfairs-content.qa.apps.scholastic.tech',
+		 BOOKFAIRS_CONTENT_BASE: 'https://bookfairs-content.qa.apps.scholastic.tech',
+		 BOOKFAIRS_CONTENT_TARGET: 'https://bookfairs-content.qa.apps.scholastic.tech',
 		 EXTERNAL_SCH_COOKIE_URL : 'https://login-qa.scholastic.com',
 		 EXTERNAL_SCH_COOKIE_BASE : 'https://login-qa.scholastic.com',
 		 EXTERNAL_SCH_COOKIE_TARGET : 'https://login-qa.scholastic.com',
 		 CMDM_QA_URL : 'https://qa-internal.api.scholastic.com',
-		 contentAccessToken : '3dIx0ZzA49dKFMQmZKEPnz3aUWesIafl'
+		 CONTENT_ACCESS_TOKEN : '3dIx0ZzA49dKFMQmZKEPnz3aUWesIafl',
 	}
 	
 	if (env == 'qa') {
@@ -24,14 +24,14 @@ function fn() {
 		config.BOOKFAIRS_JARVIS_URL = 'https://bookfairs-jarvis.qa.apps.scholastic.tech';
 		config.BOOKFAIRS_JARVIS_BASE= 'https://bookfairs-jarvis.qa.apps.scholastic.tech';
 		config.BOOKFAIRS_JARVIS_TARGET = 'https://bookfairs-jarvis.qa.apps.scholastic.tech';
-		BOOKFAIRS_CONTENT_URL: 'https://bookfairs-content.qa.apps.scholastic.tech/bookfairs-content';
-        BOOKFAIRS_CONTENT_BASE: 'https://bookfairs-content.qa.apps.scholastic.tech/bookfairs-content';
-        BOOKFAIRS_CONTENT_TARGET: 'https://bookfairs-content.qa.apps.scholastic.tech/bookfairs-content';
+		config.BOOKFAIRS_CONTENT_URL = 'https://bookfairs-content.qa.apps.scholastic.tech';
+        config.BOOKFAIRS_CONTENT_BASE = 'https://bookfairs-content.qa.apps.scholastic.tech';
+        config.BOOKFAIRS_CONTENT_TARGET = 'https://bookfairs-content.qa.apps.scholastic.tech';
 		config.EXTERNAL_SCH_COOKIE_URL = 'https://login-qa.scholastic.com';
 		 config.EXTERNAL_SCH_COOKIE_BASE = 'https://login-qa.scholastic.com';
 		 config.EXTERNAL_SCH_COOKIE_TARGET = 'https://login-qa.scholastic.com';
 		 config.CMDM_QA_URL = 'https://qa-internal.api.scholastic.com';
-		 contentAccessToken : '3dIx0ZzA49dKFMQmZKEPnz3aUWesIafl'
+		 config.CONTENT_ACCESS_TOKEN = '3dIx0ZzA49dKFMQmZKEPnz3aUWesIafl';
 		
 	} else if (env == 'dev') {
 		
