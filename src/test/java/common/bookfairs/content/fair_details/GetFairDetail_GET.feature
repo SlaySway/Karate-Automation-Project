@@ -5,11 +5,11 @@ Feature: Content Fair detail API automation tests
     * string getFairDetailUrl = "/bookfairs-content/api/fairdetail"
 
   Scenario Outline: Validate a 200 status code for a valid request
-    * def ResponseDataMap = call read('classpath:common/bookfairs/content/fair_details/FairDetailsRunnerHelper.feature@getContentFairDetailRunner'){FAIRID : '<FAIR_ID>'}
-    Then match ResponseDataMap.StatusCode == 200
-    And print ResponseDataMap.ResponseString
-    * assert ResponseDataMap.ResponseString.status == 'Not Yet Accepted'
-    * assert ResponseDataMap.ResponseString.stfEnabledFlag == 'true'
+    * def ResponseDataMap = call read('classpath:common/bookfairs/content/fair_details/FairDetailsRunnerHelper.feature@GetContentFairDetailRunner'){FAIR_ID : '<FAIR_ID>'}
+    * print ResponseDataMap
+    Then match ResponseDataMap.responseStatus == 200
+    Then match ResponseDataMap.response.status == 'Not Yet Accepted'
+    Then match ResponseDataMap.response.stfEnabledFlag == 'true'
 
     Examples:
       | FAIR_ID |
@@ -21,9 +21,9 @@ Feature: Content Fair detail API automation tests
 
   Scenario Outline: Validate when invalid fair is provided
     Given url BOOKFAIRS_CONTENT_URL + getFairDetailUrl
-    And def pathParams = {bookFairId : '#(FAIRID)'}
+    And def pathParams = {bookFairId : '#(FAIR_ID)'}
     And path pathParams.bookFairId
-    When method get
+    When method GET
     Then match responseStatus == 500
 
     Examples:
@@ -33,7 +33,7 @@ Feature: Content Fair detail API automation tests
 
   Scenario: Validate when no fairId is provided
     Given url BOOKFAIRS_CONTENT_URL + getFairDetailUrl
-    When method get
+    When method GET
     Then match responseStatus == 404
 
 
