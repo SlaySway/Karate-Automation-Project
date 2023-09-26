@@ -1,15 +1,15 @@
-@getFairDetailTest
+@GetFairDetailTest
 Feature: Content Fair detail API automation tests
 
   Background: Set config
     * string getFairDetailUrl = "/bookfairs-content/api/fairdetail"
 
   Scenario Outline: Validate a 200 status code for a valid request
-    * def ResponseDataMap = call read('classpath:common/bookfairs/content/fair_details/FairDetailsRunnerHelper.feature@GetContentFairDetailRunner'){FAIR_ID : '<FAIR_ID>'}
-    * print ResponseDataMap
-    Then match ResponseDataMap.responseStatus == 200
-    Then match ResponseDataMap.response.status == 'Not Yet Accepted'
-    Then match ResponseDataMap.response.stfEnabledFlag == 'true'
+    * def getFairDetailsResponse = call read('classpath:common/bookfairs/content/fair_details/FairDetailsRunnerHelper.feature@GetContentFairDetailRunner'){FAIR_ID : '<FAIR_ID>'}
+    * print getFairDetailsResponse
+    Then match getFairDetailsResponse.responseStatus == 200
+    Then match getFairDetailsResponse.response.status == 'Not Yet Accepted'
+    Then match getFairDetailsResponse.response.stfEnabledFlag == 'true'
 
     Examples:
       | FAIR_ID |
