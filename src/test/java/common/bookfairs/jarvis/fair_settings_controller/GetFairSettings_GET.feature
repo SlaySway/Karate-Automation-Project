@@ -1,11 +1,10 @@
-#Author: Ravindra Pallerla
-@getFairsSettingsTest
+@GetFairSettingsTest
 Feature: GetfairsSettings API automation tests
 
   Background: Set config
-    * string getFairSettingsUrl = "/bookfairs-jarvis/api/user/fairs/current/settings"
+    * string getFairSettingsUri = "/api/user/fairs/current/settings"
 
-  Scenario Outline: Validate when sessoion cookies are not passed
+  Scenario Outline: Validate when session cookies are not passed
     Given url BOOKFAIRS_JARVIS_URL + getFairSettingsUrl
     When method get
     Then match responseStatus == 401
@@ -130,3 +129,35 @@ Feature: GetfairsSettings API automation tests
       | mtodaro@scholastic.com | passw0rd | 5782056 |
       | mtodaro@scholastic.com | passw0rd | 5782055 |
       | mtodaro@scholastic.com | passw0rd | 5782053 |
+
+
+  Scenario Outline: Validate fairType 'discounted 25%'
+    * def getFairSettingResponse = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@GetFairSettingsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
+    Then match getFairSettingResponse.response.fairInfo.fairType == 'discounted 25%'
+
+    @QA
+    Examples:
+      | USER_NAME              | PASSWORD | FAIR_ID |
+      | mtodaro@scholastic.com | passw0rd | 5782058 |
+
+  Scenario Outline: Validate fairType 'discounted 25%' alternative
+    * def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>'}
+    * def beginFairSessionResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@AltBeginFairSessionRunner'){SCHL : '#(schlResponse.SCHL)'}
+    * def getFairSettingResponse = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@AltGetFairSettingsRunner'){SCHL : '#(schlResponse.SCHL)', SBF_JARVIS : '#(beginFairSessionResponse.SBF_JARVIS)'}
+    Then match getFairSettingResponse.response.fairInfo.fairType == 'discounted 25%'
+
+    @QA
+    Examples:
+      | USER_NAME              | PASSWORD | FAIR_ID |
+      | mtodaro@scholastic.com | passw0rd | 5782058 |
+
+  Scenario Outline: Validate SBF_JARVIS does not match SCHL
+    * def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>'}
+    * def beginFairSessionResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@AltBeginFairSessionRunner'){SCHL : '#(schlResponse.SCHL)'}
+    * def getFairSettingResponse = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@AltGetFairSettingsRunner'){SCHL: '', SBF_JARVIS : '#(beginFairSessionResponse.SBF_JARVIS)'}
+    Then match getFairSettingResponse.response.errorMessage == "SBF_JARVIS does not match SCHL"
+
+    @QA
+    Examples:
+      | USER_NAME              | PASSWORD | FAIR_ID |
+      | mtodaro@scholastic.com | passw0rd | 5782058 |
