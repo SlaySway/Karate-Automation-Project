@@ -6,7 +6,7 @@ function fn() {
 	}
 	var config = {
 		env: env,
-		 BOOKFAIRS_JARVIS_URL: 'https://bookfairs-jarvis.qa.apps.scholastic.tech',
+		 BOOKFAIRS_JARVIS_URL: 'https://bookfairs-jarvis.qa.apps.scholastic.tech/bookfairs-jarvis',
 		 BOOKFAIRS_JARVIS_BASE: 'https://bookfairs-jarvis.qa.apps.scholastic.tech',
 		 BOOKFAIRS_JARVIS_TARGET: 'https://bookfairs-jarvis.qa.apps.scholastic.tech',
 		 BOOKFAIRS_CONTENT_URL: 'https://bookfairs-content.qa.apps.scholastic.tech',
@@ -20,12 +20,13 @@ function fn() {
 		 BOOKFAIRS_JARVIS_URL: 'https://bookfairs-jarvis.qa.apps.scholastic.tech/bookfairs-jarvis',
 		 SCHL_LOGIN_URL : 'https://login-qa.scholastic.com/api/login',
 		 CMDM_URL : 'https://qa-internal.api.scholastic.com/cmdm/fair-service/v1',
+		 CMDM_BEARER_TOKEN : '3dIx0ZzA49dKFMQmZKEPnz3aUWesIafl'
 
 	}
 	
 	if (env == 'qa') {
 		
-		config.BOOKFAIRS_JARVIS_URL = 'https://bookfairs-jarvis.qa.apps.scholastic.tech';
+		config.BOOKFAIRS_JARVIS_URL = 'https://bookfairs-jarvis.qa.apps.scholastic.tech/bookfairs-jarvis';
 		config.BOOKFAIRS_JARVIS_BASE= 'https://bookfairs-jarvis.qa.apps.scholastic.tech';
 		config.BOOKFAIRS_JARVIS_TARGET = 'https://bookfairs-jarvis.qa.apps.scholastic.tech';
 		config.BOOKFAIRS_CONTENT_URL = 'https://bookfairs-content.qa.apps.scholastic.tech';
