@@ -20,6 +20,9 @@ function fn() {
 		 BOOKFAIRS_JARVIS_URL: 'https://bookfairs-jarvis.qa.apps.scholastic.tech/bookfairs-jarvis',
 		 SCHL_LOGIN_URL : 'https://login-qa.scholastic.com/api/login',
 		 CMDM_URL : 'https://qa-internal.api.scholastic.com/cmdm/fair-service/v1',
+		 BOOKFAIRS_FATPIPE_REPORTS_URL : 'https://fatpipe-reports-api.qa.apps.scholastic.tech',
+         BOOKFAIRS_FATPIPE_REPORTS_BASE : 'https://fatpipe-reports-api.qa.apps.scholastic.tech',
+         BOOKFAIRS_FATPIPE_REPORTS_TARGET : 'https://fatpipe-reports-api.qa.apps.scholastic.tech',
 
 	}
 	
@@ -36,6 +39,9 @@ function fn() {
 		 config.EXTERNAL_SCH_COOKIE_TARGET = 'https://login-qa.scholastic.com';
 		 config.CMDM_QA_URL = 'https://qa-internal.api.scholastic.com';
 		 config.CONTENT_ACCESS_TOKEN = '3dIx0ZzA49dKFMQmZKEPnz3aUWesIafl';
+		 config.BOOKFAIRS_FATPIPE_REPORTS_URL = 'https://fatpipe-reports-api.qa.apps.scholastic.tech';
+		 config.BOOKFAIRS_FATPIPE_REPORTS_BASE = 'https://fatpipe-reports-api.qa.apps.scholastic.tech';
+		 config.BOOKFAIRS_FATPIPE_REPORTS_TARGET = 'https://fatpipe-reports-api.qa.apps.scholastic.tech';
 		
 	} else if (env == 'dev') {
 		
@@ -46,6 +52,9 @@ function fn() {
         config.BOOKFAIRS_CONTENT_BASE = '';
         config.BOOKFAIRS_CONTENT_TARGET = '';
 		config.EXTERNAL_SCH_COOKIE_URL = '';
+		config.BOOKFAIRS_FATPIPE_REPORTS_URL = '';
+		config.BOOKFAIRS_FATPIPE_REPORTS_BASE = '';
+		config.BOOKFAIRS_FATPIPE_REPORTS_TARGET = '';
 		
 	} else if (env == 'stage') {
 		
@@ -56,6 +65,10 @@ function fn() {
         config.BOOKFAIRS_CONTENT_BASE = '';
         config.BOOKFAIRS_CONTENT_TARGET = '';
 		config.EXTERNAL_SCH_COOKIE = '';
+		config.BOOKFAIRS_FATPIPE_REPORTS_URL = '';
+		config.BOOKFAIRS_FATPIPE_REPORTS_BASE = '';
+		config.BOOKFAIRS_FATPIPE_REPORTS_TARGET = '';
+
 		
 	} else if (env == 'prod') {
 
@@ -66,6 +79,9 @@ function fn() {
         config.BOOKFAIRS_CONTENT_BASE = '';
         config.BOOKFAIRS_CONTENT_TARGET = '';
 		config.EXTERNAL_SCH_COOKIE = '';
+		config.BOOKFAIRS_FATPIPE_REPORTS_URL = '';
+		config.BOOKFAIRS_FATPIPE_REPORTS_BASE = '';
+		config.BOOKFAIRS_FATPIPE_REPORTS_TARGET = '';
 	}
 
 	return config;
