@@ -83,6 +83,7 @@ function fn() {
 		config.BOOKFAIRS_FATPIPE_REPORTS_URL = '';
 		config.BOOKFAIRS_FATPIPE_REPORTS_BASE = '';
 		config.BOOKFAIRS_FATPIPE_REPORTS_TARGET = '';
+
 	}
 
 	return config;
