@@ -2,16 +2,16 @@
 Feature: Helper for running fair-settings-controller apis
 
   Background: Set config
-    * string externalSCHLCookieUri = "/api/login"
-    * string beginFairSessionUri = "/api/login/userAuthorization/fairs"
-    * string getFairSettingsUri = "/api/user/fairs/current/settings"
+    * string externalSCHLCookieUri = "/bookfairs-jarvis/api/login"
+    * string beginFairSessionUri = "/bookfairs-jarvis/api/login/userAuthorization/fairs"
+    * string getFairSettingsUri = "/bookfairs-jarvis/api/user/fairs/current/settings"
 
-  # Input: SCHL, SBF_JARVIS
-  # Output: response
+    # Input: USER_NAME, PASSWORD, FAIR_ID
+    # Output: response
     @GetFairSettingsRunner
     Scenario: Run GetFairsettings api with no other endpoint calls
+      Given def loginAuthorizationResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@BeginFairSessionRunner'){USER_NAME : '#(USER_NAME)', PASSWORD : '#(PASSWORD)'}
+      * print loginAuthorizationResponse
       Given url BOOKFAIRS_JARVIS_URL + getFairSettingsUri
-      * def SCHL = SCHL.replace("SCHL=", "")
-      * def SBF_JARVIS = beginFairSessionResponse.SBF_JARVIS.replace("SBF_JARVIS=", "")
-      And cookies { SCHL : '#(SCHL)', SBF_JARVIS: '#(SBF_JARVIS)'}
+      And cookies { SCHL : '#(loginAuthorizationResponse.SCHL)', SBF_JARVIS: '#(loginAuthorizationResponse.SBF_JARVIS)'}
       And method GET

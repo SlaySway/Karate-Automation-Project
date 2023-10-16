@@ -16,7 +16,7 @@ function fn() {
         EXTERNAL_SCH_COOKIE_TARGET : 'https://login-qa.scholastic.com',
         CMDM_QA_URL : 'https://qa-internal.api.scholastic.com',
         CONTENT_ACCESS_TOKEN : '3dIx0ZzA49dKFMQmZKEPnz3aUWesIafl',
-        BOOKFAIRS_JARVIS_URL: 'https://bookfairs-jarvis.qa.apps.scholastic.tech/bookfairs-jarvis',
+        BOOKFAIRS_JARVIS_URL: 'https://bookfairs-jarvis.qa.apps.scholastic.tech',
         SCHL_LOGIN_URL : 'https://login-qa.scholastic.com/api/login',
         CMDM_URL : 'https://qa-internal.api.scholastic.com/cmdm/fair-service/v1',
         CMDM_BEARER_TOKEN : '3dIx0ZzA49dKFMQmZKEPnz3aUWesIafl',

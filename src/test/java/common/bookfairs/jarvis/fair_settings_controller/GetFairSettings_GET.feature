@@ -13,13 +13,13 @@ Feature: GetfairsSettings API automation tests
     Then match responseStatus == 401
 
   Scenario Outline: Validate 200 response code for a valid request
-    * def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>'}
-    * def beginFairSessionResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@BeginFairSessionRunner'){SCHL : '#(schlResponse.SCHL)', FAIR_ID : '<FAIR_ID>'}
-    * def getFairSettingsResponse = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@GetFairSettingsRunner'){SCHL : '#(schlResponse.SCHL)', SBF_JARVIS : '#(beginFairSessionResponse.SBF_JARVIS)'}
+#    * def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>'}
+#    * def beginFairSessionResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@BeginFairSessionRunner'){SCHL : '#(schlResponse.SCHL)', FAIR_ID : '<FAIR_ID>'}
+    * def getFairSettingsResponse = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@GetFairSettingsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID: '<FAIR_ID>'}
     Then getFairSettingsResponse.responseStatus == 200
 
     @QA
-    Examples: 
+    Examples:
       | USER_NAME                           | PASSWORD | FAIR_ID |
       | sdevineni-consultant@scholastic.com | passw0rd | 5383023 |
       | sdevineni-consultant@scholastic.com | passw0rd | 5734325 |
@@ -33,7 +33,7 @@ Feature: GetfairsSettings API automation tests
     Then match getFairSettingsResponse.response.fairInfo.bookfairAccountId == cmdmGetFairResponse.response.organization.bookfairAccountId
 
     @QA
-    Examples: 
+    Examples:
       | USER_NAME                           | PASSWORD | FAIR_ID |
       | sdevineni-consultant@scholastic.com | passw0rd | 5383023 |
       | sdevineni-consultant@scholastic.com | passw0rd | 5644048 |
@@ -53,7 +53,7 @@ Feature: GetfairsSettings API automation tests
     Then match getFairSettingsResponse.response.fairInfo.fairType == 'case'
 
     @QA
-    Examples: 
+    Examples:
       | USER_NAME                           | PASSWORD | FAIR_ID |
       | sdevineni-consultant@scholastic.com | passw0rd | 5383023 |
       | sdevineni-consultant@scholastic.com | passw0rd | 5790926 |
@@ -76,7 +76,7 @@ Feature: GetfairsSettings API automation tests
     Then match getFairSettingsResponse.response.fairInfo.fairType == 'tabletop'
 
     @QA
-    Examples: 
+    Examples:
       | USER_NAME                           | PASSWORD | FAIR_ID |
       | sdevineni-consultant@scholastic.com | passw0rd | 5782070 |
       | sdevineni-consultant@scholastic.com | passw0rd | 5782069 |
@@ -93,7 +93,7 @@ Feature: GetfairsSettings API automation tests
     Then match getFairSettingsResponse.response.fairInfo.fairType == 'bogo case'
 
     @QA
-    Examples: 
+    Examples:
       | USER_NAME                           | PASSWORD | FAIR_ID |
       | sdevineni-consultant@scholastic.com | passw0rd | 5638187 |
       | sdevineni-consultant@scholastic.com | passw0rd | 5762088 |
@@ -108,7 +108,7 @@ Feature: GetfairsSettings API automation tests
     Then match getFairSettingsResponse.response.fairInfo.fairType == 'bogo tabletop'
 
     @QA
-    Examples: 
+    Examples:
       | USER_NAME                           | PASSWORD | FAIR_ID |
       | sdevineni-consultant@scholastic.com | passw0rd | 5638186 |
       | sdevineni-consultant@scholastic.com | passw0rd | 5644037 |
@@ -120,7 +120,7 @@ Feature: GetfairsSettings API automation tests
     Then match getFairSettingsResponse.response.fairInfo.fairType == 'Virtual'
 
     @QA
-    Examples: 
+    Examples:
       | USER_NAME                           | PASSWORD | FAIR_ID |
       | sdevineni-consultant@scholastic.com | passw0rd | 5731020 |
       | sdevineni-consultant@scholastic.com | passw0rd | 5638188 |
