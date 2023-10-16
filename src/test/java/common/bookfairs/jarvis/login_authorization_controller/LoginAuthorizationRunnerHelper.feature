@@ -2,7 +2,7 @@
 Feature: Helper for running fair-settings-controller apis
 
   Background: Set config
-    * string beginFairSessionUri = "/api/login/userAuthorization/fairs"
+    * string beginFairSessionUri = "/bookfairs-jarvis/api/login/userAuthorization/fairs"
 
     # Input: SCHL, FAIR_ID
     # Output: response.SBF_JARVIS
