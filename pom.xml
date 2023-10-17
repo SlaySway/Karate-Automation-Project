@@ -9,8 +9,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
-		<maven.compiler.version>3.8.1</maven.compiler.version>
-		<maven.surefire.version>2.22.2</maven.surefire.version>
+		<maven.compiler.version>3.1</maven.compiler.version>
+		<maven.surefire.version>2.16</maven.surefire.version>
 		<gatling.plugin.version>3.1.2 </gatling.plugin.version>
 		<karate.version>1.4.0</karate.version>
 		<karate.core>1.4.0</karate.core>
