@@ -3,6 +3,7 @@ Feature: GetfairsSettings API automation tests
 
   Background: Set config
     * string getFairSettingsUri = "/api/user/fairs/current/settings"
+    * def obj = Java.type('utils.StrictValidation')
 
   Scenario: Validate when session cookies are not passed
     * def getFairSettingsResponse = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@GetFairSettingsRunner'){SCHL: '', SBF_JARVIS : ''}
@@ -25,7 +26,6 @@ Feature: GetfairsSettings API automation tests
       | sdevineni-consultant@scholastic.com | passw0rd | 5734325 |
 
   Scenario Outline: Validate bookfairAccountId is matching with cmdm bookFairId
-
     * def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>'}
     * def beginFairSessionResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@BeginFairSessionRunner'){SCHL : '#(schlResponse.SCHL)', FAIR_ID : '<FAIR_ID>'}
     * def getFairSettingsResponse = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@GetFairSettingsRunner'){SCHL : '#(schlResponse.SCHL)', SBF_JARVIS : '#(beginFairSessionResponse.SBF_JARVIS)'}
@@ -134,7 +134,7 @@ Feature: GetfairsSettings API automation tests
     Then match getFairSettingsResponse.response.fairInfo.fairType == 'discounted 25%'
 
     @QA
-    Examples:
+    Examples: 
       | USER_NAME              | PASSWORD | FAIR_ID |
       | mtodaro@scholastic.com | passw0rd | 5782058 |
 
@@ -145,6 +145,38 @@ Feature: GetfairsSettings API automation tests
     Then match getFairSettingsResponse.response.errorMessage == "SBF_JARVIS does not match SCHL"
 
     @QA
-    Examples:
+    Examples: 
       | USER_NAME              | PASSWORD | FAIR_ID |
       | mtodaro@scholastic.com | passw0rd | 5782058 |
+
+  Scenario Outline: Validate regression using dynamic comaprison || fairId=<FAIR_ID>
+    * def BaseResponseMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@GetFairSettingsBase'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
+    * def TargetResponseMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@GetFairSettingsTarget'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
+    Then match BaseResponseMap.BaseStatCd == TargetResponseMap.TargetStatCd
+    * def compResult = obj.strictCompare(BaseResponseMap.BaseResponse, TargetResponseMap.TargetResponse)
+    Then print "Response from production code base", BaseResponseMap.BaseResponse
+    Then print "Response from current qa code base", TargetResponseMap.TargetResponse
+    Then print 'Differences any...', compResult
+    And match BaseResponseMap.BaseResponse == TargetResponseMap.TargetResponse
+
+    Examples: 
+      | USER_NAME                           | PASSWORD | FAIR_ID |
+      | mtodaro@scholastic.com              | passw0rd | 5782058 |
+      | mtodaro@scholastic.com              | passw0rd | 5782061 |
+      | mtodaro@scholastic.com              | passw0rd | 5782060 |
+      | mtodaro@scholastic.com              | passw0rd | 5782056 |
+      | mtodaro@scholastic.com              | passw0rd | 5782055 |
+      | mtodaro@scholastic.com              | passw0rd | 5782053 |
+      | sdevineni-consultant@scholastic.com | passw0rd | 5495158 |
+      | sdevineni-consultant@scholastic.com | passw0rd | 5591617 |
+      | sdevineni-consultant@scholastic.com | passw0rd | 5644034 |
+      | sdevineni-consultant@scholastic.com | passw0rd | 5725452 |
+      | sdevineni-consultant@scholastic.com | passw0rd | 5731880 |
+      | sdevineni-consultant@scholastic.com | passw0rd | 5725433 |
+      | sdevineni-consultant@scholastic.com | passw0rd | 5576627 |
+      | sdevineni-consultant@scholastic.com | passw0rd | 5209377 |
+      | mtodaro@scholastic.com              | passw0rd | 5782061 |
+      | mtodaro@scholastic.com              | passw0rd | 5782060 |
+      | mtodaro@scholastic.com              | passw0rd | 5782056 |
+      | mtodaro@scholastic.com              | passw0rd | 5782055 |
+      | mtodaro@scholastic.com              | passw0rd | 5782053 |
