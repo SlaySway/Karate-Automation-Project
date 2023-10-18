@@ -4,34 +4,26 @@ Feature: Helper for running homepage-controller apis
   Background: Set config
     * string externalSCHLCookieUri = "/api/login"
     * string beginFairSessionUri = "/api/login/userAuthorization/fairs"
-    * string getHomepageDetailsUri = "/api/user/fairs"
+    * string getHomepageDetailsUri = "/bookfairs-jarvis/api/user/fairs/current/homepage"
+    * string updateHomepageDetailsUri = "/bookfairs-jarvis/api/user/fairs/current/homepage"
 
   # Input: SCHL, SBF_JARVIS
   # Output: response
   @GetHomepageDetailsRunner
   Scenario: Run GetHomepageDetails api
-    * def reqBody =
-      """
-      {
-          "username" : '#(USER_ID)',
-          "password" : '#(PWD)'
-      }
-      """
-    Given url EXTERNAL_SCH_COOKIE_URL + externalSCHLCookieUri
-    And headers {Content-Type : 'application/json'}
-    And request reqBody
-    And method POST
-    And def SCHL_COOKIE = 'SCHL='+responseCookies.SCHL
-    Given url BOOKFAIRS_JARVIS_URL + beginFairSessionUri
-    And headers {Content-Type : 'application/json', Cookie : '#(SCHL_COOKIE)'}
-    And def pathParams = {fairId : '#(FAIRID)'}
-    And path pathParams.bookFairId
-    And method GET
-    * def JARVIS_FAIR_SESSION = responseHeaders.SBF_JARVIS
-    Then def BFS_SCHL = responseCookies.SCHL
     Given url BOOKFAIRS_JARVIS_URL + getHomepageDetailsUri
-    And cookies {SCHL : '#(BFS_SCHL)', SBF_JARVIS : '#(JARVIS_FAIR_SESSION)'}
-    And def pathParams = {fairId : '#(FAIR_ID)'}
-    And path pathParams.fairId + '/homepage'
+    * def SCHL = SCHL.replace("SCHL=", "")
+    * def SBF_JARVIS = beginFairSessionResponse.SBF_JARVIS.replace("SBF_JARVIS=", "")
+    And cookies { SCHL : '#(SCHL)', SBF_JARVIS: '#(SBF_JARVIS)'}
     And method GET
 
+# Input: SCHL, SBF_JARVIS
+  # Output: response
+  @UpdateHomepageDetailsRunner
+  Scenario: Run UpdateHomepageDetails api
+    Given url BOOKFAIRS_JARVIS_URL + updateHomepageDetailsUri
+    * def SCHL = SCHL.replace("SCHL=", "")
+    * def SBF_JARVIS = beginFairSessionResponse.SBF_JARVIS.replace("SBF_JARVIS=", "")
+    And cookies { SCHL : '#(SCHL)', SBF_JARVIS: '#(SBF_JARVIS)'}
+    * def body = {FairId : '#(FAIRID)', paymentCheckCkbox : '#(paymentCheckCkbox)'}
+    And method PUT
