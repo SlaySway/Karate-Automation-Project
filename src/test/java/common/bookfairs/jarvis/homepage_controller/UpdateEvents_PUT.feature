@@ -25,8 +25,8 @@ Feature: Update Events API automation tests
 
     @QA
     Examples:
-      | USER_NAME                          | PASSWORD | FAIR_ID |
-      | sdevineni-consultant@scholastic.com| passw0rd | 5734325 |
+      | USER_NAME                           | PASSWORD | FAIR_ID |
+      | sdevineni-consultant@scholastic.com | passw0rd | 5734325 |
 
   Scenario: Validate when session cookies are not passed
     Given url BOOKFAIRS_JARVIS_URL + updateEventsUrl

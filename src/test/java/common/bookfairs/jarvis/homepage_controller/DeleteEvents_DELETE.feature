@@ -8,7 +8,7 @@ Feature: Delete events API automation tests
     * def inputBody =
       """
       [
-    {
+        {
         "id": 1,
         "scheduleDate": "2021-06-12",
         "createDate": "2023-10-18T18:57:19.9",
@@ -17,8 +17,8 @@ Feature: Delete events API automation tests
         "startTime": "06:30:00",
         "endTime": "07:30:00",
         "description": "Test 102 Jul 18th"
-    }
-]
+        }
+      ]
       """
     * def DeleteEventsResponseMap = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@DeleteEventsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>', Input_Body : '#(inputBody)'}
     Then match DeleteEventsResponseMap.responseStatus == 200

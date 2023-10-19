@@ -17,8 +17,8 @@ Feature: Update HomepageDetails API automation tests
 
     @QA
     Examples:
-      | USER_NAME                          | PASSWORD | FAIR_ID | PAYMENT_CHECKBOX|
-      | sdevineni-consultant@scholastic.com| passw0rd | 5734325 | N               |
+      | USER_NAME                           | PASSWORD | FAIR_ID | PAYMENT_CHECKBOX |
+      | sdevineni-consultant@scholastic.com | passw0rd | 5734325 | N                |
 
   Scenario: Validate when session cookies are not passed
     Given url BOOKFAIRS_JARVIS_URL + updateHomepageDetailsUrl

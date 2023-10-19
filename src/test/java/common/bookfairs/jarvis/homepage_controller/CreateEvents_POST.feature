@@ -8,23 +8,23 @@ Feature: Create events API automation tests
     * def inputBody =
       """
         [
-  {
-    "scheduleDate": "2021-06-16",
-    "eventCategory": "Family Event",
-    "eventName": "Hello World",
-    "startTime": "06:30:00",
-    "endTime": "07:30:00",
-    "description": "Test 1"
-  },
-  {
-    "scheduleDate": "2021-06-17",
-    "eventCategory": "Family Event",
-    "eventName": "Hello World 2",
-    "startTime": "06:30:00",
-    "endTime": "07:30:00",
-    "description": "Test 2"
-  }
-]
+         {
+          "scheduleDate": "2021-06-16",
+          "eventCategory": "Family Event",
+          "eventName": "Hello World",
+          "startTime": "06:30:00",
+          "endTime": "07:30:00",
+          "description": "Test 1"
+        },
+        {
+          "scheduleDate": "2021-06-17",
+          "eventCategory": "Family Event",
+          "eventName": "Hello World 2",
+          "startTime": "06:30:00",
+          "endTime": "07:30:00",
+          "description": "Test 2"
+        }
+       ]
       """
     * def CreateEventsResponseMap = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@CreateEventsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>', Input_Body : '#(inputBody)'}
     Then match CreateEventsResponseMap.responseStatus == 200

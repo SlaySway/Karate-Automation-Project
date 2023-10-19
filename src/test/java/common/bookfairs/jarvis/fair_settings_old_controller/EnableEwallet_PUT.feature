@@ -5,6 +5,7 @@ Feature: Enable Ewallet API automation tests
     * string putEnableEwallet = "/api/private/fairs/current/ewallet/enable"
 
   Scenario Outline: Validate 200 response code for a valid request
+
     * def PutEnableEwalletResponseMap = call read('classpath:common/bookfairs/jarvis/fair_settings_old_controller/FairSettingsOldRunnerHelper.feature@PutEnableEwalletRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
     Then match PutEnableEwalletResponseMap.responseStatus == 200
 

@@ -12,9 +12,9 @@ function fn() {
         		BOOKFAIRS_CONTENT_URL: 'https://bookfairs-content.qa.apps.scholastic.tech',
         		BOOKFAIRS_CONTENT_BASE: 'https://bookfairs-content.stage.apps.scholastic.tech',
         		BOOKFAIRS_CONTENT_TARGET: 'https://bookfairs-content.qa.apps.scholastic.tech',
-        		EXTERNAL_SCH_COOKIE_URL: 'https://login-qa.scholastic.com',
-        		EXTERNAL_SCH_COOKIE_BASE: 'https://login-stage.scholastic.com',
-        		EXTERNAL_SCH_COOKIE_TARGET: 'https://login-qa.scholastic.com',
+        		EXTERNAL_SCHL_COOKIE_URL: 'https://login-qa.scholastic.com',
+        		EXTERNAL_SCHL_COOKIE_BASE: 'https://login-stage.scholastic.com',
+        		EXTERNAL_SCHL_COOKIE_TARGET: 'https://login-qa.scholastic.com',
         		CMDM_URL: 'https://qa-internal.api.scholastic.com/cmdm/fair-service/v1',
         		CMDM_QA_URL: 'https://qa-internal.api.scholastic.com',
         		CONTENT_ACCESS_TOKEN: '3dIx0ZzA49dKFMQmZKEPnz3aUWesIafl',
@@ -34,9 +34,9 @@ function fn() {
         		config.BOOKFAIRS_CONTENT_URL = 'https://bookfairs-content.qa.apps.scholastic.tech/bookfairs-jarvis';
         		config.BOOKFAIRS_CONTENT_BASE = 'https://bookfairs-content.stage.apps.scholastic.tech/bookfairs-jarvis';
         		config.BOOKFAIRS_CONTENT_TARGET = 'https://bookfairs-content.qa.apps.scholastic.tech/bookfairs-jarvis';
-        		config.EXTERNAL_SCH_COOKIE_URL = 'https://login-qa.scholastic.com';
-        		config.EXTERNAL_SCH_COOKIE_BASE = 'https://login-stage.scholastic.com';
-        		config.EXTERNAL_SCH_COOKIE_TARGET = 'https://login-qa.scholastic.com';
+        		config.EXTERNAL_SCHL_COOKIE_URL = 'https://login-qa.scholastic.com';
+        		config.EXTERNAL_SCHL_COOKIE_BASE = 'https://login-stage.scholastic.com';
+        		config.EXTERNAL_SCHL_COOKIE_TARGET = 'https://login-qa.scholastic.com';
         		config.CMDM_URL = 'https://qa-internal.api.scholastic.com/cmdm/fair-service/v1';
         		config.CMDM_QA_URL = 'https://qa-internal.api.scholastic.com';
         		config.CONTENT_ACCESS_TOKEN = '3dIx0ZzA49dKFMQmZKEPnz3aUWesIafl';

@@ -22,7 +22,7 @@ Feature: Helper for running homepage-controller apis
           "password" : '#(PWD)'
       }
       """
-    Given url EXTERNAL_SCH_COOKIE_URL + externalSCHLCookieUri
+    Given url EXTERNAL_SCHL_COOKIE_URL + externalSCHLCookieUri
     And headers {Content-Type : 'application/json'}
     And request reqBody
     And method post
@@ -50,7 +50,7 @@ Feature: Helper for running homepage-controller apis
           "password" : '#(PWD)'
       }
       """
-    Given url EXTERNAL_SCH_COOKIE_URL + externalSCHLCookieUri
+    Given url EXTERNAL_SCHL_COOKIE_URL + externalSCHLCookieUri
     And headers {Content-Type : 'application/json'}
     And request reqBody
     And method post
@@ -80,7 +80,7 @@ Feature: Helper for running homepage-controller apis
           "password" : '#(PWD)'
       }
       """
-    Given url EXTERNAL_SCH_COOKIE_URL + externalSCHLCookieUri
+    Given url EXTERNAL_SCHL_COOKIE_URL + externalSCHLCookieUri
     And headers {Content-Type : 'application/json'}
     And request reqBody
     And method post
@@ -110,7 +110,7 @@ Feature: Helper for running homepage-controller apis
           "password" : '#(PWD)'
       }
       """
-    Given url EXTERNAL_SCH_COOKIE_URL + externalSCHLCookieUri
+    Given url EXTERNAL_SCHL_COOKIE_URL + externalSCHLCookieUri
     And headers {Content-Type : 'application/json'}
     And request reqBody
     And method post
@@ -140,7 +140,7 @@ Feature: Helper for running homepage-controller apis
           "password" : '#(PWD)'
       }
       """
-    Given url EXTERNAL_SCH_COOKIE_URL + externalSCHLCookieUri
+    Given url EXTERNAL_SCHL_COOKIE_URL + externalSCHLCookieUri
     And headers {Content-Type : 'application/json'}
     And request reqBody
     And method post
@@ -170,7 +170,7 @@ Feature: Helper for running homepage-controller apis
           "password" : '#(PWD)'
       }
       """
-    Given url EXTERNAL_SCH_COOKIE_URL + externalSCHLCookieUri
+    Given url EXTERNAL_SCHL_COOKIE_URL + externalSCHLCookieUri
     And headers {Content-Type : 'application/json'}
     And request reqBody
     And method post
