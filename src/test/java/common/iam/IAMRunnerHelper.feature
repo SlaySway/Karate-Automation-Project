@@ -1,6 +1,9 @@
 @ignore @report=true
 Feature: Helper for running SCHL login api
 
+  Background: set config
+    * string loginUri = '/api/login'
+
   # Input: USER_NAME, PASSWORD
   # Output: response.SCHL
   @SCHLCookieRunner
@@ -12,7 +15,7 @@ Feature: Helper for running SCHL login api
           "password" : '#(PASSWORD)'
       }
       """
-    Given url SCHL_LOGIN_URL
+    Given url SCHL_LOGIN_URL + loginUri
     And request requestBody
     And method POST
     And def SCHL = responseCookies.SCHL.value

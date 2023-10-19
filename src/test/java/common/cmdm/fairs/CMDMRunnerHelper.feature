@@ -3,7 +3,7 @@
 Feature: Runner helper for Jarvis application apis
 
   Background: Set config
-    * string fairsUri = "/fairs/"
+    * string fairsUri = "/cmdm/fair-service/v1/fairs/"
 
   # Input: FAIR_ID
   @GetFairRunner

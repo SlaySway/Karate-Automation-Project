@@ -5,7 +5,7 @@ Feature: GetCOAConfirmation API automation tests
     * string getCOAConfirmUrl = "/api/private/fairs/current/coa"
     * def obj = Java.type('utils.StrictValidation')
 
-  Scenario Outline: Validate when sessoion cookies are not passed
+  Scenario Outline: Validate when session cookies are not passed
     Given url BOOKFAIRS_JARVIS_TARGET + getCOAConfirmUrl
     When method get
     Then match responseStatus == 401
@@ -25,7 +25,7 @@ Feature: GetCOAConfirmation API automation tests
       | sd-consultant@scholastic.com | passw0rd |
 
   Scenario Outline: Validate 200 response code for a valid request || fairId=<FAIR_ID>
-    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/coa_controller/COARunnerHelper.feature@getCoaConfirmTarget'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
+    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/coa_controller/COARunnerHelper.feature@getCoaConfirmTarget'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
     Then match ResponseDataMap.TargetStatCd == 200
     And print ResponseDataMap.TargetResponse
 
@@ -34,7 +34,7 @@ Feature: GetCOAConfirmation API automation tests
       | mtodaro@scholastic.com | passw0rd | 5782058 |
 
   Scenario Outline: Validate service response schema || fairId=<FAIR_ID>
-    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/coa_controller/COARunnerHelper.feature@getCoaConfirmTarget'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
+    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/coa_controller/COARunnerHelper.feature@getCoaConfirmTarget'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
     Then match ResponseDataMap.TargetStatCd == 200
     And json ActualResponseSchema = ResponseDataMap.TargetResponse
     And json ExpectedSchema = call read('classpath:common/bookfairs/jarvis/coa_controller/GetCOAConfirmation_schema.json')
@@ -45,7 +45,7 @@ Feature: GetCOAConfirmation API automation tests
       | sdevineni-consultant@scholastic.com | passw0rd | 5495158 |
 
   Scenario Outline: Validate fairType 'bogo tabletop' || fairId=<FAIR_ID>
-    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/coa_controller/COARunnerHelper.feature@getCoaConfirmTarget'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
+    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/coa_controller/COARunnerHelper.feature@getCoaConfirmTarget'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
     Then json ResponseObject = ResponseDataMap.TargetResponse
     Then match ResponseObject.fairInfo.fairType == 'bogo tabletop'
 
@@ -55,7 +55,7 @@ Feature: GetCOAConfirmation API automation tests
       | sdevineni-consultant@scholastic.com | passw0rd | 5644037 |
 
   Scenario Outline: Validate fairType 'Virtual' || fairId=<FAIR_ID>
-    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/coa_controller/COARunnerHelper.feature@getCoaConfirmTarget'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
+    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/coa_controller/COARunnerHelper.feature@getCoaConfirmTarget'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
     Then json ResponseObject = ResponseDataMap.TargetResponse
     Then match ResponseObject.fairInfo.fairType == 'Virtual'
 
@@ -67,7 +67,7 @@ Feature: GetCOAConfirmation API automation tests
       | sdevineni-consultant@scholastic.com | passw0rd | 5731008 |
 
   Scenario Outline: Validate fairType 'discounted 25%' || fairId=<FAIR_ID>
-    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/coa_controller/COARunnerHelper.feature@getCoaConfirmTarget'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
+    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/coa_controller/COARunnerHelper.feature@getCoaConfirmTarget'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
     Then json ResponseObject = ResponseDataMap.TargetResponse
     Then match ResponseObject.fairInfo.fairType == 'discounted 25%'
 
@@ -80,9 +80,9 @@ Feature: GetCOAConfirmation API automation tests
       | mtodaro@scholastic.com | passw0rd | 5782055 |
       | mtodaro@scholastic.com | passw0rd | 5782053 |
 
-  Scenario Outline: Validate bookfairAccountId is matching with cmdm bookFairId || fairId=<FAIR_ID>
-    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/coa_controller/COARunnerHelper.feature@getCoaConfirmTarget'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
-    * def CMDMResponseDataMap = call read('classpath:common/cmdm/fairs/CMDMRunnerHelper.feature@GetFairRunner'){FAIRID : '<FAIR_ID>'}
+  Scenario Outline: Validate bookfairAccountId is matching with cmdm bookFairId || FAIR_ID=<FAIR_ID>
+    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/coa_controller/COARunnerHelper.feature@getCoaConfirmTarget'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
+    * def CMDMResponseDataMap = call read('classpath:common/cmdm/fairs/CMDMRunnerHelper.feature@GetFairRunner'){FAIR_ID : '<FAIR_ID>'}
     Then match ResponseDataMap.BFAcctId == CMDMResponseDataMap.response.organization.bookfairAccountId
 
     Examples: 
@@ -97,8 +97,8 @@ Feature: GetCOAConfirmation API automation tests
       | sdevineni-consultant@scholastic.com | passw0rd | 5209377 |
 
   Scenario Outline: Validate regression using dynamic comaprison || fairId=<FAIR_ID>
-    * def BaseResponseMap = call read('classpath:common/bookfairs/jarvis/coa_controller/COARunnerHelper.feature@getCoaConfirmBase'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
-    * def TargetResponseMap = call read('classpath:common/bookfairs/jarvis/coa_controller/COARunnerHelper.feature@getCoaConfirmTarget'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
+    * def BaseResponseMap = call read('classpath:common/bookfairs/jarvis/coa_controller/COARunnerHelper.feature@getCoaConfirmBase'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
+    * def TargetResponseMap = call read('classpath:common/bookfairs/jarvis/coa_controller/COARunnerHelper.feature@getCoaConfirmTarget'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
     Then match BaseResponseMap.BaseStatCd == TargetResponseMap.TargetStatCd
     * def compResult = obj.strictCompare(BaseResponseMap.BaseResponse, TargetResponseMap.TargetResponse)
     Then print "Response from production code base", BaseResponseMap.BaseResponse
