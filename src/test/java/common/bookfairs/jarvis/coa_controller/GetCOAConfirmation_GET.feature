@@ -6,12 +6,12 @@ Feature: GetCOA API automation tests
     * def obj = Java.type('utils.StrictValidation')
 
   Scenario: Validate when session cookies are not passed
-    Given url BOOKFAIRS_JARVIS_TARGET + getCOAUri
+    Given url BOOKFAIRS_JARVIS_URL + getCOAUri
     When method get
     Then match responseStatus == 401
 
   Scenario: Validate when sessoion cookies are invalid
-    Given url BOOKFAIRS_JARVIS_TARGET + getCOAUri
+    Given url BOOKFAIRS_JARVIS_URL + getCOAUri
     And cookies {SCHL : 'eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.e', SBF_JARVIS : 'eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.e'}
     When method get
     Then match responseStatus == 401
@@ -89,7 +89,7 @@ Feature: GetCOA API automation tests
 
   Scenario Outline: Validate regression using dynamic comaprison || fairId=<FAIR_ID>
     * def BaseResponseMap = call read('classpath:common/bookfairs/jarvis/coa_controller/COARunnerHelper.feature@GetCOABase'){USER_ID : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
-    * def TargetResponseMap = call read('classpath:common/bookfairs/jarvis/coa_controller/COARunnerHelper.feature@GetCOATarget'){USER_ID : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
+    * def TargetResponseMap = call read('classpath:common/bookfairs/jarvis/coa_controller/COARunnerHelper.feature@GetCOARunner'){USER_ID : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
     Then match BaseResponseMap.responseStatus == TargetResponseMap.responseStatus
     Then match BaseResponseMap.response == TargetResponseMap.response
 

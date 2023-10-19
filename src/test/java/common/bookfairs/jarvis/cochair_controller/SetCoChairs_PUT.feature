@@ -6,7 +6,7 @@ Feature: SetCoChairs API automation tests
   Background: Set config
     * string coCharisUri = "/bookfairs-jarvis/api/private/fairs/current/settings/co-chairs"
 
-  Scenario Outline: Validate when sessoion cookies are not passed
+  Scenario Outline: Validate when session cookies are not passed
     * def inputBody =
       """
         {
@@ -20,7 +20,7 @@ Feature: SetCoChairs API automation tests
       ]
       }
       """
-    Given url BOOKFAIRS_JARVIS_TARGET + coCharisUri
+    Given url BOOKFAIRS_JARVIS_URL + coCharisUri
     And request inputBody
     When method put
     Then match responseStatus == 401
@@ -43,7 +43,7 @@ Feature: SetCoChairs API automation tests
       ]
       }
       """
-    Given url BOOKFAIRS_JARVIS_TARGET + coCharisUri
+    Given url BOOKFAIRS_JARVIS_URL + coCharisUri
     And cookies {SCHL : 'eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.e', SBF_JARVIS : 'eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.e'}
     And request inputBody
     When method put

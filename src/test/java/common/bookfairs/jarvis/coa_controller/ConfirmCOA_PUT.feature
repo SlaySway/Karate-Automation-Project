@@ -5,7 +5,7 @@ Feature: ConfirmCOA API automation tests
     * string confirmCOAUrl = "/api/user/fairs/current/coa/confirmation"
 
   Scenario Outline: Validate when session cookies are not passed
-    Given url BOOKFAIRS_JARVIS_TARGET + confirmCOAUrl
+    Given url BOOKFAIRS_JARVIS_URL + confirmCOAUrl
     When method GET
     Then match responseStatus == 401
 
@@ -14,7 +14,7 @@ Feature: ConfirmCOA API automation tests
       | sd-consultant@scholastic.com | passw0rd |
 
   Scenario Outline: Validate when session cookies are invalid
-    Given url BOOKFAIRS_JARVIS_TARGET + confirmCOAUrl
+    Given url BOOKFAIRS_JARVIS_URL + confirmCOAUrl
     And cookies {SCHL : 'eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.e', SBF_JARVIS : 'eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.e'}
     When method get
     Then match responseStatus == 401

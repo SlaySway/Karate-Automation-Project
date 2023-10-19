@@ -22,7 +22,7 @@ Feature: Helper for running SCHL login api
 
   # Input: USER_NAME, PASSWORD
   # Output: response, SCHL
-  @SCHLCookieRunnerTarget
+  @SCHLCookieRunnerBase
   Scenario: Login to IAM to obtain the SCHL cookie
     * def requestBody =
       """
@@ -31,7 +31,7 @@ Feature: Helper for running SCHL login api
           "password" : '#(PASSWORD)'
       }
       """
-    Given url SCHL_LOGIN_TARGET + loginUri
+    Given url SCHL_LOGIN_BASE + loginUri
     And request requestBody
     And method post
     And def SCHL = responseCookies.SCHL.value

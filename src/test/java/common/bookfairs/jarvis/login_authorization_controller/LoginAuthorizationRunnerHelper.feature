@@ -19,10 +19,10 @@ Feature: Helper for running fair-settings-controller apis
 
   # Input: USER_NAME, PASSWORD, FAIR_ID
   # Output: response.SBF_JARVIS
-  @BeginFairSessionRunnerTarget
-  Scenario: Run GetFairSettings api in target environment
-    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunnerTarget'){USER_NAME : '#(USER_NAME)', PASSWORD : '#(PASSWORD)'}
-    Given url BOOKFAIRS_JARVIS_TARGET + beginFairSessionUri
+  @BeginFairSessionRunnerBase
+  Scenario: Run GetFairSettings api in base environment
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunnerBase'){USER_NAME : '#(USER_NAME)', PASSWORD : '#(PASSWORD)'}
+    Given url BOOKFAIRS_JARVIS_BASE + beginFairSessionUri
     And cookies { SCHL : '#(schlResponse.SCHL)'}
     And def pathParams = {bookFairId : '#(FAIR_ID)'}
     And path pathParams.bookFairId

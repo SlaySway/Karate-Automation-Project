@@ -101,7 +101,7 @@ Feature: GetfairsSettings API automation tests
 
   Scenario Outline: Validate regression using dynamic comaprison || fairId=<FAIR_ID>
     * def BaseResponseMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@GetFairSettingsBase'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
-    * def TargetResponseMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@GetFairSettingsTarget'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
+    * def TargetResponseMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@GetFairSettingsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
     Then match BaseResponseMap.BaseStatCd == TargetResponseMap.TargetStatCd
     * def compResult = obj.strictCompare(BaseResponseMap.BaseResponse, TargetResponseMap.TargetResponse)
     Then print "Response from production code base", BaseResponseMap.BaseResponse

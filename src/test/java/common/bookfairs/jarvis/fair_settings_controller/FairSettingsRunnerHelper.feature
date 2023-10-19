@@ -24,26 +24,10 @@ Feature: Helper for running fair-settings-controller apis
     When method get
 
   # Input: USER_NAME, PWD, FAIR_ID
-  @GetFairSettingsTarget
-  Scenario: Run GetFairSettings api in target environment
-    Given def loginAuthorizationResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@BeginFairSessionRunnerTarget'){USER_NAME : '#(USER_NAME)', PASSWORD : '#(PASSWORD)'}
-    Given url BOOKFAIRS_JARVIS_TARGET + getFairSettingsUri
-    And cookies { SCHL : '#(loginAuthorizationResponse.SCHL)', SBF_JARVIS: '#(loginAuthorizationResponse.SBF_JARVIS)'}
-    When method get
-
-  # Input: USER_NAME, PWD, FAIR_ID
   @GetFairSettingsDatesBase
   Scenario: Run getFairSettingsDates api in base environment
     Given def loginAuthorizationResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@BeginFairSessionRunner'){USER_NAME : '#(USER_NAME)', PASSWORD : '#(PASSWORD)'}
     Given url BOOKFAIRS_JARVIS_BASE + getFairSettingsDatesUri
     * print loginAuthorizationResponse
-    And cookies { SCHL : '#(loginAuthorizationResponse.SCHL)', SBF_JARVIS: '#(loginAuthorizationResponse.SBF_JARVIS)'}
-    When method get
-
-  # Input: USER_NAME, PWD, FAIR_ID
-  @GetFairSettingsDatesTarget
-  Scenario: Run getFairSettingsDates api in target environment
-    Given def loginAuthorizationResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@BeginFairSessionRunnerTarget'){USER_NAME : '#(USER_NAME)', PASSWORD : '#(PASSWORD)'}
-    Given url BOOKFAIRS_JARVIS_TARGET + getFairSettingsDatesUri
     And cookies { SCHL : '#(loginAuthorizationResponse.SCHL)', SBF_JARVIS: '#(loginAuthorizationResponse.SBF_JARVIS)'}
     When method get

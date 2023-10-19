@@ -27,7 +27,7 @@ Feature: GetFairsSettingsDates API automation tests
 
   Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIR_ID>
     * def BaseResponseMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@GetFairSettingsDatesBase'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
-    * def TargetResponseMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@GetFairSettingsDatesTarget'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
+    * def TargetResponseMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@GetFairSettingsDatesRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
     Then match BaseResponseMap.responseStatus == TargetResponseMap.responseStatus
     Then match BaseResponseMap.response == TargetResponseMap.response
 
