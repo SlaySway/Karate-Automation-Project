@@ -2,8 +2,6 @@
 Feature: Helper for running fair-settings-controller apis
 
   Background: Set config
-    * string externalSCHLCookieUri = "/bookfairs-jarvis/api/login"
-    * string beginFairSessionUri = "/bookfairs-jarvis/api/login/userAuthorization/fairs"
     * string getFairSettingsUri = "/bookfairs-jarvis/api/user/fairs/current/settings"
 
     # Input: USER_NAME, PASSWORD, FAIR_ID
