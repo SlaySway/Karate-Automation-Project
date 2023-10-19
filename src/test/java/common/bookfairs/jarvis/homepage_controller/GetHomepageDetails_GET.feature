@@ -2,12 +2,10 @@
 Feature: HomepageDetails API automation tests
 
   Background: Set config
-    * string getHomepageDetailsUrl = "/bookfairs-jarvis/api/user/fairs/current/homepage"
+    * string getHomepageDetailsUrl = "/api/user/fairs/current/homepage"
 
 Scenario Outline: Validate 200 response code for a valid request
-  * def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>'}
-  * def beginFairSessionResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@BeginFairSessionRunner'){SCHL : '#(schlResponse.SCHL)', FAIR_ID : '<FAIR_ID>'}
-  * def getHomepageDetailsResponse = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@GetHomepageDetailsRunner'){SCHL : '#(schlResponse.SCHL)', SBF_JARVIS : '#(beginFairSessionResponse.SBF_JARVIS)'}
+  * def getHomepageDetailsResponse = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@GetHomepageDetailsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
   Then match getHomepageDetailsResponse.responseStatus == 200
 
 Examples:
@@ -30,5 +28,4 @@ Examples:
       Examples:
         | USER_NAME                    | PASSWORD |
         | sd-consultant@scholastic.com | passw0rd |
-
 
