@@ -10,4 +10,4 @@ Feature: Runner helper for Jarvis application apis
   Scenario: Run getFairs api
     Given url CMDM_URL + fairsUri + FAIR_ID
     And header Authorization = CMDM_BEARER_TOKEN
-    When method GET
+    When method get

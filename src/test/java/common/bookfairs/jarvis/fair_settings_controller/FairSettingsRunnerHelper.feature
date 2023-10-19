@@ -13,7 +13,7 @@ Feature: Helper for running fair-settings-controller apis
     Given def loginAuthorizationResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@BeginFairSessionRunner'){USER_NAME : '#(USER_NAME)', PASSWORD : '#(PASSWORD)'}
     Given url BOOKFAIRS_JARVIS_URL + getFairSettingsUri
     And cookies { SCHL : '#(loginAuthorizationResponse.SCHL)', SBF_JARVIS: '#(loginAuthorizationResponse.SBF_JARVIS)'}
-    And method GET
+    And method get
 
   # Input: USER_NAME, PWD, FAIR_ID
   @GetFairSettingsBase

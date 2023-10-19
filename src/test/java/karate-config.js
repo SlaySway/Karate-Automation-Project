@@ -8,7 +8,7 @@ function fn() {
 		env: env,
 
 		BOOKFAIRS_JARVIS_URL: 'https://bookfairs-jarvis.qa.apps.scholastic.tech',
-		BOOKFAIRS_JARVIS_BASE: 'https://bookfairs-jarvis.qa.apps.scholastic.tech',
+		BOOKFAIRS_JARVIS_BASE: 'https://bookfairs-jarvis.stage.apps.scholastic.tech',
 		BOOKFAIRS_JARVIS_TARGET: 'https://bookfairs-jarvis.stage.apps.scholastic.tech',
 
 		BOOKFAIRS_CONTENT_URL: 'https://bookfairs-content.qa.apps.scholastic.tech',

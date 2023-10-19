@@ -13,7 +13,7 @@ Feature: Helper for running fair-settings-controller apis
     And cookies { SCHL : '#(schlResponse.SCHL)'}
     And def pathParams = {bookFairId : '#(FAIR_ID)'}
     And path pathParams.bookFairId
-    And method GET
+    And method get
     Then def SBF_JARVIS = responseCookies.SBF_JARVIS.value
     Then def SCHL = schlResponse.SCHL
 
@@ -26,7 +26,7 @@ Feature: Helper for running fair-settings-controller apis
     And cookies { SCHL : '#(schlResponse.SCHL)'}
     And def pathParams = {bookFairId : '#(FAIR_ID)'}
     And path pathParams.bookFairId
-    And method GET
+    And method get
     Then def SBF_JARVIS = responseCookies.SBF_JARVIS.value
     Then def SCHL = schlResponse.SCHL
 

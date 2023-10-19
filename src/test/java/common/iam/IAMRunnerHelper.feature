@@ -17,7 +17,7 @@ Feature: Helper for running SCHL login api
       """
     Given url SCHL_LOGIN_URL + loginUri
     And request requestBody
-    And method POST
+    And method post
     And def SCHL = responseCookies.SCHL.value
 
   # Input: USER_NAME, PASSWORD
@@ -33,5 +33,5 @@ Feature: Helper for running SCHL login api
       """
     Given url SCHL_LOGIN_TARGET + loginUri
     And request requestBody
-    And method POST
+    And method post
     And def SCHL = responseCookies.SCHL.value
