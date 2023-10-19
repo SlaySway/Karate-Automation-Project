@@ -3,7 +3,7 @@
 Feature: SetFairsBlackoutDates API automation tests
 
   Background: Set config
-    * string setFairBlkOutDatesUrl = "/bookfairs-jarvis/api/user/fairs/current/settings/dates/blackout-dates"
+    * string setFairBlackOutDatesUri = "/bookfairs-jarvis/api/user/fairs/current/settings/dates/blackout-dates"
     * def setFairSettingsBlackOut_ReqBody =
       """
       {
@@ -19,7 +19,7 @@ Feature: SetFairsBlackoutDates API automation tests
       """
 
   Scenario Outline: Validate when session cookies are not passed
-    Given url BOOKFAIRS_JARVIS_URL + setFairBlkOutDatesUrl
+    Given url BOOKFAIRS_JARVIS_URL + setFairBlackOutDatesUri
     And request setFairSettingsBlackOut_ReqBody
     When method put
     Then match responseStatus == 401
@@ -29,7 +29,7 @@ Feature: SetFairsBlackoutDates API automation tests
       | sd-consultant@scholastic.com | passw0rd |
 
   Scenario Outline: Validate when session cookies are invalid
-    Given url BOOKFAIRS_JARVIS_URL + setFairBlkOutDatesUrl
+    Given url BOOKFAIRS_JARVIS_URL + setFairBlackOutDatesUri
     And cookies {SCHL : 'eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.e', SBF_JARVIS : 'eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.e'}
     And request setFairSettingsBlackOut_ReqBody
     When method put
@@ -40,7 +40,7 @@ Feature: SetFairsBlackoutDates API automation tests
       | sd-consultant@scholastic.com | passw0rd |
 
   Scenario Outline: Validate when request body is missing
-    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@setFairsBlkOutDatesRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
+    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@setFairsBlkOutDatesRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
     Then match ResponseDataMap.StatusCode == 415
     And print ResponseDataMap.ResponseString
 
@@ -62,7 +62,7 @@ Feature: SetFairsBlackoutDates API automation tests
         }
       }
       """
-    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@setFairsBlkOutDatesRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>', setFairsBlackOutDates_Input : '#(Input_PayloadBody)'}
+    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@setFairsBlkOutDatesRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>', setFairsBlackOutDates_Input : '#(Input_PayloadBody)'}
     Then match ResponseDataMap.StatusCode == 200
     And print ResponseDataMap.ResponseString
 

@@ -5,7 +5,7 @@ Feature: Helper for running fair-settings-controller apis
     * string beginFairSessionUri = "/bookfairs-jarvis/api/login/userAuthorization/fairs"
 
   # Input: USER_NAME, PASSWORD, FAIR_ID
-  # Output: response.SBF_JARVIS
+  # Output: response, SBF_JARVIS, SCHL
   @BeginFairSessionRunner
   Scenario: Run GetFairSettings api
     Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner'){USER_NAME : '#(USER_NAME)', PASSWORD : '#(PASSWORD)'}
@@ -15,18 +15,19 @@ Feature: Helper for running fair-settings-controller apis
     And path pathParams.bookFairId
     And method GET
     Then def SBF_JARVIS = responseCookies.SBF_JARVIS.value
-
+    Then def SCHL = schlResponse.SCHL
 
   # Input: USER_NAME, PASSWORD, FAIR_ID
   # Output: response.SBF_JARVIS
   @BeginFairSessionRunnerTarget
   Scenario: Run GetFairSettings api in target environment
-    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner'){USER_NAME : '#(USER_NAME)', PASSWORD : '#(PASSWORD)'}
-    Given url BOOKFAIRS_JARVIS_URL + beginFairSessionUri
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunnerTarget'){USER_NAME : '#(USER_NAME)', PASSWORD : '#(PASSWORD)'}
+    Given url BOOKFAIRS_JARVIS_TARGET + beginFairSessionUri
     And cookies { SCHL : '#(schlResponse.SCHL)'}
     And def pathParams = {bookFairId : '#(FAIR_ID)'}
     And path pathParams.bookFairId
     And method GET
     Then def SBF_JARVIS = responseCookies.SBF_JARVIS.value
+    Then def SCHL = schlResponse.SCHL
 
 

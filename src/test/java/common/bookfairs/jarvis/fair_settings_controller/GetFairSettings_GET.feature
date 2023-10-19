@@ -18,7 +18,7 @@ Feature: GetfairsSettings API automation tests
 
   Scenario Outline: Validate 200 response code for a valid request
     * def getFairSettingsResponse = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@GetFairSettingsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID: '<FAIR_ID>'}
-    Then getFairSettingsResponse.responseStatus == 200
+    Then match getFairSettingsResponse.responseStatus == 200
 
     @QA
     Examples: 

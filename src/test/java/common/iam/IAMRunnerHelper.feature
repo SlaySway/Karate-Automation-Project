@@ -5,7 +5,7 @@ Feature: Helper for running SCHL login api
     * string loginUri = '/api/login'
 
   # Input: USER_NAME, PASSWORD
-  # Output: response.SCHL
+  # Output: response, SCHL
   @SCHLCookieRunner
   Scenario: Login to IAM to obtain the SCHL cookie
     * def requestBody =
@@ -16,6 +16,22 @@ Feature: Helper for running SCHL login api
       }
       """
     Given url SCHL_LOGIN_URL + loginUri
+    And request requestBody
+    And method POST
+    And def SCHL = responseCookies.SCHL.value
+
+  # Input: USER_NAME, PASSWORD
+  # Output: response, SCHL
+  @SCHLCookieRunnerTarget
+  Scenario: Login to IAM to obtain the SCHL cookie
+    * def requestBody =
+      """
+      {
+          "username" : '#(USER_NAME)',
+          "password" : '#(PASSWORD)'
+      }
+      """
+    Given url SCHL_LOGIN_TARGET + loginUri
     And request requestBody
     And method POST
     And def SCHL = responseCookies.SCHL.value

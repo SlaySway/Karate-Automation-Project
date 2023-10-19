@@ -8,16 +8,18 @@ function fn() {
 		env: env,
 
 		BOOKFAIRS_JARVIS_URL: 'https://bookfairs-jarvis.qa.apps.scholastic.tech',
-		BOOKFAIRS_JARVIS_BASE: 'https://bookfairs-jarvis.stage.apps.scholastic.tech',
-		BOOKFAIRS_JARVIS_TARGET: 'https://bookfairs-jarvis.qa.apps.scholastic.tech',
+		BOOKFAIRS_JARVIS_BASE: 'https://bookfairs-jarvis.qa.apps.scholastic.tech',
+		BOOKFAIRS_JARVIS_TARGET: 'https://bookfairs-jarvis.stage.apps.scholastic.tech',
 
 		BOOKFAIRS_CONTENT_URL: 'https://bookfairs-content.qa.apps.scholastic.tech',
-		BOOKFAIRS_CONTENT_BASE: 'https://bookfairs-content.stage.apps.scholastic.tech',
-		BOOKFAIRS_CONTENT_TARGET: 'https://bookfairs-content.qa.apps.scholastic.tech',
+		BOOKFAIRS_CONTENT_BASE: 'https://bookfairs-content.qa.apps.scholastic.tech',
+		BOOKFAIRS_CONTENT_TARGET: 'https://bookfairs-content.stage.apps.scholastic.tech',
 
         CONTENT_ACCESS_TOKEN : '3dIx0ZzA49dKFMQmZKEPnz3aUWesIafl',
 
         SCHL_LOGIN_URL : 'https://login-qa.scholastic.com',
+        SCHL_LOGIN_TARGET : 'https://login-stage.scholastic.com',
+
 
         CMDM_URL : 'https://qa-internal.api.scholastic.com',
         CMDM_BEARER_TOKEN : '3dIx0ZzA49dKFMQmZKEPnz3aUWesIafl',
