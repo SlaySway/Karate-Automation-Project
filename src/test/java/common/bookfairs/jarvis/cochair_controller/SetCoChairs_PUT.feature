@@ -64,7 +64,7 @@ Feature: SetCoChairs API automation tests
       ]
       }
       """
-    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/cochair_controller/CoChairRunnerHelper.feature@coChairsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>', REQUEST_BODY : '#(requestBody)'}
+    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/cochair_controller/CoChairRunnerHelper.feature@SetCoChairsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>', REQUEST_BODY : '#(requestBody)'}
     Then match ResponseDataMap.responseStatus == 200
 
     Examples: 
