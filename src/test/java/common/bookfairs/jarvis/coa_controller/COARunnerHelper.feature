@@ -10,7 +10,7 @@ Feature: Helper for running coa-controller apis
   @GetCOARunner
   Scenario: Run GetCOA api in target environment
     Given def loginAuthorizationResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@BeginFairSessionRunner'){USER_NAME : '#(USER_NAME)', PASSWORD : '#(PASSWORD)'}
-    Given url BOOKFAIRS_JARVIS_TARGET + getCOAUri
+    Given url BOOKFAIRS_JARVIS_URL + getCOAUri
     And cookies { SCHL : '#(loginAuthorizationResponse.SCHL)', SBF_JARVIS: '#(loginAuthorizationResponse.SBF_JARVIS)'}
     When method get
 

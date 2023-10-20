@@ -19,7 +19,7 @@ Feature: Helper for running fair-settings-controller apis
 
   # Input: USER_NAME, PASSWORD, FAIR_ID
   # Output: response.SBF_JARVIS
-  @BeginFairSessionRunnerBase
+  @BeginFairSessionBase
   Scenario: Run GetFairSettings api in base environment
     Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunnerBase'){USER_NAME : '#(USER_NAME)', PASSWORD : '#(PASSWORD)'}
     Given url BOOKFAIRS_JARVIS_BASE + beginFairSessionUri

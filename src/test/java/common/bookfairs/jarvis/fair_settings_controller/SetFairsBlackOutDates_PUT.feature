@@ -1,4 +1,3 @@
-#Author: Ravindra Pallerla
 @setFairBlkOutDatesTest
 Feature: SetFairsBlackoutDates API automation tests
 

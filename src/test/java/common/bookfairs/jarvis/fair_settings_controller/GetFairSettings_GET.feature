@@ -99,15 +99,18 @@ Feature: GetfairsSettings API automation tests
       | USER_NAME              | PASSWORD | FAIR_ID |
       | mtodaro@scholastic.com | passw0rd | 5782058 |
 
-  Scenario Outline: Validate regression using dynamic comaprison || fairId=<FAIR_ID>
+  Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIR_ID>
     * def BaseResponseMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@GetFairSettingsBase'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
     * def TargetResponseMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@GetFairSettingsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
-    Then match BaseResponseMap.BaseStatCd == TargetResponseMap.TargetStatCd
-    * def compResult = obj.strictCompare(BaseResponseMap.BaseResponse, TargetResponseMap.TargetResponse)
-    Then print "Response from production code base", BaseResponseMap.BaseResponse
-    Then print "Response from current qa code base", TargetResponseMap.TargetResponse
+    Then match BaseResponseMap.responseStatus == TargetResponseMap.responseStatus
+    Then match BaseResponseMap.response == TargetResponseMap.response
+
+    * string base = BaseResponseMap.response
+    * string target = TargetResponseMap.response
+    * def compResult = obj.strictCompare(base, target)
+    Then print "Response from production code base", BaseResponseMap.response
+    Then print "Response from current qa code base", TargetResponseMap.response
     Then print 'Differences any...', compResult
-    And match BaseResponseMap.BaseResponse == TargetResponseMap.TargetResponse
 
     Examples:
       | USER_NAME                           | PASSWORD | FAIR_ID |

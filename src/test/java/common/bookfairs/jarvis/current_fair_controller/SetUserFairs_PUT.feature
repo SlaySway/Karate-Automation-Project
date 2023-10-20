@@ -1,13 +1,11 @@
-#Author: Ravindra Pallerla
-
 @setUserFairsTest
 Feature: SetUserFairs API automation tests
 
   Background: Set config
-    * string setUserFairsUrl = "/bookfairs-jarvis/api/user/fairs/current"
+    * string beginFairSessionUri = "/bookfairs-jarvis/api/user/fairs/current"
 
   Scenario Outline: Validate when fairid is missing
-    * def reqBody =
+    * def requestBody =
       """
       {
           "fairId": '<FAIR_ID>'
