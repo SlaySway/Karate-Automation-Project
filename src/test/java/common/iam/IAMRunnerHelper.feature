@@ -1,18 +1,37 @@
 @ignore @report=true
 Feature: Helper for running SCHL login api
 
-  # Input: USER_ID, PWD
-  # Output: response.SCHL
+  Background: set config
+    * string loginUri = '/api/login'
+
+  # Input: USER_NAME, PASSWORD
+  # Output: response, SCHL
   @SCHLCookieRunner
   Scenario: Login to IAM to obtain the SCHL cookie
-    * def reqBody =
+    * def requestBody =
       """
       {
-          "username" : '#(USER_ID)',
-          "password" : '#(PWD)'
+          "username" : '#(USER_NAME)',
+          "password" : '#(PASSWORD)'
       }
       """
-    Given url SCHL_LOGIN_URL
-    And request reqBody
-    And method POST
-    And def SCHL = "SCHL=" + responseCookies.SCHL.value
+    Given url SCHL_LOGIN_URL + loginUri
+    And request requestBody
+    And method post
+    And def SCHL = responseCookies.SCHL.value
+
+  # Input: USER_NAME, PASSWORD
+  # Output: response, SCHL
+  @SCHLCookieRunnerBase
+  Scenario: Login to IAM to obtain the SCHL cookie
+    * def requestBody =
+      """
+      {
+          "username" : '#(USER_NAME)',
+          "password" : '#(PASSWORD)'
+      }
+      """
+    Given url SCHL_LOGIN_BASE + loginUri
+    And request requestBody
+    And method post
+    And def SCHL = responseCookies.SCHL.value

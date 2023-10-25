@@ -1,12 +1,10 @@
-#Author: Ravindra Pallerla
-
 @setCoChairsTest
 Feature: SetCoChairs API automation tests
 
   Background: Set config
-    * string coCharisUri = "/bookfairs-jarvis/api/private/fairs/current/settings/co-chairs"
+    * string setCoChairsUri = "/bookfairs-jarvis/api/private/fairs/current/settings/co-chairs"
 
-  Scenario Outline: Validate when sessoion cookies are not passed
+  Scenario Outline: Validate when session cookies are not passed
     * def inputBody =
       """
         {
@@ -20,7 +18,7 @@ Feature: SetCoChairs API automation tests
       ]
       }
       """
-    Given url BOOKFAIRS_JARVIS_TARGET + coCharisUri
+    Given url BOOKFAIRS_JARVIS_URL + setCoChairsUri
     And request inputBody
     When method put
     Then match responseStatus == 401
@@ -29,7 +27,7 @@ Feature: SetCoChairs API automation tests
       | USER_NAME                    | PASSWORD | CC_FIRSTNAME | CC_LASTNAME | CC_EMAIL          | SF_ID |
       | sd-consultant@scholastic.com | passw0rd | Jimmy        | Kies        | jimmyk@qatest.com | E1    |
 
-  Scenario Outline: Validate when sessoion cookies are invalid
+  Scenario Outline: Validate when session cookies are invalid
     * def inputBody =
       """
         {
@@ -43,7 +41,7 @@ Feature: SetCoChairs API automation tests
       ]
       }
       """
-    Given url BOOKFAIRS_JARVIS_TARGET + coCharisUri
+    Given url BOOKFAIRS_JARVIS_URL + setCoChairsUri
     And cookies {SCHL : 'eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.e', SBF_JARVIS : 'eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.e'}
     And request inputBody
     When method put
@@ -54,7 +52,7 @@ Feature: SetCoChairs API automation tests
       | sd-consultant@scholastic.com | passw0rd | Jimmy        | Kies        | jimmyk@qatest.com | E1    |
 
   Scenario Outline: Validate 200 response code for a valid request
-    * def inputBody =
+    * def requestBody =
       """
         {
       "co-chairs": [
@@ -66,9 +64,8 @@ Feature: SetCoChairs API automation tests
       ]
       }
       """
-    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/cochair_controller/CoChairRunnerHelper.feature@coChairsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>', Input_Body : '#(inputBody)'}
-    Then match ResponseDataMap.StatusCode == 200
-    And print ResponseDataMap.ResponseString
+    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/cochair_controller/CoChairRunnerHelper.feature@SetCoChairsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>', REQUEST_BODY : '#(requestBody)'}
+    Then match ResponseDataMap.responseStatus == 200
 
     Examples: 
       | USER_NAME                           | PASSWORD | FAIR_ID | CC_FIRSTNAME | CC_LASTNAME | CC_EMAIL             |
