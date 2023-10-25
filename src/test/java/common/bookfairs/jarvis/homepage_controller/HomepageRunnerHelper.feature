@@ -9,8 +9,8 @@ Feature: Helper for running homepage-controller apis
     * string createEventsUri = "/bookfairs-jarvis/api/user/fairs/current/homepage/events"
     * string deleteEventsUri = "/bookfairs-jarvis/api/user/fairs/current/homepage/events"
 
-  # Input: SCHL, SBF_JARVIS
-  # Output: Homepage details in response
+  # Input: USER_NAME, PASSWORD, FAIR_ID
+  # Output: response
   @GetHomepageDetailsRunner
   Scenario: Run GetHomepageDetails api
     Given def loginAuthorizationResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@BeginFairSessionRunner'){USER_NAME : '#(USER_NAME)', PASSWORD : '#(PASSWORD)'}
@@ -18,7 +18,7 @@ Feature: Helper for running homepage-controller apis
     And cookies { SCHL : '#(loginAuthorizationResponse.SCHL)', SBF_JARVIS: '#(loginAuthorizationResponse.SBF_JARVIS)'}
     When method GET
 
-# Input: SCHL, SBF_JARVIS, Homepage details to be updated as request body
+# Input: USER_NAME, PASSWORD, FAIR_ID, Homepage details to be updated as request body
   # Output: Updated homepage details in response
   @UpdateHomepageDetailsRunner
   Scenario: Run UpdateHomepageDetails api
@@ -29,7 +29,7 @@ Feature: Helper for running homepage-controller apis
     And request putPayload
     When method PUT
 
-    # Input: SCHL, SBF_JARVIS, Event details to be updated as request body
+    # Input: USER_NAME, PASSWORD, FAIR_ID, Event details to be updated as request body
     # Output: Updated Event details in response
   @UpdateEventsRunner
   Scenario: Run UpdateEvents api
@@ -40,7 +40,7 @@ Feature: Helper for running homepage-controller apis
     And request putPayload
     When method PUT
 
-    # Input: SCHL, SBF_JARVIS, Goals details to be updated as request body
+    # Input: USER_NAME, PASSWORD, FAIR_ID, Goals details to be updated as request body
     # Output: response
   @UpdateGoalsRunner
   Scenario: Run UpdateGoals api
@@ -51,7 +51,7 @@ Feature: Helper for running homepage-controller apis
     And request putPayload
     When method PUT
 
-    # Input: SCHL, SBF_JARVIS, New event details to be created as request body
+    # Input: USER_NAME, PASSWORD, FAIR_ID, New event details to be created as request body
     # Output: response
   @CreateEventsRunner
   Scenario: Run CreateEvents api
@@ -62,7 +62,7 @@ Feature: Helper for running homepage-controller apis
     And request putPayload
     When method POST
 
-        # Input: SCHL, SBF_JARVIS, Events to be deleted as request body
+        # Input: USER_NAME, PASSWORD, FAIR_ID, Events to be deleted as request body
         # Output: response
   @DeleteEventsRunner
   Scenario: Run DeleteEvents api
