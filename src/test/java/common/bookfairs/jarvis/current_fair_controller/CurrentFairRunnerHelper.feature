@@ -1,29 +1,15 @@
-#Author: Ravindra Pallerla
-
 @ignore @report=true
 Feature: Helper for running current-fair-controller apis
 
   Background: Set config
-    * string externalSCHCookieUri = "/api/login"
-    * string beginFairSessionUri = "/bookfairs-jarvis/api/login/userAuthorization/fairs"
-    * string setUserFairsUrl = "/bookfairs-jarvis/api/user/fairs/current"
+    * string beginFairSessionUri = "/bookfairs-jarvis/api/user/fairs/current"
 
-  @setUserFairsRunner
+  # Inputs: USER_NAME, PASSWORD, REQUEST_BODY
+  # Outputs: response
+  @SetUserFairsRunner
   Scenario: Run setUserFairs api
-    * def reqBody =
-      """
-      {
-          "username" : '#(USER_ID)',
-          "password" : '#(PWD)'
-      }
-      """
-    Given url EXTERNAL_SCH_COOKIE_URL + externalSCHCookieUri
-    And headers {Content-Type : 'application/json'}
-    And request reqBody
-    And method post
-    And def SCHL_SESSION = 'SCHL='+responseCookies.SCHL.value
-    Given url BOOKFAIRS_JARVIS_URL + setUserFairsUrl
-    And headers {Content-Type : 'application/json', Cookie : '#(SCH_Cookie)'}
-    * def jsonBody = {inputpayLoad : '#(jsonInput)'}
-    And request jsonBody.inputpayLoad
-    When method PUT
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    Given url BOOKFAIRS_JARVIS_URL + beginFairSessionUri
+    And cookies { SCHL : '#(schlResponse.SCHL)'}
+    And request REQUEST_BODY
+    When method put

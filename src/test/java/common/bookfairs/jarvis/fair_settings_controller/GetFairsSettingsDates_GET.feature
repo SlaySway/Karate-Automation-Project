@@ -2,47 +2,41 @@
 Feature: GetFairsSettingsDates API automation tests
 
   Background: Set config
-    * string getFairSettingsDatesUrl = "/api/user/fairs/current/settings/dates"
+    * string getFairSettingsDatesUri = "/bookfairs-jarvis/api/user/fairs/current/settings/dates"
     * def obj = Java.type('utils.StrictValidation')
 
-  Scenario Outline: Validate when sessoion cookies are not passed
-    Given url BOOKFAIRS_JARVIS_URL + getFairSettingsDatesUrl
+  Scenario: Validate when session cookies are not passed
+    Given url BOOKFAIRS_JARVIS_URL + getFairSettingsDatesUri
     When method get
     Then match responseStatus == 401
 
-    Examples: 
-      | USER_NAME                    | PASSWORD |
-      | sd-consultant@scholastic.com | passw0rd |
-
-  Scenario Outline: Validate when sessoion cookies are invalid
-    Given url BOOKFAIRS_JARVIS_URL + getFairSettingsDatesUrl
+  Scenario: Validate when session cookies are invalid
+    Given url BOOKFAIRS_JARVIS_URL + getFairSettingsDatesUri
     And cookies {SCHL : 'eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.e', SBF_JARVIS : 'eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.e'}
     When method get
     Then match responseStatus == 401
 
-    Examples: 
-      | USER_NAME                    | PASSWORD |
-      | sd-consultant@scholastic.com | passw0rd |
-
   Scenario Outline: Validate 200 response code for a valid request
-    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@getFairsSettingsDatesRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
-    Then match ResponseDataMap.StatusCode == 200
-    And print ResponseDataMap.ResponseString
+    * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@GetFairSettingsDatesBase'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
+    Then match ResponseDataMap.responseStatus == 200
 
     Examples: 
       | USER_NAME                           | PASSWORD | FAIR_ID |
       | sdevineni-consultant@scholastic.com | passw0rd | 5383023 |
       | sdevineni-consultant@scholastic.com | passw0rd | 5734325 |
 
-  Scenario Outline: Validate regression using dynamic comaprison || fairId=<FAIR_ID>
-    * def BaseResponseMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@getFairSettingsDatesBase'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
-    * def TargetResponseMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@getFairSettingsDatesTarget'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
-    Then match BaseResponseMap.BaseStatCd == TargetResponseMap.TargetStatCd
-    * def compResult = obj.strictCompare(BaseResponseMap.BaseResponse, TargetResponseMap.TargetResponse)
-    Then print "Response from production code base", BaseResponseMap.BaseResponse
-    Then print "Response from current qa code base", TargetResponseMap.TargetResponse
+  Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIR_ID>
+    * def BaseResponseMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@GetFairSettingsDatesBase'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
+    * def TargetResponseMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@GetFairSettingsDatesRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
+    Then match BaseResponseMap.responseStatus == TargetResponseMap.responseStatus
+    Then match BaseResponseMap.response == TargetResponseMap.response
+
+    * string base = BaseResponseMap.response
+    * string target = TargetResponseMap.response
+    * def compResult = obj.strictCompare(base, target)
+    Then print "Response from production code base", BaseResponseMap.response
+    Then print "Response from current qa code base", TargetResponseMap.response
     Then print 'Differences any...', compResult
-    And match BaseResponseMap.BaseResponse == TargetResponseMap.TargetResponse
 
     Examples: 
       | USER_NAME                           | PASSWORD | FAIR_ID |
