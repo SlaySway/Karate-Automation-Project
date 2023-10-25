@@ -8,9 +8,9 @@ Feature: Update HomepageDetails API automation tests
     * def inputBody =
       """
         {
-    "fairId": '<FAIR_ID>',
-    "paymentCheckCkbox": '<PAYMENT_CHECKBOX>'
-}
+          "fairId": '<FAIR_ID>',
+          "paymentCheckCkbox": '<PAYMENT_CHECKBOX>'
+        }
       """
     * def UpdateHomepageDetailsResponseMap = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@UpdateHomepageDetailsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>', Input_Body : '#(inputBody)'}
     Then match UpdateHomepageDetailsResponseMap.responseStatus == 204
