@@ -2,7 +2,7 @@
 Feature: Update Goals API automation tests
 
   Background: Set config
-    * string updateGoalsUrl = "/api/user/fairs/current/homepage/goals"
+    * string updateGoalsUrl = "/bookfairs-jarvis/api/user/fairs/current/homepage/goals"
 
   Scenario Outline: Validate 200 response code for a valid request
     * def inputBody =

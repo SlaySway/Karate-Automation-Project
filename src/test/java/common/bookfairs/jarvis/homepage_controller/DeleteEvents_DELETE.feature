@@ -2,7 +2,7 @@
 Feature: Delete events API automation tests
 
   Background: Set config
-    * string deleteEventsUrl = "/api/user/fairs/current/homepage/events"
+    * string deleteEventsUrl = "/bookfairs-jarvis/api/user/fairs/current/homepage/events"
 
   Scenario Outline: Validate 200 response code for a valid request
     * def inputBody =

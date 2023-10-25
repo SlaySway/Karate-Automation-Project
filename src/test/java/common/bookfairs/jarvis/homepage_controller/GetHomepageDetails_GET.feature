@@ -2,7 +2,7 @@
 Feature: HomepageDetails API automation tests
 
   Background: Set config
-    * string getHomepageDetailsUrl = "/api/user/fairs/current/homepage"
+    * string getHomepageDetailsUrl = "/bookfairs-jarvis/api/user/fairs/current/homepage"
 
   Scenario Outline: Validate 200 response code for a valid request
     * def getHomepageDetailsResponse = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@GetHomepageDetailsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}

@@ -2,7 +2,7 @@
 Feature: Update Events API automation tests
 
   Background: Set config
-    * string updateEventsUrl = "/api/user/fairs/current/homepage/events"
+    * string updateEventsUrl = "/bookfairs-jarvis/api/user/fairs/current/homepage/events"
 
   Scenario Outline: Validate 200 response code for a valid request
     * def inputBody =

@@ -2,7 +2,7 @@
 Feature: Update HomepageDetails API automation tests
 
   Background: Set config
-    * string updateHomepageDetailsUrl = "/api/user/fairs/current/homepage"
+    * string updateHomepageDetailsUrl = "/bookfairs-jarvis/api/user/fairs/current/homepage"
 
   Scenario Outline: Validate 200 response code for a valid request
     * def inputBody =

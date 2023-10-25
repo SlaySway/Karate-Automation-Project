@@ -2,7 +2,7 @@
 Feature: Create events API automation tests
 
   Background: Set config
-    * string createEventsUrl = "/api/user/fairs/current/homepage/events"
+    * string createEventsUrl = "/bookfairs-jarvis/api/user/fairs/current/homepage/events"
 
   Scenario Outline: Validate 200 response code for a valid request
     * def inputBody =
