@@ -26,7 +26,7 @@ Feature: Create events API automation tests
         }
        ]
       """
-    * def CreateEventsResponseMap = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@CreateEventsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>', Input_Body : '#(inputBody)'}
+    * def CreateEventsResponseMap = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@CreateEventsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>', Input_Body : '#(inputBody)'}
     Then match CreateEventsResponseMap.responseStatus == 200
 
     @QA

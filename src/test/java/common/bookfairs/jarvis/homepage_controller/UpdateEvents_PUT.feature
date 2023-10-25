@@ -20,7 +20,7 @@ Feature: Update Events API automation tests
     }
 ]
       """
-    * def UpdateEventsResponseMap = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@UpdateEventsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>', Input_Body : '#(inputBody)'}
+    * def UpdateEventsResponseMap = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@UpdateEventsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>', Input_Body : '#(inputBody)'}
     Then match UpdateEventsResponseMap.responseStatus == 200
 
     @QA

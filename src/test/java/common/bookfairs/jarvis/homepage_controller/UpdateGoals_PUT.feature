@@ -16,7 +16,7 @@ Feature: Update Goals API automation tests
     "goalPurpose": "2023-10-19T10:49:31.365Z"
   }
       """
-    * def UpdateGoalsResponseMap = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@UpdateGoalsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>', Input_Body : '#(inputBody)'}
+    * def UpdateGoalsResponseMap = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@UpdateGoalsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>', Input_Body : '#(inputBody)'}
     Then match UpdateGoalsResponseMap.responseStatus == 200
 
     @QA

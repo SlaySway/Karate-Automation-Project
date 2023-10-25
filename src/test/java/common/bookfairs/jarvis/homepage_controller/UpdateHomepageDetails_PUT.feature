@@ -12,7 +12,7 @@ Feature: Update HomepageDetails API automation tests
           "paymentCheckCkbox": '<PAYMENT_CHECKBOX>'
         }
       """
-    * def UpdateHomepageDetailsResponseMap = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@UpdateHomepageDetailsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>', Input_Body : '#(inputBody)'}
+    * def UpdateHomepageDetailsResponseMap = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@UpdateHomepageDetailsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>', Input_Body : '#(inputBody)'}
     Then match UpdateHomepageDetailsResponseMap.responseStatus == 204
 
     @QA
