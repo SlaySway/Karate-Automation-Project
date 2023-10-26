@@ -36,8 +36,7 @@ Feature: Helper for running homepage-controller apis
     Given def loginAuthorizationResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@BeginFairSessionRunner'){USER_NAME : '#(USER_NAME)', PASSWORD : '#(PASSWORD)'}
     Given url BOOKFAIRS_JARVIS_URL + updateEventsUri
     And cookies { SCHL : '#(loginAuthorizationResponse.SCHL)', SBF_JARVIS: '#(loginAuthorizationResponse.SBF_JARVIS)'}
-    * def putPayload = {inputBody : '#(Input_Body)'}
-    And request putPayload
+    And request inputBody
     When method PUT
 
     # Input: USER_NAME, PASSWORD, FAIR_ID, Goals details to be updated as request body
@@ -58,8 +57,20 @@ Feature: Helper for running homepage-controller apis
     Given def loginAuthorizationResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@BeginFairSessionRunner'){USER_NAME : '#(USER_NAME)', PASSWORD : '#(PASSWORD)'}
     Given url BOOKFAIRS_JARVIS_URL + createEventsUri
     And cookies { SCHL : '#(loginAuthorizationResponse.SCHL)', SBF_JARVIS: '#(loginAuthorizationResponse.SBF_JARVIS)'}
-    * def putPayload = {inputBody : '#(Input_Body)'}
-    And request putPayload
+    * def requestBody =
+      """
+      [
+         {
+          "scheduleDate": "2021-06-22",
+          "eventCategory": "School Event",
+          "eventName": "Hello World 3",
+          "startTime": "05:30:00",
+          "endTime": "08:30:00",
+          "description": "Test 3"
+        }
+       ]
+      """
+    And request requestBody
     When method POST
 
         # Input: USER_NAME, PASSWORD, FAIR_ID, Events to be deleted as request body
