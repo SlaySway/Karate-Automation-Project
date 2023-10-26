@@ -5,6 +5,7 @@ Feature: Online fair toggle API automation tests
     * string putOnlineFairToggleUrl = "/bookfairs-jarvis/api/private/fairs/current/onlinefair/toggle"
 
   Scenario Outline: Validate 200 response code for a valid request
+
     * def getFairSettingsResponse = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@GetFairSettingsRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
     * def OriginalOnlineFairStatus = getFairSettingsResponse.response.onlineFair.enabled
     * def PutOnlineFairToggleResponseMap = call read('classpath:common/bookfairs/jarvis/fair_settings_old_controller/FairSettingsOldRunnerHelper.feature@PutOnlineFairToggleRunner'){USER_ID : '<USER_NAME>', PWD : '<PASSWORD>', FAIRID : '<FAIR_ID>'}
