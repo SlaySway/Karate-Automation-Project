@@ -7,6 +7,7 @@ Feature: HomepageDetails API automation tests
   Scenario Outline: Validate 200 response code for a valid request
     * def getHomepageDetailsResponse = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@GetHomepageDetailsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
     Then match getHomepageDetailsResponse.responseStatus == 200
+    * print getHomepageDetailsResponse.response
 
     Examples:
       | USER_NAME                           | PASSWORD  | FAIR_ID |

@@ -5,15 +5,30 @@ Feature: Update Events API automation tests
     * string updateEventsUrl = "/bookfairs-jarvis/api/user/fairs/current/homepage/events"
 
   Scenario Outline: Validate 200 response code for a valid request
+    * json getHomepageDetailsResponse = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@GetHomepageDetailsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
+    And json HomepageRes = getHomepageDetailsResponse.HomepageDetailResp
+    * print HomepageRes
+    * def OriginalEventName = getHomepageDetailsResponse.response.events[0].eventName
+    * def getDate =
+  """
+  function() {
+    var SimpleDateFormat = Java.type('java.text.SimpleDateFormat');
+    var sdf = new SimpleDateFormat('yyyy-MM-dd HH:mm:ss.sss');
+    var date = new java.util.Date();
+    return sdf.format(date);
+  }
+  """
+    * def temp = getDate()
+    * print temp
     * def inputBody =
       """
       [
     {
         "id": 1,
         "scheduleDate": "2021-06-12",
-        "createDate": "2023-10-18T18:57:19.9",
-        "eventCategory": "Family Event",
-        "eventName": "2023-05-17 14:53:55.127",
+        "createDate": "2023-10-25T15:48:17.43",
+        "eventCategory": "TEST Event",
+        "eventName": '#(temp)',
         "startTime": "06:30:00",
         "endTime": "07:30:00",
         "description": "Test 102 Jul 18th"
@@ -21,12 +36,18 @@ Feature: Update Events API automation tests
 ]
       """
     * def UpdateEventsResponseMap = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@UpdateEventsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>', Input_Body : '#(inputBody)'}
-    Then match UpdateEventsResponseMap.responseStatus == 200
+    Then match UpdateEventsResponseMap.responseStatus == 204
+    * def getHomepageDetailsResponse = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@GetHomepageDetailsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
+    * def EventsArray = getHomepageDetailsResponse.response.events
+    * print EventsArray
+    * def CurrentEventName = getHomepageDetailsResponse.response.events[0].eventName
+    * print CurrentEventName
+    And match CurrentEventName != OriginalEventName
 
     @QA
     Examples:
-      | USER_NAME                           | PASSWORD | FAIR_ID |
-      | sdevineni-consultant@scholastic.com | passw0rd | 5734325 |
+      | USER_NAME               | PASSWORD  | FAIR_ID |
+      | azhou1@scholastic.com   | password1 | 5633533 |
 
   Scenario: Validate when session cookies are not passed
     Given url BOOKFAIRS_JARVIS_URL + updateEventsUrl
@@ -41,5 +62,5 @@ Feature: Update Events API automation tests
     Then match responseStatus == 401
 
     Examples:
-      | USER_NAME                    | PASSWORD |
-      | sd-consultant@scholastic.com | passw0rd |
+      | USER_NAME               | PASSWORD  |
+      | azhou1@scholastic.com   | password1 |
