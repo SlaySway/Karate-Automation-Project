@@ -23,7 +23,7 @@ function fn() {
         CMDM_BEARER_TOKEN : '3dIx0ZzA49dKFMQmZKEPnz3aUWesIafl',
 
         BOOKFAIRS_FATPIPE_REPORTS_URL : 'https://fatpipe-reports-api.qa.apps.scholastic.tech',
-        BOOKFAIRS_FATPIPE_REPORTS_BASE : 'https://fatpipe-reports-api.qa.apps.scholastic.tech',
+        BOOKFAIRS_FATPIPE_REPORTS_BASE : 'https://fatpipe-reports-api.stage.apps.scholastic.tech',
         BOOKFAIRS_FATPIPE_REPORTS_TARGET : 'https://fatpipe-reports-api.qa.apps.scholastic.tech'
 	}
 

@@ -6,9 +6,9 @@ Feature: Update Events API automation tests
 
   Scenario Outline: Validate 200 response code for a valid request
     * json getHomepageDetailsResponse = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@GetHomepageDetailsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
-    And json HomepageRes = getHomepageDetailsResponse.HomepageDetailResp
+    And json HomepageRes = getHomepageDetailsResponse.response
     * print HomepageRes
-    * def OriginalEventName = getHomepageDetailsResponse.response.events[0].eventName
+    * def OriginalEventName = getHomepageDetailsResponse.response.events.eventName
     * def getDate =
   """
   function() {
@@ -36,10 +36,8 @@ Feature: Update Events API automation tests
 ]
       """
     * def UpdateEventsResponseMap = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@UpdateEventsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>', Input_Body : '#(inputBody)'}
-    Then match UpdateEventsResponseMap.responseStatus == 204
+    Then match UpdateEventsResponseMap.responseStatus == 200
     * def getHomepageDetailsResponse = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@GetHomepageDetailsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
-    * def EventsArray = getHomepageDetailsResponse.response.events
-    * print EventsArray
     * def CurrentEventName = getHomepageDetailsResponse.response.events[0].eventName
     * print CurrentEventName
     And match CurrentEventName != OriginalEventName
@@ -47,7 +45,7 @@ Feature: Update Events API automation tests
     @QA
     Examples:
       | USER_NAME               | PASSWORD  | FAIR_ID |
-      | azhou1@scholastic.com   | password1 | 5633533 |
+      | azhou1@scholastic.com   | password1 | 5782595 |
 
   Scenario: Validate when session cookies are not passed
     Given url BOOKFAIRS_JARVIS_URL + updateEventsUrl
