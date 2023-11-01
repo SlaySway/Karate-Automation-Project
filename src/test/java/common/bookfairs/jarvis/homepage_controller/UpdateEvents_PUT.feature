@@ -41,6 +41,7 @@ Feature: Update Events API automation tests
     * def CurrentEventName = getHomepageDetailsResponse.response.events[0].eventName
     * print CurrentEventName
     And match CurrentEventName != OriginalEventName
+    And match CurrentEventName == temp
 
     @QA
     Examples:
