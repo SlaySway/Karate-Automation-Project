@@ -46,18 +46,7 @@ Feature: Helper for running homepage-controller apis
     Given def loginAuthorizationResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@BeginFairSessionRunner'){USER_NAME : '#(USER_NAME)', PASSWORD : '#(PASSWORD)'}
     Given url BOOKFAIRS_JARVIS_URL + updateGoalsUri
     And cookies { SCHL : '#(loginAuthorizationResponse.SCHL)', SBF_JARVIS: '#(loginAuthorizationResponse.SBF_JARVIS)'}
-    * def inputBody =
-      """
-   {
-    "booksGoal": "608",
-    "booksSales": "325",
-    "dollarsGoal": "4848",
-    "dollarsSales": "2600",
-    "bookFairGoalCkbox": "N",
-    "goalPurpose": "2023-10-19T10:49:31.365Z"
-  }
-      """
-    And request inputBody
+    And request requestBody
     When method PUT
 
     # Input: USER_NAME, PASSWORD, FAIR_ID, New event details to be created as request body

@@ -7,7 +7,27 @@ Feature: Update Goals API automation tests
   Scenario Outline: Validate 200 response code for a valid request
     * def getHomepageDetailsResponse = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@GetHomepageDetailsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
     And json OriginalBookfairGoalCkbox = getHomepageDetailsResponse.response.goals.onlineHomepage.bookFairGoalCkbox
-    * def UpdateGoalsResponseMap = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@UpdateGoalsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>', Input_Body : '#(inputBody)'}
+    * print OriginalBookfairGoalCkbox
+    * def getCkBoxOptions = OriginalBookfairGoalCkbox
+    * eval
+"""
+if (getCkBoxOptions == 'Y') {
+  getCkBoxOptions = 'N'
+}
+else getCkBoxOptions = 'Y'
+"""
+    * def requestBody =
+      """
+   {
+    "booksGoal": "608",
+    "booksSales": "325",
+    "dollarsGoal": "4848",
+    "dollarsSales": "2600",
+    "bookFairGoalCkbox": '#(getCkBoxOptions)',
+    "goalPurpose": "2023-10-19T10:49:31.365Z"
+  }
+      """
+    * def UpdateGoalsResponseMap = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@UpdateGoalsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>', REQUEST_BODY : requestBody}
     Then match UpdateGoalsResponseMap.responseStatus == 200
     * def getHomepageDetailsResponse = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@GetHomepageDetailsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
     And json CurrentBookfairGoalCkbox = getHomepageDetailsResponse.response.goals.onlineHomepage.bookFairGoalCkbox
