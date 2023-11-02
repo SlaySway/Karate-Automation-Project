@@ -20,7 +20,7 @@ Feature: Update Events API automation tests
   """
     * def temp = getDate()
     * print temp
-    * def inputBody =
+    * def requestBody =
       """
       [
     {
