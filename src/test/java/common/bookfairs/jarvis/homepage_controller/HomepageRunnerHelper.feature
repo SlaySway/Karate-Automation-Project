@@ -25,7 +25,7 @@ Feature: Helper for running homepage-controller apis
     Given def loginAuthorizationResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@BeginFairSessionRunner'){USER_NAME : '#(USER_NAME)', PASSWORD : '#(PASSWORD)'}
     Given url BOOKFAIRS_JARVIS_URL + updateHomepageDetailsUri
     And cookies { SCHL : '#(loginAuthorizationResponse.SCHL)', SBF_JARVIS: '#(loginAuthorizationResponse.SBF_JARVIS)'}
-    * def putPayload = {inputBody : '#(Input_Body)'}
+    * def putPayload = {requestBody : '#(REQUEST_BODY)'}
     And request putPayload
     When method PUT
 
@@ -36,7 +36,7 @@ Feature: Helper for running homepage-controller apis
     Given def loginAuthorizationResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@BeginFairSessionRunner'){USER_NAME : '#(USER_NAME)', PASSWORD : '#(PASSWORD)'}
     Given url BOOKFAIRS_JARVIS_URL + updateEventsUri
     And cookies { SCHL : '#(loginAuthorizationResponse.SCHL)', SBF_JARVIS: '#(loginAuthorizationResponse.SBF_JARVIS)'}
-    And request inputBody
+    And request requestBody
     When method PUT
 
     # Input: USER_NAME, PASSWORD, FAIR_ID, Goals details to be updated as request body
@@ -79,6 +79,6 @@ Feature: Helper for running homepage-controller apis
     Given def loginAuthorizationResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@BeginFairSessionRunner'){USER_NAME : '#(USER_NAME)', PASSWORD : '#(PASSWORD)'}
     Given url BOOKFAIRS_JARVIS_URL + deleteEventsUri
     And cookies { SCHL : '#(loginAuthorizationResponse.SCHL)', SBF_JARVIS: '#(loginAuthorizationResponse.SBF_JARVIS)'}
-    * def putPayload = {inputBody : '#(Input_Body)'}
+    * def putPayload = {requestBody : '#(REQUEST_BODY)'}
     And request putPayload
     When method DELETE

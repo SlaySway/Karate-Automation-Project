@@ -15,7 +15,7 @@ Feature: Update HomepageDetails API automation tests
           "schoolPostalcode": '<SCHOOL_POSTAL_CODE>'
         }
       """
-    * def UpdateHomepageDetailsResponseMap = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@UpdateHomepageDetailsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>', Input_Body : '#(inputBody)'}
+    * def UpdateHomepageDetailsResponseMap = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@UpdateHomepageDetailsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>', REQUEST_BODY : '#(requestBody)'}
     Then match UpdateHomepageDetailsResponseMap.responseStatus == 204
     * def getHomepageDetailsResponse = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@GetHomepageDetailsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
     And json CurrentSchoolPostalCode = getHomepageDetailsResponse.response.online_homepage.schoolState

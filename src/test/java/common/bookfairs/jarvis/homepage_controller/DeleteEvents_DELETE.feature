@@ -9,7 +9,7 @@ Feature: Delete events API automation tests
     And json originalEvents = getHomepageDetailsResponse.response.events
     * def originalNumOfEvents = originalEvents.length
     * print originalNumOfEvents
-    * def inputBody =
+    * def requestBody =
       """
       [
          {
@@ -22,7 +22,7 @@ Feature: Delete events API automation tests
         }
        ]
       """
-    * def DeleteEventsResponseMap = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@DeleteEventsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>', Input_Body : '#(inputBody)'}
+    * def DeleteEventsResponseMap = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@DeleteEventsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>', REQUEST_BODY : '#(requestBody)'}
     Then match DeleteEventsResponseMap.responseStatus == 200
     * def getHomepageDetailsResponse = call read('classpath:common/bookfairs/jarvis/homepage_controller/HomepageRunnerHelper.feature@GetHomepageDetailsRunner'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
     And json currentEvents = getHomepageDetailsResponse.response.events
