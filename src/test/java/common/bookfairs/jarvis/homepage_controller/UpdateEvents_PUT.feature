@@ -18,9 +18,9 @@ Feature: Update Events API automation tests
     return sdf.format(date);
   }
   """
-    * def temp = getDate()
-    * print temp
-    * def requestBody =
+     * def temp = getDate()
+     * print temp
+     * def requestBody =
       """
       [
     {
