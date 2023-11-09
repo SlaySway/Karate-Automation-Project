@@ -6,6 +6,7 @@ Feature: Helper for running SCHL login api
 
   # Input: USER_NAME, PASSWORD
   # Output: response, SCHL
+  # schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner'){USER_NAME : '#(USER_NAME)', PASSWORD : '#(PASSWORD)'}
   @SCHLCookieRunner
   Scenario: Login to IAM to obtain the SCHL cookie
     * def requestBody =
