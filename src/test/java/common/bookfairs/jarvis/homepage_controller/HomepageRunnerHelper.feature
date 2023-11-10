@@ -18,6 +18,15 @@ Feature: Helper for running homepage-controller apis
     And cookies { SCHL : '#(loginAuthorizationResponse.SCHL)', SBF_JARVIS: '#(loginAuthorizationResponse.SBF_JARVIS)'}
     When method GET
 
+    # Input: USER_NAME, PASSWORD, FAIR_ID
+  # Output: response
+  @GetHomepageDetailsBase
+  Scenario: Run GetHomepageDetails api
+    Given def loginAuthorizationResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@BeginFairSessionRunner'){USER_NAME : '#(USER_NAME)', PASSWORD : '#(PASSWORD)'}
+    Given url BOOKFAIRS_JARVIS_BASE + getHomepageDetailsUri
+    And cookies { SCHL : '#(loginAuthorizationResponse.SCHL)', SBF_JARVIS: '#(loginAuthorizationResponse.SBF_JARVIS)'}
+    When method GET
+
 # Input: USER_NAME, PASSWORD, FAIR_ID, Homepage details to be updated as request body
   # Output: Updated homepage details in response
   @UpdateHomepageDetailsRunner
