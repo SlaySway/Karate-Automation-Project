@@ -17,7 +17,7 @@ Feature: GetFairInfoOrSelectFair GET Api tests
 
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
-    * url BOOKFAIRS_JARVIS_URL + selectionAndBasicInfoUri
+    * url BOOKFAIRS_JARVIS_URL
     * path selectFairUri, FAIRID_OR_CURRENT
     Given method get
     Then match responseStatus == 401
