@@ -93,3 +93,5 @@ Feature: GetFairInfoOrSelectFair GET Api tests
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR | SBF_JARVIS_FAIR |
       | azhou1@scholastic.com | password1 | 5633533           | 5633533       | 5782595         |
       | azhou1@scholastic.com | password1 | current           | 5633533       | 5633533         |
+
+    #TODO: Test enableswitch with onefair@testing.com/password1 account as well as test enable switch TRUE with normal credentials
