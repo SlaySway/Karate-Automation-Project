@@ -94,4 +94,14 @@ Feature: GetFairInfoOrSelectFair GET Api tests
       | azhou1@scholastic.com | password1 | 5633533           | 5633533       | 5782595         |
       | azhou1@scholastic.com | password1 | current           | 5633533       | 5633533         |
 
-    #TODO: Test enableswitch with onefair@testing.com/password1 account as well as test enable switch TRUE with normal credentials
+  @Happy
+  Scenario Outline: Validate when user has only one fair or multiple fairs that enableSwitch is false or true respectively, user:<USER_NAME>
+    Given def selectFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){FAIRID_OR_CURRENT: 'current'}
+    Then match selectFairResponse.responseStatus == 200
+    Then match selectFairResponse.response.enableSwitch == '#(ENABLE_SWITCH_EXPECTED === "true")'
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | ENABLE_SWITCH_EXPECTED  |
+      | azhou1@scholastic.com | password1 | true                    |
+      | onefair@testing.com   | password1 | false                   |
