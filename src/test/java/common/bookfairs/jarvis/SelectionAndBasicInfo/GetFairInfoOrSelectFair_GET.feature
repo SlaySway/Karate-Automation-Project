@@ -31,7 +31,7 @@ Feature: GetFairInfoOrSelectFair GET Api tests
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is expired
     * url BOOKFAIRS_JARVIS_URL
-    * path selectFairUri, FAIRID_OR_CURRENT
+    * path selectFairUri, 'current'
     * cookies { SCHL : '<EXPIRED_SCHL>'}
     Given method get
     Then match responseStatus == 401
@@ -43,20 +43,28 @@ Feature: GetFairInfoOrSelectFair GET Api tests
 
   @Happy
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    Given def selectFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
-    Then match selectFairResponse.responseStatus == 204
-    And match selectFairResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    * url BOOKFAIRS_JARVIS_URL
+    * path selectFairUri, 'current'
+    * cookies { SCHL : #(schlResponse.SCHL)}
+    Given method get
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
 
     @QA
     Examples:
-      | USER_NAME           | PASSWORD  | FAIRID_OR_CURRENT |
-      | nofairs@testing.com | password1 | current           |
+      | USER_NAME           | PASSWORD  |
+      | nofairs@testing.com | password1 |
 
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to specific fair for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    Given def selectFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
-    Then match selectFairResponse.responseStatus == 403
-    And match selectFairResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    * url BOOKFAIRS_JARVIS_URL
+    * path selectFairUri, FAIRID_OR_CURRENT
+    * cookies { SCHL : #(schlResponse.SCHL)}
+    * param fairSelectionMode = "SELECT"
+    Given method get
+    Then match responseStatus == 403
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
 
     @QA
     Examples:
@@ -120,9 +128,14 @@ Feature: GetFairInfoOrSelectFair GET Api tests
 
   @Happy @GetFairInfo
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    Given def getFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@GetFairInfo')
-    Then match getFairResponse.responseStatus == 204
-    And match getFairResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    * url BOOKFAIRS_JARVIS_URL
+    * path selectFairUri, 'current'
+    * cookies { SCHL : #(schlResponse.SCHL)}
+    * param fairSelectionMode = "DO_NOT_SELECT"
+    Given method get
+    Then match responseStatus == 204
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
 
     @QA
     Examples:
@@ -131,9 +144,14 @@ Feature: GetFairInfoOrSelectFair GET Api tests
 
   @Unhappy @GetFairInfo
   Scenario Outline: Validate when user doesn't have access to specific fair for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    Given def getFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@GetFairInfo')
-    Then match getFairResponse.responseStatus == 403
-    And match getFairResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    * url BOOKFAIRS_JARVIS_URL
+    * path selectFairUri, FAIRID_OR_CURRENT
+    * cookies { SCHL : #(schlResponse.SCHL)}
+    * param fairSelectionMode = "DO_NOT_SELECT"
+    Given method get
+    Then match responseStatus == 403
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
 
     @QA
     Examples:

@@ -14,7 +14,7 @@ Feature: Helper for running Selection and Basic Info APIs
     * cookies { SCHL : '#(schlResponse.SCHL)'}
     * param fairSelectionMode = "SELECT"
     Then method get
-    And def SBF_JARVIS = responseCookies.SBF_JARVIS != '#null' ? responseCookies.SBF_JARVIS.value:"null"
+    And def SBF_JARVIS = responseCookies.SBF_JARVIS.value
     And def SCHL = schlResponse.SCHL
 
   # Same endpoint as @SelectFair just with different selection mode
@@ -29,5 +29,5 @@ Feature: Helper for running Selection and Basic Info APIs
     * cookies { SCHL : '#(schlResponse.SCHL)'}
     * param fairSelectionMode = "DO_NOT_SELECT"
     Then method get
-    And def SBF_JARVIS = responseCookies.SBF_JARVIS != '#null' ? responseCookies.SBF_JARVIS.value:"null"
+    And def SBF_JARVIS = responseCookies.SBF_JARVIS.value
     And def SCHL = schlResponse.SCHL
