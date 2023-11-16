@@ -106,7 +106,8 @@ Feature: GetFairInfoOrSelectFair GET Api tests
       | azhou1@scholastic.com | password1 | true                    |
       | onefair@testing.com   | password1 | false                   |
 
-# Testing with fairSelectionMode set to DO_NOT_SELECT
+# Testing with fairSelectionMode set to DO_NOT_SELECT:
+
   @Happy @GetFairInfo
   Scenario Outline: Validate successful response for valid request for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     Given def getFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@GetFairInfo')
