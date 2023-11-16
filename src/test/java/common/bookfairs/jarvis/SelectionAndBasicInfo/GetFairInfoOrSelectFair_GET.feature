@@ -105,3 +105,58 @@ Feature: GetFairInfoOrSelectFair GET Api tests
       | USER_NAME             | PASSWORD  | ENABLE_SWITCH_EXPECTED  |
       | azhou1@scholastic.com | password1 | true                    |
       | onefair@testing.com   | password1 | false                   |
+
+# Testing with fairSelectionMode set to DO_NOT_SELECT
+  @Happy @GetFairInfo
+  Scenario Outline: Validate successful response for valid request for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    Given def getFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@GetFairInfo')
+    Then match getFairResponse.responseStatus == 200
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5633533           |
+
+  @Happy @GetFairInfo
+  Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    Given def getFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@GetFairInfo')
+    Then match getFairResponse.responseStatus == 204
+    And match getFairResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
+
+    @QA
+    Examples:
+      | USER_NAME           | PASSWORD  | FAIRID_OR_CURRENT |
+      | nofairs@testing.com | password1 | current           |
+
+  @Unhappy @GetFairInfo
+  Scenario Outline: Validate when user doesn't have access to specific fair for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    Given def getFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@GetFairInfo')
+    Then match getFairResponse.responseStatus == 403
+    And match getFairResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5734325           |
+
+  @Happy @GetFairInfo
+  Scenario Outline: Validate when user inputs different configurations for fairId/current for user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>
+    Given def getFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@GetFairInfo')
+    Then match getFairResponse.response.fair.id == EXPECTED_FAIR
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR             |
+      | azhou1@scholastic.com | password1 | 5633533           | 5633533                   |
+
+  @Happy @GetFairInfo
+  Scenario Outline: Validate when user inputs current for GetFairInfo user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>
+    Given def getFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@GetFairInfo'){FAIRID_OR_CURRENT: 'current'}
+    Then match getFairResponse.response.fair.id == '#notpresent'
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  |
+      | azhou1@scholastic.com | password1 |
+
+
