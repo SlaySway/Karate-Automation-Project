@@ -51,11 +51,10 @@ Feature: Fatpipe Discount summary report API automation tests
     Given url BOOKFAIRS_FATPIPE_REPORTS_URL + getDiscountSummaryUri
     And headers {Content-Type : 'application/json'}
     And def pathParams = {bookFairId : '#(FAIR_ID)'}
-    And path pathParams.bookFairId + '/pos/discount/summary'
+    And path pathParams.bookFairId + '/pos/discounts/summary'
     And params {perRegister : 'false', transactionStatusGroup : 'REGIS', typeCode : 'xyz'}
     And method GET
-    #COMMENT : On postman and swagger 400 is generated for this test scenario but here it shows 404, please suggest what to do with this scenario.
-    Then match responseStatus == 404
+    Then match responseStatus == 400
 
     @QA
     Examples:
