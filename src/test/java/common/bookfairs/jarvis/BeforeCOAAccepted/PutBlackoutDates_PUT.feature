@@ -127,7 +127,7 @@ Feature: PutBlackoutDates API automation tests
    }
       """
     * def putBlackoutDatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@PutBlackoutDates'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIRID_OR_CURRENT : '<fairIdOrCurrent>',REQUEST_BODY : '#(requestBody)'}
-    Then match putBlackoutDatesResponse.responseStatus == 401
+    Then match putBlackoutDatesResponse.responseStatus == 403
 
     Examples:
       | USER_NAME                           | PASSWORD  | fairIdOrCurrent |
