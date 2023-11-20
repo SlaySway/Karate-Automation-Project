@@ -7,7 +7,7 @@ Feature: GetFairSettings GET Api tests
 
   @Happy
   Scenario Outline: Validate successful response for valid request for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    Given def getFairSettingsResponse = call read('RunnerHelper.feature@GetFairHomepage')
+    Given def getFairSettingsResponse = call read('RunnerHelper.feature@GetFairSettings')
     Then match getFairSettingsResponse.responseStatus == 200
 
     @QA
@@ -43,7 +43,7 @@ Feature: GetFairSettings GET Api tests
 
   @Happy
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    Given def getFairSettingsResponse = call read('RunnerHelper.feature@GetFairHomepage')
+    Given def getFairSettingsResponse = call read('RunnerHelper.feature@GetFairSettings')
     Then match getFairSettingsResponse.responseStatus == 204
     And match getFairSettingsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
 
@@ -54,7 +54,7 @@ Feature: GetFairSettings GET Api tests
 
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to specific fair for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    Given def getFairSettingsResponse = call read('RunnerHelper.feature@GetFairHomepage')
+    Given def getFairSettingsResponse = call read('RunnerHelper.feature@GetFairSettings')
     Then match getFairSettingsResponse.responseStatus == 403
     And match getFairSettingsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
 
@@ -65,7 +65,7 @@ Feature: GetFairSettings GET Api tests
 
   @Unhappy
   Scenario Outline: Validate when user attempts to access a non-COA Accepted fair:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    Given def getFairSettingsResponse = call read('RunnerHelper.feature@GetFairHomepage')
+    Given def getFairSettingsResponse = call read('RunnerHelper.feature@GetFairSettings')
     Then match getFairSettingsResponse.responseStatus == 204
     And match getFairSettingsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NEEDS_COA_CONFIRMATION"
 
@@ -76,7 +76,7 @@ Feature: GetFairSettings GET Api tests
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<FAIRID_OR_CURRENT>
-    Given def getFairSettingsResponse = call read('RunnerHelper.feature@GetFairHomepage')
+    Given def getFairSettingsResponse = call read('RunnerHelper.feature@GetFairSettings')
     Then match getFairSettingsResponse.responseHeaders['Sbf-Jarvis-Fair-Id'][0] == EXPECTED_FAIR
     And if(FAIRID_OR_CURRENT == 'current') karate.log(karate.match(getFairSettingsResponse.responseHeaders['Sbf-Jarvis-Default-Fair'][0], 'AUTOMATICALLY_SELECTED_THIS_REQUEST'))
 

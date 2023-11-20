@@ -1,0 +1,41 @@
+{
+  "volunteerRequestBody": {
+    "volunteerSignupUrl":"https://automationtest.com"
+  },
+  "contactRequestBody": {
+    "contactFirstName": "Automation",
+    "contactLastName": "Test",
+    "contactEmail": "automation@test.com",
+    "contactPhoneNumber": "1111111111",
+    "contactPhoneNumberCkbox": "N"
+  },
+  "fairInfoRequestBody":
+  {
+    "schoolName": "DAYTON ELEMENTARY SCHOOL",
+    "fairStartDate": "2023-10-18",
+    "fairEndDate": "2024-01-03",
+    "fairLocation": "",
+    "schoolAddress1": "286 Dayton Valley Rd",
+    "schoolCity": "2023-11-07 13:01:53.913",
+    "schoolState": "US",
+    "schoolPostalcode": "92841",
+    "welcomeMessage": "Automation Test",
+    "thankYouMessage": "Automation Test, automation should have reset me to original values",
+    "paymentCashCkbox": "Y",
+    "paymentCheckCkbox": "Y",
+    "paymentCcCkbox": "Y",
+    "checkDescription": "(Payable to the school)"
+  },
+  "homepageUrlRequestBody":
+  {
+    "homepageUrl": {
+      "webUrl": "557broadwayelementary19999",
+      "urlStatus": "RESERVED"
+    }
+  },
+  "toggleFairFinderBody":
+  {
+    "homepageUrl":{"fairFinderCkbok":"N"}
+  }
+
+}
