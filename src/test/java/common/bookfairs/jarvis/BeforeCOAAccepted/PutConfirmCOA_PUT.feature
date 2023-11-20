@@ -39,6 +39,8 @@ Feature: PutCOAConfirm API automation tests
 #      | azhou1@scholastic.com               | password1 | current         |
 
   Scenario Outline: Validate GetCOA API with a valid fairId SCHL and Session Cookie
+    * def getCookie = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
+    Then match getCookie.responseStatus == 200
     * def putConfirmCOAResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
     Then match putConfirmCOAResponse.responseStatus == 200
     * print putConfirmCOAResponse.response
@@ -49,6 +51,8 @@ Feature: PutCOAConfirm API automation tests
       | sdevineni-consultant@scholastic.com | passw0rd  | 5591611         |
 
   Scenario Outline: Validate GetCOA API with current keyword SCHL and Session Cookie
+    * def getCookie = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
+    Then match getCookie.responseStatus == 200
     * def putConfirmCOAResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
     Then match putConfirmCOAResponse.responseStatus == 200
     * print putConfirmCOAResponse.response

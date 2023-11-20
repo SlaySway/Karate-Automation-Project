@@ -38,7 +38,9 @@ Feature: GetFairCOA API automation tests
 #      | azhou1@scholastic.com               | password1 | current         |
 
   Scenario Outline: Validate GetCOA API with a valid fairId SCHL and Session Cookie
-    * def getCOAResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
+    * def getFairSessionCookie = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
+    Then match getFairSessionCookie.responseStatus == 200
+    * def getCOAResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOA'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
     Then match getCOAResponse.responseStatus == 200
     * print getCOAResponse.response
 
@@ -48,7 +50,9 @@ Feature: GetFairCOA API automation tests
       | sdevineni-consultant@scholastic.com | passw0rd  | 5644038         |
 
   Scenario Outline: Validate GetCOA API with current keyword SCHL and Session Cookie
-    * def getCOAResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
+    * def getFairSessionCookie = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
+    Then match getFairSessionCookie.responseStatus == 200
+    * def getCOAResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOA'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
     Then match getCOAResponse.responseStatus == 200
     * print getCOAResponse.response
 
@@ -56,4 +60,3 @@ Feature: GetFairCOA API automation tests
       | USER_NAME                           | PASSWORD  | fairIdOrCurrent |
       | azhou1@scholastic.com               | password1 | current         |
       | sdevineni-consultant@scholastic.com | passw0rd  | current         |
-

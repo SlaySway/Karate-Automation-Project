@@ -38,7 +38,9 @@ Feature: GetCOApdfLink API automation tests
 #      | azhou1@scholastic.com               | password1 | current         |
 
   Scenario Outline: Validate GetCOApdfLink API with a valid fairId SCHL and Session Cookie
-    * def getCOApdfLinkResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
+    * def getFairSessionCookie = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
+    Then match getFairSessionCookie.responseStatus == 200
+    * def getCOApdfLinkResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOApdfLink'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
     Then match getCOApdfLinkResponse.responseStatus == 200
     * print getCOApdfLinkResponse.response
 
@@ -48,7 +50,9 @@ Feature: GetCOApdfLink API automation tests
       | sdevineni-consultant@scholastic.com | passw0rd  | 5644038         |
 
   Scenario Outline: Validate GetCOApdfLink API with current keyword SCHL and Session Cookie
-    * def getCOApdfLinkResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
+    * def getFairSessionCookie = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
+    Then match getFairSessionCookie.responseStatus == 200
+    * def getCOApdfLinkResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOApdfLink'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
     Then match getCOApdfLinkResponse.responseStatus == 200
     * print getCOApdfLinkResponse.response
 
@@ -62,5 +66,5 @@ Feature: GetCOApdfLink API automation tests
     Then match getCOApdfLinkResponse.responseStatus == 403
 
     Examples:
-      | USER_NAME                           | PASSWORD  | fairIdOrCurrent | additionalDetails| Cnt_Method|
-      | azhou1@scholastic.com               | password1 | 5565            | Test1            | Email     |
+      | USER_NAME                           | PASSWORD  | fairIdOrCurrent |
+      | azhou1@scholastic.com               | password1 | 5565            |
