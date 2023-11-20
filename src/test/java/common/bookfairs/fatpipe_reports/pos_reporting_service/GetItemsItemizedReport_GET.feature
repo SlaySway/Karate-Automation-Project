@@ -51,11 +51,10 @@ Feature: Fatpipe Items itemized report API automation tests
     Given url BOOKFAIRS_FATPIPE_REPORTS_URL + getItemsItemizedUri
     And headers {Content-Type : 'application/json'}
     And def pathParams = {bookFairId : '#(FAIR_ID)'}
-    And path pathParams.bookFairId + '/pos/discount/summary'
+    And path pathParams.bookFairId + '/pos/discounts/summary'
     And params {itemIdentityMode: 'PRODUCT', page: 0, rollupGroupingCode: 'ITEM', size: 100, transactionMode: 'SALE',transactionStatusGroup : 'REGIST', typeCode : 'xyz'}
     And method GET
-    #COMMENT : On postman and swagger 400 is generated for this test scenario but here it shows 404, please suggest what to do with this scenario.
-    Then match responseStatus == 404
+    Then match responseStatus == 400
 
     @QA
     Examples:

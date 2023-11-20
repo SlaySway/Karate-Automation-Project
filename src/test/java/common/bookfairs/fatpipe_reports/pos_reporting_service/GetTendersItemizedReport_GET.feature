@@ -53,7 +53,6 @@ Feature: Fatpipe Tenders Itemized report API automation tests
     And path pathParams.bookFairId + '/pos/tenders/itemized'
     And params {tenderAuthStatusGroup:'REGISTE',tenderStatusGroup:'REGIST',transactionStatusGroup:'REGISTER',page:0,size:100}
     And method GET
-      #COMMENT : On postman and swagger 400 is generated for this test scenario but here it shows 404, please suggest what to do with this scenario.
     Then match responseStatus == 400
 
     @QA
