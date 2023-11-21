@@ -105,7 +105,7 @@ Feature: Helper for running After COA Accepted endpoints
   @SetFairCoChairs
   Scenario: Run update fair cochairs for user: <USER_NAME>, fair: <FAIRID_OR_CURRENT>, and request body: <REQUEST_BODY>
     Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
-    * replace updateFairCochairsUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    * replace setFairCoChairsUri.fairIdOrCurrent = FAIRID_OR_CURRENT
     * url BOOKFAIRS_JARVIS_URL + setFairCoChairsUri
     * cookies { SCHL : '#(schlResponse.SCHL)'}
     * request REQUEST_BODY
