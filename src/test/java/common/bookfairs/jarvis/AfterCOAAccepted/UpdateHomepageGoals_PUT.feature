@@ -5,6 +5,7 @@ Feature: UpdateHomepageGoals PUT Api tests
     * def obj = Java.type('utils.StrictValidation')
     * def updateHomepageGoalsUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/homepage/goals"
 
+    #TODO: Functional test
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
     * replace updateHomepageGoalsUri.fairIdOrCurrent =  FAIRID_OR_CURRENT

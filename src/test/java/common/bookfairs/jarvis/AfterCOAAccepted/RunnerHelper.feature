@@ -10,7 +10,7 @@ Feature: Helper for running After COA Accepted endpoints
     * string deleteHomepageEventsUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/homepage/events"
     * string updateHomepageGoalsUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/homepage/goals"
     * string getFairSettingsUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/settings"
-    * string updateFairCochairsUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/co-chairs"
+    * string setFairCoChairsUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/co-chairs"
     * string toggleFairWalletStatusUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/ewallets"
     * string toggleFairOnlineFairStatusUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/online-fair"
 
@@ -102,11 +102,11 @@ Feature: Helper for running After COA Accepted endpoints
 
   # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT, REQUEST_BODY
   # Output: response
-  @UpdateFairCochairs
+  @SetFairCoChairs
   Scenario: Run update fair cochairs for user: <USER_NAME>, fair: <FAIRID_OR_CURRENT>, and request body: <REQUEST_BODY>
     Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
     * replace updateFairCochairsUri.fairIdOrCurrent = FAIRID_OR_CURRENT
-    * url BOOKFAIRS_JARVIS_URL + updateFairCochairsUri
+    * url BOOKFAIRS_JARVIS_URL + setFairCoChairsUri
     * cookies { SCHL : '#(schlResponse.SCHL)'}
     * request REQUEST_BODY
     Then method put

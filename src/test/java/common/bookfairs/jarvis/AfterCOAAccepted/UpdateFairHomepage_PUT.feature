@@ -4,6 +4,7 @@ Feature: UpdateFairHomepage PUT Api tests
   Background: Set config
     * def obj = Java.type('utils.StrictValidation')
     * def updateHomepageUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/homepage"
+    * def sleep = function(millis){ java.lang.Thread.sleep(millis) }
 
   @Happy
   Scenario Outline: Validate successful response for valid request for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -30,6 +31,7 @@ Feature: UpdateFairHomepage PUT Api tests
     Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFairHomepage')
     Then updateHomepageResponse.responseStatus == 200
     # Verify that that it's been changed
+    * sleep(1000)
     Given def modifiedHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
     Then match originalHomepageResponse != modifiedHomepageResponse
     Then match modifiedHomepageResponse.response.online_homepage contains deep REQUEST_BODY
@@ -37,6 +39,7 @@ Feature: UpdateFairHomepage PUT Api tests
     * def REQUEST_BODY = originalHomepageResponse.response.online_homepage
     Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFairHomepage')
     # Verify that that it's back to original values
+    * sleep(1000)
     Given def modifiedHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
     Then match modifiedHomepageResponse.responseStatus == 200
     Then match originalHomepageResponse.response == modifiedHomepageResponse.response
