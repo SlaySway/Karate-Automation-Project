@@ -5,16 +5,16 @@ Feature: GetCOAdates API automation tests
     * string getCOAdatesUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/settings/dates"
 
   Scenario Outline: Validate with a valid fairId or current keyword
-    * def getCOAdatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOAdates'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
+    * def getCOAdatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOAdates')
     Then match getCOAdatesResponse.responseStatus == 200
     * print getCOAdatesResponse.response
 
     Examples:
-      | USER_NAME                           | PASSWORD  | fairIdOrCurrent |
-      | azhou1@scholastic.com               | password1 | 5633533         |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038         |
-      | sdevineni-consultant@scholastic.com | passw0rd  | current         |
-      | azhou1@scholastic.com               | password1 | current         |
+      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com               | password1 | 5633533           |
+      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           |
+      | sdevineni-consultant@scholastic.com | passw0rd  | current           |
+      | azhou1@scholastic.com               | password1 | current           |
 
 #  Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIR_ID>
 #    * def BaseResponseMap = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@@GetCOAdatesBase'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
@@ -38,33 +38,33 @@ Feature: GetCOAdates API automation tests
 #      | azhou1@scholastic.com               | password1 | current         |
 
   Scenario Outline: Validate GetCOAdates API with a valid fairId SCHL and Session Cookie
-    * def getFairSessionCookie = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
+    * def getFairSessionCookie = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
     Then match getFairSessionCookie.responseStatus == 200
-    * def getCOAdatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOAdates'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
+    * def getCOAdatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOAdates')
     Then match getCOAdatesResponse.responseStatus == 200
     * print getCOAdatesResponse.response
 
     Examples:
-      | USER_NAME                           | PASSWORD  | fairIdOrCurrent   |
+      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com               | password1 | 5633533           |
       | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           |
 
   Scenario Outline: Validate GetCOAdates API with current keyword SCHL and Session Cookie
-    * def getFairSessionCookie = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
+    * def getFairSessionCookie = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
     Then match getFairSessionCookie.responseStatus == 200
-    * def getCOAdatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOAdates'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
+    * def getCOAdatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOAdates')
     Then match getCOAdatesResponse.responseStatus == 200
     * print getCOAdatesResponse.response
 
     Examples:
-      | USER_NAME                           | PASSWORD  | fairIdOrCurrent |
-      | azhou1@scholastic.com               | password1 | current         |
-      | sdevineni-consultant@scholastic.com | passw0rd  | current         |
+      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT|
+      | azhou1@scholastic.com               | password1 | current          |
+      | sdevineni-consultant@scholastic.com | passw0rd  | current          |
 
   Scenario Outline: Validate with invalid fairId or current keyword
-    * def getCOAdatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOAdates'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
+    * def getCOAdatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOAdates')
     Then match getCOAdatesResponse.responseStatus == 403
 
     Examples:
-      | USER_NAME                           | PASSWORD  | fairIdOrCurrent |
-      | azhou1@scholastic.com               | password1 | 5565            |
+      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com               | password1 | 5565              |
