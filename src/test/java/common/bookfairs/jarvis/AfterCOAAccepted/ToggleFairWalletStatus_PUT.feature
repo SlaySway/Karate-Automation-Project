@@ -4,23 +4,44 @@ Feature: ToggleFairWalletStatus PUT Api tests
   Background: Set config
     * def obj = Java.type('utils.StrictValidation')
     * def toggleFairWalletStatusUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/homepage/events"
+    * def sleep = function(millis){ java.lang.Thread.sleep(millis) }
 
-    # TODO functional test for toggling wallet status
-#  @Happy
-#  Scenario Outline: Validate successful response for valid change request for user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, request scenario:<requestBody>
-#    # Create an event
-#    # Verify event is created
-#    # Update the event
-#    # Verify value of event
-#    # delete the event
-#    # Verify event doesn't exist anymore
-#
-#
-#
-#    @QA
-#    Examples:
-#      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | requestBody             |
-#      | azhou1@scholastic.com | password1 | 5633533           | volunteerRequestBody    |
+  @Happy
+  Scenario Outline: Validate successful response for valid change request for user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, request scenario:<requestBody>
+    # Get original homepage information
+    Given def getFairSettingsResponse = call read('RunnerHelper.feature@GetFairSettings')
+    Then getFairSettingsResponse.responseStatus == 200
+    * def originalStatus = getFairSettingsResponse.response.ewallet.enabled
+    # Get response json config we are changing values to
+    * def REQUEST_BODY =
+    """
+      {
+        "enabled": "whatever"
+      }
+    """
+    * set REQUEST_BODY.enabled = !originalStatus
+    # Call the endpoint to change to those values
+    Given def toggleWalletStatusResponse = call read('RunnerHelper.feature@ToggleFairWalletStatus')
+    Then toggleWalletStatusResponse.responseStatus == 200
+    # Verify that that it's been changed
+    * sleep(1000)
+    Given def getFairSettingsResponse = call read('RunnerHelper.feature@GetFairSettings')
+    Then getFairSettingsResponse.responseStatus == 200
+    Then match getFairSettingsResponse.response.ewallet.enabled != originalStatus
+    # Change all the values back to the original
+    * set REQUEST_BODY.enabled = originalStatus
+    Given def toggleWalletStatusResponse = call read('RunnerHelper.feature@ToggleFairWalletStatus')
+    Then toggleWalletStatusResponse.responseStatus == 200
+    # Verify that that it's back to original values
+    * sleep(1000)
+    Given def getFairSettingsResponse = call read('RunnerHelper.feature@GetFairSettings')
+    Then match getFairSettingsResponse.responseStatus == 200
+    Then match getFairSettingsResponse.response.ewallet.enabled == originalStatus
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5633533           |
 
   @Unhappy
   Scenario Outline: Validate when invalid request body for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
