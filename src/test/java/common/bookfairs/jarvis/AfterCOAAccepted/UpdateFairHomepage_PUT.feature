@@ -7,20 +7,6 @@ Feature: UpdateFairHomepage PUT Api tests
     * def sleep = function(millis){ java.lang.Thread.sleep(millis) }
 
   @Happy
-  Scenario Outline: Validate successful response for valid request for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    Given def getHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
-    * remove getHomepageResponse.response.online_homepage.homepageUrl
-    * remove getHomepageResponse.response.online_homepage.onlineShopping
-    * def REQUEST_BODY = getHomepageResponse.response.online_homepage
-    Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFairHomepage')
-    Then match updateHomepageResponse.responseStatus == 200
-
-    @QA
-    Examples:
-      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5633533           |
-
-  @Happy
   Scenario Outline: Validate successful response for valid change request for user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, request scenario:<requestBody>
     # Get original homepage information
     Given def originalHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
@@ -92,10 +78,7 @@ Feature: UpdateFairHomepage PUT Api tests
 
   @Happy
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    Given def getHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
-    * remove getHomepageResponse.response.online_homepage.homepageUrl
-    * remove getHomepageResponse.response.online_homepage.onlineShopping
-    * def REQUEST_BODY = getHomepageResponse.response.online_homepage
+    * def REQUEST_BODY = {}
     Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFairHomepage')
     Then match updateHomepageResponse.responseStatus == 204
     And match updateHomepageResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
@@ -118,10 +101,7 @@ Feature: UpdateFairHomepage PUT Api tests
 
   @Unhappy
   Scenario Outline: Validate when user attempts to access a non-COA Accepted fair:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    Given def getHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
-    * remove getHomepageResponse.response.online_homepage.homepageUrl
-    * remove getHomepageResponse.response.online_homepage.onlineShopping
-    * def REQUEST_BODY = getHomepageResponse.response.online_homepage
+    * def REQUEST_BODY = {}
     Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFairHomepage')
     Then match updateHomepageResponse.responseStatus == 204
     And match updateHomepageResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NEEDS_COA_CONFIRMATION"
@@ -133,10 +113,7 @@ Feature: UpdateFairHomepage PUT Api tests
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<FAIRID_OR_CURRENT>
-    Given def getHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
-    * remove getHomepageResponse.response.online_homepage.homepageUrl
-    * remove getHomepageResponse.response.online_homepage.onlineShopping
-    * def REQUEST_BODY = getHomepageResponse.response.online_homepage
+    * def REQUEST_BODY = {}
     Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFairHomepage')
     Then match updateHomepageResponse.responseHeaders['Sbf-Jarvis-Fair-Id'][0] == EXPECTED_FAIR
     And if(FAIRID_OR_CURRENT == 'current') karate.log(karate.match(updateHomepageResponse.responseHeaders['Sbf-Jarvis-Default-Fair'][0], 'AUTOMATICALLY_SELECTED_THIS_REQUEST'))
@@ -147,12 +124,9 @@ Feature: UpdateFairHomepage PUT Api tests
       | azhou1@scholastic.com | password1 | 5633533           | 5633533       |
 
   @Happy
-  Scenario Outline: Validate when user inputs different configurations for fairId/current WITH SBF_JARVIS for DO_NOT_SELECT mode with user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, cookie fair:<SBF_JARVIS_FAIR>
+  Scenario Outline: Validate when user inputs different configurations for fairId/current WITH SBF_JARVIS for user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, cookie fair:<SBF_JARVIS_FAIR>
     Given def selectFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){FAIRID_OR_CURRENT: <SBF_JARVIS_FAIR>}
-    Given def getHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
-    * remove getHomepageResponse.response.online_homepage.homepageUrl
-    * remove getHomepageResponse.response.online_homepage.onlineShopping
-    * def REQUEST_BODY = getHomepageResponse.response.online_homepage
+    * def REQUEST_BODY = {}
     * replace updateHomepageUri.fairIdOrCurrent = FAIRID_OR_CURRENT
     * url BOOKFAIRS_JARVIS_URL + updateHomepageUri
     * cookies { SCHL : '#(selectFairResponse.SCHL)', SBF_JARVIS: '#(selectFairResponse.SBF_JARVIS)'}

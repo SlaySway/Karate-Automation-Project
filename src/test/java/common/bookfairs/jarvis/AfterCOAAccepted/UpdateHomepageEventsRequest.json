@@ -1,0 +1,10 @@
+[
+  {
+    "scheduleDate": "2021-06-16",
+    "eventCategory": "Family Event",
+    "eventName": "Automation Test",
+    "startTime": "06:30:00",
+    "endTime": "07:30:00",
+    "description": "Test 1"
+  }
+]

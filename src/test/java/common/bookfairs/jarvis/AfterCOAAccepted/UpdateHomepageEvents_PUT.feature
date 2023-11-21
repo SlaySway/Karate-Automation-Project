@@ -4,23 +4,60 @@ Feature: UpdateHomepageEvents PUT Api tests
   Background: Set config
     * def obj = Java.type('utils.StrictValidation')
     * def updateHomepageEventsUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/homepage/events"
+    * def sleep = function(millis){ java.lang.Thread.sleep(millis) }
 
-    # TODO
-#  @Happy
-#  Scenario Outline: Validate successful response for valid change request for user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, request scenario:<requestBody>
-#    # Create an event
-#    # Verify event is created
-#    # Update the event
-#    # Verify value of event
-#    # delete the event
-#    # Verify event doesn't exist anymore
-#
-#
-#
-#    @QA
-#    Examples:
-#      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | requestBody             |
-#      | azhou1@scholastic.com | password1 | 5633533           | volunteerRequestBody    |
+  @Happy
+  Scenario Outline: Validate successful response for valid change request for user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, request scenario:<requestBody>
+    # Get a record of the original amount of events
+    Given def getHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
+    Then match getHomepageResponse.responseStatus == 200
+    * def originalEvents = getHomepageResponse.response.events
+
+    # Create an event
+    * def REQUEST_BODY = read('UpdateHomepageEventsRequest.json')
+    Given def createEventsResponse = call read("RunnerHelper.feature@CreateHomepageEvents")
+    Then match createEventsResponse.responseStatus == 200
+
+    # Verify event is created
+    * sleep(1000)
+    Given def getHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
+    Then getHomepageResponse.responseStatus == 200
+    Then match originalEvents != getHomepageResponse.response.events
+    And assert originalEvents.length < getHomepageResponse.response.events.length
+
+    # Select an event to update
+    * def selectedEventToChange = getHomepageResponse.response.events[0]
+    # Update the event
+    * set selectedEventToChange.description = "I should now be new"
+    * def array = [""]
+    * set array[0] = selectedEventToChange
+    * def REQUEST_BODY = array
+    Given def updateHomepageEventsResponse = call read("RunnerHelper.feature@UpdateHomepageEvents")
+    Then match updateHomepageEventsResponse.responseStatus == 200
+
+    # Verify value of event
+    * sleep(1000)
+    Given def getHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
+    Then match getHomepageResponse.responseStatus == 200
+    Then match getHomepageResponse.response.events contains selectedEventToChange
+
+    # delete the event
+    * def REQUEST_BODY = array
+    Given def deleteHomepageEventResponse = call read('RunnerHelper.feature@DeleteHomepageEvents')
+    Then match deleteHomepageEventResponse.responseStatus == 200
+
+    # Verify event doesn't exist anymore
+    * sleep(1000)
+    Given def getHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
+    Then match getHomepageResponse.responseStatus == 200
+    Then match getHomepageResponse.response.events !contains selectedEventToChange
+    Then assert originalEvents.length == getHomepageResponse.response.events.length
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5633533           |
+
 
   @Unhappy
   Scenario Outline: Validate when invalid request body for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -108,7 +145,7 @@ Feature: UpdateHomepageEvents PUT Api tests
       | azhou1@scholastic.com | password1 | 5633533           | 5633533       |
 
   @Happy
-  Scenario Outline: Validate when user inputs different configurations for fairId/current WITH SBF_JARVIS for DO_NOT_SELECT mode with user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, cookie fair:<SBF_JARVIS_FAIR>
+  Scenario Outline: Validate when user inputs different configurations for fairId/current WITH SBF_JARVIS for user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, cookie fair:<SBF_JARVIS_FAIR>
     Given def selectFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){FAIRID_OR_CURRENT: <SBF_JARVIS_FAIR>}
     * def REQUEST_BODY = {}
     * replace updateHomepageEventsUri.fairIdOrCurrent = FAIRID_OR_CURRENT
