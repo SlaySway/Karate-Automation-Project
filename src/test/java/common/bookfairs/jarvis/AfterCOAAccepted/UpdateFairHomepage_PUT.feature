@@ -65,7 +65,7 @@ Feature: UpdateFairHomepage PUT Api tests
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
     * replace updateHomepageUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
     * url BOOKFAIRS_JARVIS_URL + updateHomepageUri
-    Given method get
+    Given method put
     Then match responseStatus == 401
 
     @QA
@@ -79,7 +79,7 @@ Feature: UpdateFairHomepage PUT Api tests
     * replace updateHomepageUri.fairIdOrCurrent =  "current"
     * url BOOKFAIRS_JARVIS_URL + updateHomepageUri
     * cookies { SCHL : '<EXPIRED_SCHL>'}
-    Given method get
+    Given method put
     Then match responseStatus == 401
 
     @QA
@@ -142,8 +142,6 @@ Feature: UpdateFairHomepage PUT Api tests
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR |
       | azhou1@scholastic.com | password1 | 5633533           | 5633533       |
-      | azhou1@scholastic.com | password1 | current           | 5782595       |
-    #TODO: Need to create users with specific sets of fairs to test the current fair selection logic is working
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current WITH SBF_JARVIS for DO_NOT_SELECT mode with user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, cookie fair:<SBF_JARVIS_FAIR>
@@ -155,7 +153,7 @@ Feature: UpdateFairHomepage PUT Api tests
     * replace updateHomepageUri.fairIdOrCurrent = FAIRID_OR_CURRENT
     * url BOOKFAIRS_JARVIS_URL + updateHomepageUri
     * cookies { SCHL : '#(selectFairResponse.SCHL)', SBF_JARVIS: '#(selectFairResponse.SBF_JARVIS)'}
-    Then method get
+    Then method put
     Then match responseHeaders['Sbf-Jarvis-Fair-Id'][0] == EXPECTED_FAIR
     And if(FAIRID_OR_CURRENT == 'current') karate.log(karate.match(responseHeaders['Sbf-Jarvis-Default-Fair'][0], 'PREVIOUSLY_SELECTED'))
 
