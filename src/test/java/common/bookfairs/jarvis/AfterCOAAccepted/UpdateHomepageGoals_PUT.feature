@@ -4,8 +4,49 @@ Feature: UpdateHomepageGoals PUT Api tests
   Background: Set config
     * def obj = Java.type('utils.StrictValidation')
     * def updateHomepageGoalsUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/homepage/goals"
+    * def sleep = function(millis){ java.lang.Thread.sleep(millis) }
 
-    #TODO: Functional test
+  @Happy
+  Scenario Outline: Validate successful response for valid change request for user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, request scenario:<requestBody>
+    # Get original homepage information
+    Given def originalHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
+    Then originalHomepageResponse.responseStatus == 200
+    # Get response json config we are changing values to
+    * def REQUEST_BODY =
+    """
+      {
+        "booksGoal": "3455",
+        "booksSales": "555",
+        "dollarsGoal": "27640",
+        "dollarsSales": "4440",
+        "bookFairGoalCkbox": "Y",
+        "goalPurpose": "Automation Test"
+      }
+    """
+    # Call the endpoint to change to those values
+    Given def updateHomepageGoalResponse = call read('RunnerHelper.feature@UpdateHomepageGoals')
+    Then updateHomepageGoalResponse.responseStatus == 200
+    # Verify that that it's been changed
+    * sleep(1000)
+    Given def modifiedHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
+    Then modifiedHomepageResponse.responseStatus == 200
+    Then match originalHomepageResponse.response.goals != modifiedHomepageResponse.response.goals
+    Then match modifiedHomepageResponse.response.goals.onlineHomepage contains deep REQUEST_BODY
+    # Change all the values back to the original
+    * def REQUEST_BODY = originalHomepageResponse.response.goals.onlineHomepage
+    Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateHomepageGoals')
+    Then updateHomepageResponse.responseStatus == 200
+    # Verify that that it's back to original values
+    * sleep(1000)
+    Given def modifiedHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
+    Then match modifiedHomepageResponse.responseStatus == 200
+    Then match originalHomepageResponse.response.goals.onlineHomepage == modifiedHomepageResponse.response.goals.onlineHomepage
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5633533           |
+
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
     * replace updateHomepageGoalsUri.fairIdOrCurrent =  FAIRID_OR_CURRENT

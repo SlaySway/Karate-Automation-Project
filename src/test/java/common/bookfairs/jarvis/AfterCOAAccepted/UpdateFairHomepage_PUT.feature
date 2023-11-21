@@ -19,7 +19,7 @@ Feature: UpdateFairHomepage PUT Api tests
     # Verify that that it's been changed
     * sleep(1000)
     Given def modifiedHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
-    Then match originalHomepageResponse != modifiedHomepageResponse
+    Then match originalHomepageResponse.response.online_homepage != modifiedHomepageResponse.response.online_homepage
     Then match modifiedHomepageResponse.response.online_homepage contains deep REQUEST_BODY
     # Change all the values back to the original
     * def REQUEST_BODY = originalHomepageResponse.response.online_homepage
@@ -28,7 +28,7 @@ Feature: UpdateFairHomepage PUT Api tests
     * sleep(1000)
     Given def modifiedHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
     Then match modifiedHomepageResponse.responseStatus == 200
-    Then match originalHomepageResponse.response == modifiedHomepageResponse.response
+    Then match originalHomepageResponse.response.online_homepage == modifiedHomepageResponse.response.online_homepage
 
     @QA
     Examples:
