@@ -102,3 +102,19 @@ Feature: GetFairHomepage GET Api tests
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR | SBF_JARVIS_FAIR |
       | azhou1@scholastic.com | password1 | 5633533           | 5633533       | 5782595         |
       | azhou1@scholastic.com | password1 | current           | 5633533       | 5633533         |
+
+
+  @Regression
+  Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIR_ID>
+    * def BaseResponseMap = call read('RunnerHelper.feature@GetFairHomepage')
+    * def TargetResponseMap = call read('RunnerHelper.feature@GetFairHomepageBase')
+    * string base = BaseResponseMap.response
+    * string target = TargetResponseMap.response
+    * def compResult = obj.strictCompare(base, target)
+    Then print "Response from production code base", BaseResponseMap.response
+    Then print "Response from current qa code base", TargetResponseMap.response
+    Then print 'Differences any...', compResult
+
+    Examples:
+      | USER_NAME                           | PASSWORD | FAIR_ID |
+      | mtodaro@scholastic.com              | passw0rd | 5782058 |
