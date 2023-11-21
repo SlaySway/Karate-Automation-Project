@@ -29,11 +29,12 @@ public class ParallelRunner {
 				.outputCucumberJson(true)
 				.outputJunitXml(true)
 				.configDir("src/test/java")
-				.tags("@GetCOATest").parallel(20);
+				.tags("@public&userTests").parallel(5);
 
 		System.out.println("Total Feature => " + results.getFeaturesTotal());
 		System.out.println("Total Scenarios => " + results.getScenariosTotal());
-		System.out.println("Passed Scenarios => " + results.getFailCount());
+		System.out.println("Passed Scenarios => " + results.getScenariosPassed());
+		System.out.println("Failed Scenarios => " + results.getFailCount());
 
 		generateCucumberReport(results.getReportDir());
 		Assertions.assertEquals(0, results.getFailCount(), results.getErrorMessages());
