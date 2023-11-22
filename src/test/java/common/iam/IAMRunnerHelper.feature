@@ -8,7 +8,7 @@ Feature: Helper for running SCHL login api
   # Output: response, SCHL
   # schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner'){USER_NAME : '#(USER_NAME)', PASSWORD : '#(PASSWORD)'}
   @SCHLCookieRunner
-  Scenario: Login to IAM to obtain the SCHL cookie
+  Scenario: Login to IAM to obtain the SCHL cookie for user:<USER_NAME>
     * def requestBody =
       """
       {
@@ -16,15 +16,15 @@ Feature: Helper for running SCHL login api
           "password" : '#(PASSWORD)'
       }
       """
-    Given url SCHL_LOGIN_URL + loginUri
-    And request requestBody
-    And method post
-    And def SCHL = responseCookies.SCHL.value
+    * url SCHL_LOGIN_URL + loginUri
+    * request requestBody
+    Given method post
+    Then def SCHL = responseCookies.SCHL.value
 
   # Input: USER_NAME, PASSWORD
   # Output: response, SCHL
   @SCHLCookieRunnerBase
-  Scenario: Login to IAM to obtain the SCHL cookie
+  Scenario: Login to IAM to obtain the SCHL cookie for user:<USER_NAME>
     * def requestBody =
       """
       {
@@ -32,7 +32,7 @@ Feature: Helper for running SCHL login api
           "password" : '#(PASSWORD)'
       }
       """
-    Given url SCHL_LOGIN_BASE + loginUri
-    And request requestBody
-    And method post
-    And def SCHL = responseCookies.SCHL.value
+    * url SCHL_LOGIN_BASE + loginUri
+    * request requestBody
+    Given method post
+    Then def SCHL = responseCookies.SCHL.value
