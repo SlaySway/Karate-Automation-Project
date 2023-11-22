@@ -19,8 +19,8 @@ Feature: Helper for running Before COA Accepted endpoints
     * string putConfirmCOAUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/coa/confirmation"
 
      # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
-  # Output: response
-  #    * def getCOAdatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOAdates')
+     # Output: response
+     #    * def getCOAdatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOAdates')
   @GetCOAdates
   Scenario: Get COA dates api
     Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
