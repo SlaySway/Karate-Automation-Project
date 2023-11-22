@@ -7,7 +7,7 @@ Feature: Runner helper for Jarvis application apis
 
   # Input: FAIR_ID
   @GetFairRunner
-  Scenario: Run getFairs api
-    Given url CMDM_URL + fairsUri + FAIR_ID
-    And header Authorization = CMDM_BEARER_TOKEN
-    When method get
+  Scenario: Run getFairs api for fair:<FAIR_ID>
+    * url CMDM_URL + fairsUri + FAIR_ID
+    * header Authorization = CMDM_BEARER_TOKEN
+    Given method get
