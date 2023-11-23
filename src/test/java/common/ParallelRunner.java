@@ -25,11 +25,8 @@ public class ParallelRunner {
 	@Test
 	public void executeTest() {
 
-		Results results = Runner.path("classpath:common")
-				.outputCucumberJson(true)
-				.outputJunitXml(true)
-				.configDir("src/test/java")
-				.tags("@public&userTests").parallel(5);
+		Results results = Runner.path("classpath:common").outputCucumberJson(true).outputJunitXml(true)
+				.configDir("src/test/java").tags("@getUserSchoolsTest").parallel(5);
 
 		System.out.println("Total Feature => " + results.getFeaturesTotal());
 		System.out.println("Total Scenarios => " + results.getScenariosTotal());
