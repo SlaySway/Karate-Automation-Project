@@ -107,7 +107,7 @@ Feature: GetFairHomepage GET Api tests
 
 
   @Regression
-  Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIR_ID>
+  Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIRID_OR_CURRENT>
     * def BaseResponseMap = call read('RunnerHelper.feature@GetFairHomepage')
     * def TargetResponseMap = call read('RunnerHelper.feature@GetFairHomepageBase')
     * string base = BaseResponseMap.response
@@ -118,5 +118,5 @@ Feature: GetFairHomepage GET Api tests
     Then print 'Differences any...', compResult
 
     Examples:
-      | USER_NAME                           | PASSWORD | FAIR_ID |
-      | mtodaro@scholastic.com              | passw0rd | 5782058 |
+      | USER_NAME                           | PASSWORD | FAIRID_OR_CURRENT |
+      | mtodaro@scholastic.com              | passw0rd | 5782058           |

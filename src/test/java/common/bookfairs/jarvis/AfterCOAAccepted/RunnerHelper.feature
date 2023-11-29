@@ -28,11 +28,10 @@ Feature: Helper for running After COA Accepted endpoints
   # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
   # Output: response
   @GetFairWalletsBase
-  Scenario: Run get fair settings for user: <USER_NAME> and fair: <FAIRID_OR_CURRENT>
-    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunnerBase')
-    * replace getFairSettingsUri.fairIdOrCurrent = FAIRID_OR_CURRENT
-    * url BOOKFAIRS_JARVIS_BASE + getFairWalletsUri
-    * cookies { SCHL : '#(schlResponse.SCHL)'}
+  Scenario: Run get fair ewallets for user: <USER_NAME> and fair: <FAIRID_OR_CURRENT>
+    Given def authResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@BeginFairSessionBase'){FAIR_ID: '#(FAIRID_OR_CURRENT)'}
+    * url BOOKFAIRS_JARVIS_BASE + "/bookfairs-jarvis/api/user/fairs/current/ewallets"
+    * cookies { SCHL : '#(authResponse.SCHL)', SBF_JARVIS:'#(authResponse.SBF_JARVIS)'}
     Then method get
 
   # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
@@ -49,10 +48,9 @@ Feature: Helper for running After COA Accepted endpoints
   # Output: response
   @GetFairHomepageBase
   Scenario: Run get fair homepage for user: <USER_NAME> and fair: <FAIRID_OR_CURRENT>
-    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunnerBase')
-    * replace getFairHomepageUri.fairIdOrCurrent = FAIRID_OR_CURRENT
-    * url BOOKFAIRS_JARVIS_BASE + getFairHomepageUri
-    * cookies { SCHL : '#(schlResponse.SCHL)'}
+    Given def authResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@BeginFairSessionBase'){FAIR_ID: '#(FAIRID_OR_CURRENT)'}
+    * url BOOKFAIRS_JARVIS_BASE + "/bookfairs-jarvis/api/user/fairs/current/homepage"
+    * cookies { SCHL : '#(authResponse.SCHL)', SBF_JARVIS:'#(authResponse.SBF_JARVIS)'}
     Then method get
 
   # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT, REQUEST_BODY
@@ -124,10 +122,9 @@ Feature: Helper for running After COA Accepted endpoints
   # Output: response
   @GetFairSettingsBase
   Scenario: Run get fair settings for user: <USER_NAME> and fair: <FAIRID_OR_CURRENT>
-    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunnerBase')
-    * replace getFairSettingsUri.fairIdOrCurrent = FAIRID_OR_CURRENT
-    * url BOOKFAIRS_JARVIS_BASE + getFairSettingsUri
-    * cookies { SCHL : '#(schlResponse.SCHL)'}
+    Given def authResponse = call read('classpath:common/bookfairs/jarvis/login_authorization_controller/LoginAuthorizationRunnerHelper.feature@BeginFairSessionBase'){FAIR_ID: '#(FAIRID_OR_CURRENT)'}
+    * url BOOKFAIRS_JARVIS_BASE + "/bookfairs-jarvis/api/user/fairs/current/settings"
+    * cookies { SCHL : '#(authResponse.SCHL)', SBF_JARVIS:'#(authResponse.SBF_JARVIS)'}
     Then method get
 
   # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT, REQUEST_BODY

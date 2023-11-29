@@ -106,8 +106,8 @@ Feature: GetFairSettings GET Api tests
       | azhou1@scholastic.com | password1 | current           | 5633533       | 5633533         |
 
   @Regression
-  Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIR_ID>
-    * def BaseResponseMap = call read('RunnerHelper.feature@GetFairHomepage')
+  Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIRID_OR_CURRENT>
+    * def BaseResponseMap = call read('RunnerHelper.feature@GetFairSettings')
     * def TargetResponseMap = call read('RunnerHelper.feature@GetFairSettingsBase')
     * string base = BaseResponseMap.response
     * string target = TargetResponseMap.response
@@ -117,5 +117,5 @@ Feature: GetFairSettings GET Api tests
     Then print 'Differences any...', compResult
 
     Examples:
-      | USER_NAME                           | PASSWORD | FAIR_ID |
-      | mtodaro@scholastic.com              | passw0rd | 5782058 |
+      | USER_NAME                           | PASSWORD | FAIRID_OR_CURRENT |
+      | mtodaro@scholastic.com              | passw0rd | 5782058           |
