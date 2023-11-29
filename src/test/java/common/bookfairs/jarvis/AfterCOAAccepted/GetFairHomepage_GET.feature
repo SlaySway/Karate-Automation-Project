@@ -75,17 +75,19 @@ Feature: GetFairHomepage GET Api tests
       | azhou1@scholastic.com | password1 | 5829187           |
 
   @Happy
-  Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<FAIRID_OR_CURRENT>
+  Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, scenario:<SCENARIO>
     Given def getHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
     Then match getHomepageResponse.responseHeaders['Sbf-Jarvis-Fair-Id'][0] == EXPECTED_FAIR
     And if(FAIRID_OR_CURRENT == 'current') karate.log(karate.match(getHomepageResponse.responseHeaders['Sbf-Jarvis-Default-Fair'][0], 'AUTOMATICALLY_SELECTED_THIS_REQUEST'))
 
     @QA
     Examples:
-      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR |
-      | azhou1@scholastic.com | password1 | 5633533           | 5633533       |
-      | azhou1@scholastic.com | password1 | current           | 5782595       |
-    #TODO: Need to create users with specific sets of fairs to test the current fair selection logic is working
+      | USER_NAME                                               | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR | SCENARIO                                                 |
+      | azhou1@scholastic.com                                   | password1 | 5633533           | 5633533       | Return path parameter fairId information                 |
+      | azhou1@scholastic.com                                   | password1 | current           | 5782595       | Has current, upcoming, and past fairs                    |
+      | HasRecentlyEnded.AndOnlyUpcomingandPastFairs@schol.com  | passw0rd  | current           | 5842804       | Has only upcoming, and past fairs                        |
+      | upcomingAndPastFairs@schol.com                          | passw0rd  | current           | 5842814       | Has only upcoming and past fairs                         |
+      | userhasonlypastfairs@scl.com                            | passw0rd  | current           | 5842806       | Has only past fairs                                      |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current WITH SBF_JARVIS for DO_NOT_SELECT mode with user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, cookie fair:<SBF_JARVIS_FAIR>
