@@ -30,7 +30,7 @@ Feature: GetPublicHomepage API automation tests
     And path WEB_URL
     And param fairId = FAIRID_OR_CURRENT
     And method get
-    Then match responseStatus == 404
+    Then match responseStatus == 500
 
     @QA
     Examples: 

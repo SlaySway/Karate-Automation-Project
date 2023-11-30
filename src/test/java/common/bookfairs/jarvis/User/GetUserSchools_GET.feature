@@ -64,9 +64,12 @@ Feature: GetUserSchools API automation tests
 
     @QA
     Examples: 
-      | USER_NAME                           | PASSWORD  |
-      | mtodaro@scholastic.com              | passw0rd  |
-      | amomin-consultant@scholastic.com    | Bookfair2 |
-      | sdevineni-consultant@scholastic.com | passw0rd  |
-      | RPallerla-consultant@Scholastic.com | Test@1234 |
-      | bradpitt@gmail.com                  | passw0rd  |
+      | USER_NAME                                              | PASSWORD  |
+      | mtodaro@scholastic.com                                 | passw0rd  |
+      | amomin-consultant@scholastic.com                       | Bookfair2 |
+      | sdevineni-consultant@scholastic.com                    | passw0rd  |
+      | RPallerla-consultant@Scholastic.com                    | Test@1234 |
+      | bradpitt@gmail.com                                     | passw0rd  |
+      #| userhas.OnlyPastFairs@schl.com                         | passw0rd  |
+      | HasRecentlyEnded.AndOnlyUpcomingandPastFairs@schol.com | passw0rd  |
+      | upcomingAndPastFairs@schol.com                         | passw0rd  |
