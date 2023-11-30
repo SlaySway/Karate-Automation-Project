@@ -24,8 +24,8 @@ Feature: FairFinderByFairId API automation tests
     Given url BOOKFAIRS_JARVIS_URL + fairFinderByFairIdURL
     And method get
     Then match responseStatus == 500
-    
-    Scenario: Validate request when manadtory path parameter 'fairId' does not exist
+
+  Scenario: Validate request when manadtory path parameter 'fairId' does not exist
     * replace fairFinderByFairIdURL.fairId = '1112223'
     Given url BOOKFAIRS_JARVIS_URL + fairFinderByFairIdURL
     And method get
@@ -49,7 +49,7 @@ Feature: FairFinderByFairId API automation tests
     And method get
     Then string TargetResponse = response
     Then string TargetStatusCd = responseStatus
-    * def BaseCall = call read('classpath:common/bookfairs/jarvis/Public/publicRunnerHelper.feature@fairFinderByFairIdBase')
+    * def BaseCall = call read('classpath:common/bookfairs/jarvis/Public/publicRunnerHelper.feature@bookFairServiceGetFairDetails')
     Then string BaseResponse = BaseCall.response
     Then string BaseStatusCd = BaseCall.responseStatus
     Then match BaseStatusCd == TargetStatusCd

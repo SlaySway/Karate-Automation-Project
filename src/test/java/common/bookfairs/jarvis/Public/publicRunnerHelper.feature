@@ -38,3 +38,11 @@ Feature: Helper for running SCHL login api
     And path FAIRID_OR_CURRENT
     And cookies {SCHL : '#(SCHL)', SBF_JARVIS  : '#(SBF_JARVIS)'}
     And method get
+
+  # Input:FAIRID_OR_CURRENT
+  # Output: response
+  @bookFairServiceGetFairDetails
+  Scenario: Run GetFairDetails api from bookfairs service swagger
+    Given url BOOKFAIRS_SERVICE_URL + '/bookfairs-service'
+    And path FAIRID_OR_CURRENT
+    And method get

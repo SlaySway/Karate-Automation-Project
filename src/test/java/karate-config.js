@@ -13,25 +13,22 @@ function fn() {
 		BOOKFAIRS_CONTENT_URL: 'https://bookfairs-content.qa.apps.scholastic.tech',
 		BOOKFAIRS_CONTENT_BASE: 'https://bookfairs-content.stage.apps.scholastic.tech',
 
-        CONTENT_ACCESS_TOKEN : '3dIx0ZzA49dKFMQmZKEPnz3aUWesIafl',
+		CONTENT_ACCESS_TOKEN: '3dIx0ZzA49dKFMQmZKEPnz3aUWesIafl',
 
-        SCHL_LOGIN_URL : 'https://login-qa.scholastic.com',
-        SCHL_LOGIN_BASE : 'https://login-stage.scholastic.com',
+		SCHL_LOGIN_URL: 'https://login-qa.scholastic.com',
+		SCHL_LOGIN_BASE: 'https://login-stage.scholastic.com',
 
+		CMDM_URL: 'https://qa-internal.api.scholastic.com',
+		CMDM_BEARER_TOKEN: '3dIx0ZzA49dKFMQmZKEPnz3aUWesIafl',
 
-        CMDM_URL : 'https://qa-internal.api.scholastic.com',
-        CMDM_BEARER_TOKEN : '3dIx0ZzA49dKFMQmZKEPnz3aUWesIafl',
+		BOOKFAIRS_FATPIPE_REPORTS_URL: 'https://fatpipe-reports-api.qa.apps.scholastic.tech',
+		BOOKFAIRS_FATPIPE_REPORTS_BASE: 'https://fatpipe-reports-api.stage.apps.scholastic.tech',
+		BOOKFAIRS_FATPIPE_REPORTS_TARGET: 'https://fatpipe-reports-api.qa.apps.scholastic.tech',
 
-        BOOKFAIRS_FATPIPE_REPORTS_URL : 'https://fatpipe-reports-api.qa.apps.scholastic.tech',
-        BOOKFAIRS_FATPIPE_REPORTS_BASE : 'https://fatpipe-reports-api.stage.apps.scholastic.tech',
-        BOOKFAIRS_FATPIPE_REPORTS_TARGET : 'https://fatpipe-reports-api.qa.apps.scholastic.tech'
+		BOOKFAIRS_SERVICE_URL: 'https://bookfairs-service.qa.apps.scholastic.tech'
 	}
 
-	if (env == 'qa') {
-
-        // DEFAULT CONFIG IS QA, NO NEED FOR TWO CONFIGS FOR QA
-
-	} else if (env == 'dev') {
+	if (env == 'dev') {
 
 		config.BOOKFAIRS_JARVIS_URL = 'author';
 		config.BOOKFAIRS_JARVIS_TARGET = 'authorpassword';
@@ -40,6 +37,7 @@ function fn() {
 		config.BOOKFAIRS_CONTENT_BASE = '';
 		config.BOOKFAIRS_CONTENT_TARGET = '';
 		config.EXTERNAL_SCH_COOKIE_URL = '';
+		config.BOOKFAIRS_SERVICE_URL = '';
 
 	} else if (env == 'stage') {
 
@@ -50,6 +48,7 @@ function fn() {
 		config.BOOKFAIRS_CONTENT_BASE = '';
 		config.BOOKFAIRS_CONTENT_TARGET = '';
 		config.EXTERNAL_SCH_COOKIE = '';
+		config.BOOKFAIRS_SERVICE_URL = '';
 
 	} else if (env == 'prod') {
 
@@ -63,6 +62,7 @@ function fn() {
 		config.BOOKFAIRS_FATPIPE_REPORTS_URL = '';
 		config.BOOKFAIRS_FATPIPE_REPORTS_BASE = '';
 		config.BOOKFAIRS_FATPIPE_REPORTS_TARGET = '';
+		config.BOOKFAIRS_SERVICE_URL = '';
 
 	}
 
