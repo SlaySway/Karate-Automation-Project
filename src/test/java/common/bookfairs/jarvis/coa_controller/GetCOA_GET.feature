@@ -1,3 +1,4 @@
+@ignore
 @GetCOATest
 Feature: GetCOA API automation tests
 

@@ -28,6 +28,20 @@ Feature: GetUserSchools API automation tests
       | USER_NAME              | PASSWORD |
       | mtodaro@scholastic.com | passw0rd |
 
+  Scenario Outline: Validate request when user does not have any fairs
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    Given url BOOKFAIRS_JARVIS_URL + getUserSchoolsURL
+    And cookies { SCHL : '#(schlResponse.SCHL)'}
+    And method get
+    Then status 204
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
+
+    @QA
+    Examples: 
+      | USER_NAME           | PASSWORD |
+      | qaeduc032@gmail.com | passw0rd |
+      | slam@scholastic.com | passw0rd |
+
   Scenario Outline: Validate regression | <USER_NAME>
     * def TargetCall = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
     Given url BOOKFAIRS_JARVIS_URL + getUserSchoolsURL
@@ -55,6 +69,4 @@ Feature: GetUserSchools API automation tests
       | amomin-consultant@scholastic.com    | Bookfair2 |
       | sdevineni-consultant@scholastic.com | passw0rd  |
       | RPallerla-consultant@Scholastic.com | Test@1234 |
-      | qaeduc032@gmail.com                 | passw0rd  |
       | bradpitt@gmail.com                  | passw0rd  |
-      | slam@scholastic.com                 | passw0rd  |
