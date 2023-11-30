@@ -18,9 +18,9 @@ Feature: Helper for running Before COA Accepted endpoints
     * string getJWTForCOAUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/coa/pdf-links"
     * string putConfirmCOAUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/coa/confirmation"
 
-     # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
-     # Output: response
-     #    * def getCOAdatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOAdates')
+  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
+  # Output: response
+  #    * def getCOAdatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOAdates')
   @GetCOAdates
   Scenario: Get COA dates api
     Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
@@ -29,7 +29,7 @@ Feature: Helper for running Before COA Accepted endpoints
     And cookies { SCHL : '#(schlResponse.SCHL)'}
     And method GET
 
-    # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
+  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
   # Output: response
   #    * def getCOAdatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOAdatesBase')
   @GetCOAdatesBase
@@ -45,7 +45,7 @@ Feature: Helper for running Before COA Accepted endpoints
     And cookies {SCHL : '#(SCHL)', SBF_JARVIS  : '#(SBF_JARVIS)'}
     And method get
 
-     # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
+  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
   # Output: response
   #    * def getCOApdfLinkResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOApdfLink'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
   @GetCOApdfLink
@@ -56,7 +56,7 @@ Feature: Helper for running Before COA Accepted endpoints
     And cookies { SCHL : '#(schlResponse.SCHL)'}
     And method GET
 
-    # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
+  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
   # Output: response
   #    * def getCOApdfLinkResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOApdfLinkBase'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
   @GetCOApdfLinkBase
@@ -72,7 +72,7 @@ Feature: Helper for running Before COA Accepted endpoints
     And cookies {SCHL : '#(SCHL)', SBF_JARVIS  : '#(SBF_JARVIS)'}
     And method get
 
-    # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
+  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
   # Output: response
   #    * def getCOAResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOA'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
   @GetCOA
@@ -83,7 +83,7 @@ Feature: Helper for running Before COA Accepted endpoints
     And cookies { SCHL : '#(schlResponse.SCHL)'}
     And method GET
 
-    # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
+  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
   # Output: response
   #    * def getCOAResponseBase = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOABase'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
   @GetCOABase
@@ -99,12 +99,12 @@ Feature: Helper for running Before COA Accepted endpoints
     And cookies {SCHL : '#(SCHL)', SBF_JARVIS  : '#(SBF_JARVIS)'}
     And method get
 
-# Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT, requestbody
+  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT, requestbody
   # Output: response
   #    * def postCOApdfLinkResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOApdfLink')
   @PostCOApdfLink
   Scenario: Post COA pdf link api
-    Given def sbf_jarvis = call read ('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
+    * def sbf_jarvis = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
     #Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
     And replace postCOApdfLinkUri.fairIdOrCurrent = FAIRID_OR_CURRENT
     Given url BOOKFAIRS_JARVIS_URL + postCOApdfLinkUri
@@ -112,7 +112,7 @@ Feature: Helper for running Before COA Accepted endpoints
     And request requestBody
     And method POST
 
-    # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT, requestbody
+  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT, requestbody
   # Output: response
   #    * def postCOApdfLinkResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOApdfLink')
   @PostCOApdfLinkBase
@@ -129,7 +129,7 @@ Feature: Helper for running Before COA Accepted endpoints
     And cookies {SCHL : '#(SCHL)', SBF_JARVIS  : '#(SBF_JARVIS)'}
     And method POST
 
-    # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT, requestBody
+  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT, requestBody
   # Output: response
   #    * def requestChangeResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@PostChangeRequest'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIRID_OR_CURRENT : '<fairIdOrCurrent>',REQUEST_BODY : '#(requestBody)'}
   @PostChangeRequest
@@ -141,7 +141,7 @@ Feature: Helper for running Before COA Accepted endpoints
     And request requestBody
     And method POST
 
-    # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT, requestBody
+  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT, requestBody
   # Output: response
   #    * def requestChangeResponseBase = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@PostChangeRequestBase'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIRID_OR_CURRENT : '<fairIdOrCurrent>',REQUEST_BODY : '#(requestBody)'}
   @PostChangeRequestBase
@@ -158,7 +158,7 @@ Feature: Helper for running Before COA Accepted endpoints
     And cookies {SCHL : '#(SCHL)', SBF_JARVIS  : '#(SBF_JARVIS)'}
     And method POST
 
-# Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT, requestBody
+  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT, requestBody
   # Output: response
   #    * def putBlackoutDatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@PutBlackoutDates'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIRID_OR_CURRENT : '<fairIdOrCurrent>',REQUEST_BODY : '#(requestBody)'}
   @PutBlackoutDates
@@ -170,7 +170,7 @@ Feature: Helper for running Before COA Accepted endpoints
     And request requestBody
     And method PUT
 
-    # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT, requestBody
+  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT, requestBody
   # Output: response
   #    * def putBlackoutDatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@PutBlackoutDatesBase'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIRID_OR_CURRENT : '<fairIdOrCurrent>',REQUEST_BODY : '#(requestBody)'}
   @PutBlackoutDatesBase
@@ -187,7 +187,7 @@ Feature: Helper for running Before COA Accepted endpoints
     And cookies {SCHL : '#(SCHL)', SBF_JARVIS  : '#(SBF_JARVIS)'}
     And method PUT
 
-# Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
+  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
   # Output: response
   #    * def putConfirmCOAResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@PutConfirmCOA'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIRID_OR_CURRENT : '<fairIdOrCurrent>'}
   @PutConfirmCOA
@@ -198,7 +198,7 @@ Feature: Helper for running Before COA Accepted endpoints
     And cookies { SCHL : '#(schlResponse.SCHL)'}
     And method PUT
 
-# Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
+  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
   # Output: response
   @GetJWTForCOA
   Scenario: Get a JWT for COA
