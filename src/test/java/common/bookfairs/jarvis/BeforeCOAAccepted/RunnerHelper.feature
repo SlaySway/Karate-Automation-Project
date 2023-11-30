@@ -104,10 +104,11 @@ Feature: Helper for running Before COA Accepted endpoints
   #    * def postCOApdfLinkResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOApdfLink')
   @PostCOApdfLink
   Scenario: Post COA pdf link api
-    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    Given def sbf_jarvis = call read ('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
+    #Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
     And replace postCOApdfLinkUri.fairIdOrCurrent = FAIRID_OR_CURRENT
     Given url BOOKFAIRS_JARVIS_URL + postCOApdfLinkUri
-    And cookies { SCHL : '#(schlResponse.SCHL)'}
+    And cookies { SCHL : '#(sbf_jarvis.SCHL)', SBF_JARVIS  : '#(sbf_jarvis.SBF_JARVIS)'}
     And request requestBody
     And method POST
 
