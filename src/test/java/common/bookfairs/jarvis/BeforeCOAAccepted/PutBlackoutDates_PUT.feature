@@ -11,16 +11,21 @@ Feature: PutBlackoutDates API automation tests
        {
     "blackoutDates": {
     "deliveryBlackoutDates": [
-      "11-09-2023"
      ],
       "pickupBlackoutDates": [
-      "17-11-2023"
      ]
     }
    }
       """
     * def putBlackoutDatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@PutBlackoutDates')
     Then match putBlackoutDatesResponse.responseStatus == 200
+    # TODO: In order to test functionality:
+      # set blackout dates empty
+      # check that blackout dates is no empty
+      # select one random blackout date within range of deliveryWindow and pickupWindow
+        # ^ random date must be on a weekday
+      # set blackout dates to the randomly chosen days
+      # check that backout dates is now updated
 
     Examples:
       | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT|
