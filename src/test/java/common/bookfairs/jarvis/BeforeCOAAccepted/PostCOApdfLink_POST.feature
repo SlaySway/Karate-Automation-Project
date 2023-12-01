@@ -15,6 +15,7 @@ Feature: PostCOApdfLink API automation tests
       """
     * def postCOApdfLinkResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@PostCOApdfLink')
     Then match postCOApdfLinkResponse.responseStatus == 200
+    Then match postCOApdfLinkResponse.response == 'Successful'
 
     Examples: 
       | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                               | MESSAGE |
@@ -48,10 +49,7 @@ Feature: PostCOApdfLink API automation tests
       | azhou1@scholastic.com               | password1 |           5633533 | azhou1@scholastic.com               | test    |
       | sdevineni-consultant@scholastic.com | passw0rd  |           5644037 | sdevineni-consultant@scholastic.com | TEST1   |
 
-  #      | sdevineni-consultant@scholastic.com | passw0rd  | current         |sdevineni-consultant@scholastic.com| TEST2  |
-  #      | azhou1@scholastic.com               | password1 | current         |azhou1@scholastic.com              | TEST3  |
   Scenario Outline: Validate PostCOApdfLink API with a valid fairId SCHL and Session Cookie
-    * def getCookie = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
     * def requestBody =
       """
         {
@@ -81,13 +79,12 @@ Feature: PostCOApdfLink API automation tests
     Then match postCOApdfLinkResponse.responseStatus == 200
     * print postCOApdfLinkResponse.response
 
-    #showing 400 for current keyword everytime
     Examples: 
       | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                               | MESSAGE |
       | azhou1@scholastic.com               | password1 | current           | azhou1@scholastic.com               | test    |
       | sdevineni-consultant@scholastic.com | passw0rd  | current           | sdevineni-consultant@scholastic.com | TEST2   |
 
-  Scenario Outline: Validate with invalid fairId
+  Scenario Outline: Validate with invalid fairId and valid login session
     * def requestBody =
       """
         {
@@ -107,3 +104,73 @@ Feature: PostCOApdfLink API automation tests
     Examples: 
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
       | azhou1@scholastic.com | password1 |              6598 | azhou1@scholastic.com | test    |
+
+  Scenario Outline: Validate with invalid login session and a valid fairId
+    * def requestBody =
+      """
+        {
+        "email": '<EMAIL>',
+        "message": '<MESSAGE>',
+        }
+      """
+    And replace postCOApdfLinkUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    Given url BOOKFAIRS_JARVIS_URL + postCOApdfLinkUri
+    And cookies { SCHL : eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoSMyNTYifQ.eyJpc3MiOiJNeVNjaGwiLCJhdWQiOiJTY2hvbGFzdGljIiwibmJmIjoxNzAxMzY1MzUyLCJzdWIiOiI5ODMwMzM2MSIsImlhdCI6MTcwMTM2NTM1NywiZXhwIjoxNzAxMzY3MTU3fQ.RuNxPupsos4pRP7GVeYoUTM_bxxHfXS4FWpf_bZaeZs}
+    And request requestBody
+    And method POST
+    Then match responseStatus == 401
+
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT| EMAIL                 | MESSAGE |
+      | azhou1@scholastic.com | password1 |          5775209 | azhou1@scholastic.com | test    |
+
+  Scenario Outline: Validate PostCOApdfLink API with invalid keyword and SCHL cookie
+    * def requestBody =
+      """
+        {
+        "email": '<EMAIL>',
+        "message": '<MESSAGE>',
+        }
+      """
+    And replace postCOApdfLinkUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    Given url BOOKFAIRS_JARVIS_URL + postCOApdfLinkUri
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    And cookies { SCHL : '#(schlResponse.SCHL)'}
+    And request requestBody
+    And method POST
+    Then match responseStatus == 404
+
+    Examples:
+      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                               | MESSAGE |
+      | azhou1@scholastic.com               | password1 | testing           | azhou1@scholastic.com               | test    |
+      | sdevineni-consultant@scholastic.com | passw0rd  | invalid           | sdevineni-consultant@scholastic.com | TEST2   |
+
+  Scenario Outline: Validate with invalid login session and a valid fairId
+    * def requestBody =
+      """
+        {
+        "email": '<EMAIL>',
+        "message": '<MESSAGE>',
+        }
+      """
+    And replace postCOApdfLinkUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    Given url BOOKFAIRS_JARVIS_URL
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    And cookies { SCHL : '#(schlResponse.SCHL)'}
+    And request requestBody
+    And method POST
+    Then match responseStatus == 404
+
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT| EMAIL                 | MESSAGE |
+      | azhou1@scholastic.com | password1 |          5775209 | azhou1@scholastic.com | test    |
+
+  Scenario Outline: Validate PostCOApdfLink API with SCHL Session Cookie and no request payload
+    * def requestBody = ""
+    * def postCOApdfLinkResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@PostCOApdfLink')
+    Then match postCOApdfLinkResponse.responseStatus == 415
+
+    Examples:
+      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                               | MESSAGE |
+      | azhou1@scholastic.com               | password1 | 5775209           | azhou1@scholastic.com               | test    |
+      | sdevineni-consultant@scholastic.com | passw0rd  | current           | sdevineni-consultant@scholastic.com | TEST2   |
