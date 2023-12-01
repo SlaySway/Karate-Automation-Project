@@ -17,6 +17,8 @@ Feature: GetCOApdfLink API automation tests
       | sdevineni-consultant@scholastic.com | passw0rd  | current           |
       | azhou1@scholastic.com               | password1 | current           |
 
+    # COA PDF link generates a new jwt token each time it's hit so it'll be different even in the same environment, so it can't be dynamically compared
+  @ignore
   Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIR_ID>
     * def BaseResponseMap = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOApdfLinkBase')
     * def TargetResponseMap = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOApdfLink')

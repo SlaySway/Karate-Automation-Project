@@ -165,7 +165,7 @@ Feature: Helper for running Before COA Accepted endpoints
     * def sbf_jarvis = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
     And replace putBlackoutDatesUri.fairIdOrCurrent = FAIRID_OR_CURRENT
     Given url BOOKFAIRS_JARVIS_URL + putBlackoutDatesUri
-    And cookies { SCHL : '#(schlResponse.SCHL)'}
+    And cookies { SCHL : '#(sbf_jarvis.SCHL)'}
     And request requestBody
     And method PUT
 
@@ -194,7 +194,7 @@ Feature: Helper for running Before COA Accepted endpoints
     * def sbf_jarvis = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
     And replace putConfirmCOAUri.fairIdOrCurrent = FAIRID_OR_CURRENT
     Given url BOOKFAIRS_JARVIS_URL + putConfirmCOAUri
-    And cookies { SCHL : '#(schlResponse.SCHL)'}
+    And cookies { SCHL : '#(sbf_jarvis.SCHL)', SBF_JARVIS : '#(sbf_jarvis.SBF_JARVIS)'}
     And method PUT
 
   # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
