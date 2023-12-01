@@ -35,38 +35,41 @@ Feature: GetCOApdfLink API automation tests
       | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com               | password1 | 5633533           |
       | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           |
-    # For current keyword it is giving 400
-#      | sdevineni-consultant@scholastic.com | passw0rd  | current           |
-#      | azhou1@scholastic.com               | password1 | current           |
 
-  Scenario Outline: Validate GetCOApdfLink API with a valid fairId SCHL and Session Cookie
-    * def getFairSessionCookie = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
-    Then match getFairSessionCookie.responseStatus == 200
-    * def getCOApdfLinkResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOApdfLink')
-    Then match getCOApdfLinkResponse.responseStatus == 200
-    * print getCOApdfLinkResponse.response
+  Scenario Outline: Validate GetCOApdfLink API with a valid fairId invalid SCHL cookie
+    And replace getCOApdfLinkUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    Given url BOOKFAIRS_JARVIS_URL + getCOApdfLinkUri
+    And cookies { SCHL : eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoSMyNTYifQ.eyJpc3MiOiJNeVNjaGwiLCJhdWQiOiJTY2hvbGFzdGljIiwibmJmIjoxNzAxMzY1MzUyLCJzdWIiOiI5ODMwMzM2MSIsImlhdCI6MTcwMTM2NTM1NywiZXhwIjoxNzAxMzY3MTU3fQ.RuNxPupsos4pRP7GVeYoUTM_bxxHfXS4FWpf_bZaeZs}
+    And method GET
+    Then match responseStatus == 401
 
     Examples:
       | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com               | password1 | 5633533           |
       | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           |
 
-  Scenario Outline: Validate GetCOApdfLink API with current keyword SCHL and Session Cookie
-    * def getFairSessionCookie = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
-    Then match getFairSessionCookie.responseStatus == 200
-    * def getCOApdfLinkResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOApdfLink')
-    Then match getCOApdfLinkResponse.responseStatus == 200
-    * print getCOApdfLinkResponse.response
+  Scenario Outline: Validate GetCOApdfLink API with invalid fairID and valid login session
+    And replace getCOApdfLinkUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    Given url BOOKFAIRS_JARVIS_URL + getCOApdfLinkUri
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunnerBase')
+    And cookies { SCHL : '#(schlResponse.SCHL)'}
+    And method GET
+    Then match responseStatus == 403
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT|
-      | azhou1@scholastic.com               | password1 | current          |
-      | sdevineni-consultant@scholastic.com | passw0rd  | current          |
+      | USER_NAME                     | PASSWORD  | FAIRID_OR_CURRENT|
+      | azhou1@scholastic.com         | password1 | 56335            |
 
-  Scenario Outline: Validate with invalid fairId or current keyword
-    * def getCOApdfLinkResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOApdfLink')
-    Then match getCOApdfLinkResponse.responseStatus == 403
+  Scenario Outline: Validate with current keyword or valid fairId valid login session and invalid session cookie
+    * def sbf_jarvis = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
+    And replace getCOApdfLinkUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    Given url BOOKFAIRS_JARVIS_URL + getCOApdfLinkUri
+    And cookies { SCHL : '#(sbf_jarvis.SCHL)', SBF_JARVIS  : eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoSMyNTYifQ}
+    And method GET
+    Then match responseStatus == 200
 
     Examples:
       | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com               | password1 | 5565              |
+      | azhou1@scholastic.com               | password1 | current           |
+      | azhou1@scholastic.com               | password1 |          5775209  |
+

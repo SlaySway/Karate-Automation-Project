@@ -26,9 +26,8 @@ Feature: PutBlackoutDates API automation tests
       | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT|
       | azhou1@scholastic.com               | password1 | 5633533          |
       | sdevineni-consultant@scholastic.com | passw0rd  | 5782071          |
-  #      With current keyword test is getting failed
-#      | sdevineni-consultant@scholastic.com | passw0rd  | current         |
-#      | azhou1@scholastic.com               | password1 | current         |
+      | sdevineni-consultant@scholastic.com | passw0rd  | current          |
+      | azhou1@scholastic.com               | password1 | current          |
 
   Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIR_ID>
     * def requestBody =
@@ -61,11 +60,10 @@ Feature: PutBlackoutDates API automation tests
       | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT|
       | azhou1@scholastic.com               | password1 | 5633533          |
       | sdevineni-consultant@scholastic.com | passw0rd  | 5644038          |
-#      | sdevineni-consultant@scholastic.com | passw0rd  | current         |
-#      | azhou1@scholastic.com               | password1 | current         |
+      | sdevineni-consultant@scholastic.com | passw0rd  | current          |
+      | azhou1@scholastic.com               | password1 | current          |
 
-  Scenario Outline: Validate PutBlackoutDates API with a valid fairId SCHL and Session Cookie
-    * def getCookie = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
+  Scenario Outline: Validate PutBlackoutDates API with invalid login session and valid fairId
     * def requestBody =
      """
        {
@@ -79,17 +77,19 @@ Feature: PutBlackoutDates API automation tests
     }
    }
       """
-    * def putBlackoutDatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@PutBlackoutDates')
-    Then match putBlackoutDatesResponse.responseStatus == 200
-    * print putBlackoutDatesResponse.response
+    And replace putBlackoutDatesUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    Given url BOOKFAIRS_JARVIS_URL + putBlackoutDatesUri
+    And cookies { SCHL : eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoSMyNTYifQ.eyJpc3MiOiJNeVNjaGwiLCJhdWQiOiJTY2hvbGFzdGljIiwibmJmIjoxNzAxMzY1MzUyLCJzdWIiOiI5ODMwMzM2MSIsImlhdCI6MTcwMTM2NTM1NywiZXhwIjoxNzAxMzY3MTU3fQ.RuNxPupsos4pRP7GVeYoUTM_bxxHfXS4FWpf_bZaeZs}
+    And request requestBody
+    And method PUT
+    Then match responseStatus == 401
 
     Examples:
       | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT|
       | azhou1@scholastic.com               | password1 | 5633533          |
       | sdevineni-consultant@scholastic.com | passw0rd  | 5644038          |
 
-  Scenario Outline: Validate PutBlackoutDates API with current keyword SCHL and Session Cookie
-    * def getCookie = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
+  Scenario Outline: Validate PutBlackoutDates API with valid login session and a invalid fairId
     * def requestBody =
      """
        {
@@ -103,16 +103,19 @@ Feature: PutBlackoutDates API automation tests
     }
    }
       """
-    * def putBlackoutDatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@PutBlackoutDates')
-    Then match putBlackoutDatesResponse.responseStatus == 200
-    * print putBlackoutDatesResponse.response
+    And replace putBlackoutDatesUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    Given url BOOKFAIRS_JARVIS_URL + putBlackoutDatesUri
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunnerBase')
+    And cookies { SCHL : '#(schlResponse.SCHL)'}
+    And request requestBody
+    And method PUT
+    Then match responseStatus == 403
 
     Examples:
       | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT|
-      | azhou1@scholastic.com               | password1 | current          |
-      | sdevineni-consultant@scholastic.com | passw0rd  | current          |
+      | azhou1@scholastic.com               | password1 | 57752YU          |
 
-  Scenario Outline: Validate with invalid fairId or current keyword
+  Scenario Outline: Validate with current keyword valid SCHL and invalid fairsession
     * def requestBody =
      """
        {
@@ -126,9 +129,24 @@ Feature: PutBlackoutDates API automation tests
     }
    }
       """
-    * def putBlackoutDatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@PutBlackoutDates')
-    Then match putBlackoutDatesResponse.responseStatus == 403
+    * def sbf_jarvis = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
+    And replace putBlackoutDatesUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    Given url BOOKFAIRS_JARVIS_URL + putBlackoutDatesUri
+    And cookies { SCHL : '#(sbf_jarvis.SCHL)',SBF_JARVIS  :eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoSMyNTYifQ}
+    And request requestBody
+    And method PUT
+    Then match responseStatus == 400
 
     Examples:
       | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com               | password1 | 56335             |
+      | azhou1@scholastic.com               | password1 | current           |
+
+  Scenario Outline: Validate PutBlackoutDates API with SCHL Session Cookie and no request payload
+    * def requestBody = ""
+    * def putBlackoutDatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@PutBlackoutDates')
+    Then match putBlackoutDatesResponse.responseStatus == 415
+
+    Examples:
+      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT|
+      | azhou1@scholastic.com               | password1 | 5775209          |
+      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038          |

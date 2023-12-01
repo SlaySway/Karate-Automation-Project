@@ -27,7 +27,7 @@ public class ParallelRunner {
 
 		Results results = Runner.path("classpath:common").outputCucumberJson(true).outputJunitXml(true)
 				// .configDir("src/test/java").tags("@public&userTests").parallel(10);
-				.configDir("src/test/java").tags("@PostCOApdfLinkTest").parallel(5);
+				.configDir("src/test/java").tags("@PutConfirmCOATest").parallel(5);
 
 		System.out.println("Total Feature => " + results.getFeaturesTotal());
 		System.out.println("Total Scenarios => " + results.getScenariosTotal());
