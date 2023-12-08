@@ -1,4 +1,4 @@
-@fairFinderTest @public&userTests
+@fairFinderTest @public&userTests @PerformanceEnhancement
 Feature: FairFinder API automation tests
 
   Background: Set config

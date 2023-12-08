@@ -1,4 +1,4 @@
-@getUserSchoolsTest @public&userTests
+@getUserSchoolsTest @public&userTests @PerformanceEnhancement
 Feature: GetUserSchools API automation tests
 
   Background: Set config
@@ -24,7 +24,7 @@ Feature: GetUserSchools API automation tests
     Then status 200
 
     @QA
-    Examples: 
+    Examples:
       | USER_NAME              | PASSWORD |
       | mtodaro@scholastic.com | passw0rd |
 
@@ -37,7 +37,7 @@ Feature: GetUserSchools API automation tests
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
 
     @QA
-    Examples: 
+    Examples:
       | USER_NAME           | PASSWORD |
       | qaeduc032@gmail.com | passw0rd |
       | slam@scholastic.com | passw0rd |
@@ -63,7 +63,7 @@ Feature: GetUserSchools API automation tests
     And match BaseResponse == TargetResponse
 
     @QA
-    Examples: 
+    Examples:
       | USER_NAME                                              | PASSWORD  |
       | mtodaro@scholastic.com                                 | passw0rd  |
       | amomin-consultant@scholastic.com                       | Bookfair2 |

@@ -1,4 +1,4 @@
-@GetCOAdatesTest
+@GetCOAdatesTest @PerformanceEnhancement
 Feature: GetCOAdates API automation tests
 
   Background: Set config
@@ -32,9 +32,9 @@ Feature: GetCOAdates API automation tests
     And match base == target
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT|
-      | azhou1@scholastic.com               | password1 | 5633533          |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038          |
+      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com               | password1 | 5633533           |
+      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           |
 
   Scenario Outline: Validate GetCOAdates API with a valid fairId SCHL and Session Cookie
     * def getCOAdatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOAdates')
@@ -52,9 +52,9 @@ Feature: GetCOAdates API automation tests
     * print getCOAdatesResponse.response
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT|
-      | azhou1@scholastic.com               | password1 | current          |
-      | sdevineni-consultant@scholastic.com | passw0rd  | current          |
+      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com               | password1 | current           |
+      | sdevineni-consultant@scholastic.com | passw0rd  | current           |
 
   Scenario Outline: Validate with invalid fairId and valid SCHL and session cookie
     And replace getCOAdatesUri.fairIdOrCurrent = FAIRID_OR_CURRENT
@@ -66,8 +66,8 @@ Feature: GetCOAdates API automation tests
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com               | password1 | 5565              |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5565              |
 
   Scenario Outline: Validate with invalid login session and a valid fairId
     And replace getCOAdatesUri.fairIdOrCurrent = FAIRID_OR_CURRENT
@@ -76,8 +76,8 @@ Feature: GetCOAdates API automation tests
     And method GET
     Then match responseStatus == 401
     Examples:
-      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT|
-      | azhou1@scholastic.com | password1 |          5775209 |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5775209           |
 
   Scenario Outline: Validate with invalid session cookie and a valid fairId
     And replace getCOAdatesUri.fairIdOrCurrent = FAIRID_OR_CURRENT
@@ -88,5 +88,5 @@ Feature: GetCOAdates API automation tests
     Then match responseStatus == 404
 
     Examples:
-      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT|
-      | azhou1@scholastic.com | password1 |                  |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 |                   |

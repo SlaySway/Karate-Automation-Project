@@ -25,7 +25,7 @@ Feature: Content Fair detail API automation tests
     And def pathParams = {bookFairId : '#(FAIR_ID)'}
     And path pathParams.bookFairId
     When method GET
-    Then match responseStatus == 500
+    Then match responseStatus == 404
 
     @QA
     Examples:
@@ -37,5 +37,15 @@ Feature: Content Fair detail API automation tests
     Given url BOOKFAIRS_CONTENT_URL + getFairDetailUri
     When method GET
     Then match responseStatus == 404
+
+  Scenario Outline: Validate a 200 status code for a valid request and versions provided
+    Given def getFairDetailsResponse = call read('classpath:common/bookfairs/content/fair_details/FairDetailsRunnerHelper.feature@GetContentFairDetailRunner'){FAIR_ID : '<FAIR_ID>'}
+    Then match getFairDetailsResponse.responseStatus == 200
+
+    @QA
+    Examples:
+      | FAIR_ID | VERSION |
+      | 5416059 | V1_0    |
+      | 5416059 | V2_0    |
 
 

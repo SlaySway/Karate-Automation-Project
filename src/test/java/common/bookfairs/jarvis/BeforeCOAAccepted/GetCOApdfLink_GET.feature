@@ -1,4 +1,4 @@
-@GetCOApdfLinkTest
+@GetCOApdfLinkTest @PerformanceEnhancement
 Feature: GetCOApdfLink API automation tests
 
   Background: Set config
@@ -59,8 +59,8 @@ Feature: GetCOApdfLink API automation tests
     Then match responseStatus == 403
 
     Examples:
-      | USER_NAME                     | PASSWORD  | FAIRID_OR_CURRENT|
-      | azhou1@scholastic.com         | password1 | 56335            |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 56335             |
 
   Scenario Outline: Validate with current keyword or valid fairId valid login session and invalid session cookie
     * def sbf_jarvis = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
@@ -71,7 +71,7 @@ Feature: GetCOApdfLink API automation tests
     Then match responseStatus == 200
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com               | password1 | current           |
-      | azhou1@scholastic.com               | password1 |          5775209  |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | current           |
+      | azhou1@scholastic.com | password1 | 5775209           |
 

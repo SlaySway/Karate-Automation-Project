@@ -1,4 +1,4 @@
-@PutBlackoutDatesTest
+@PutBlackoutDatesTest @PerformanceEnhancement
 Feature: PutBlackoutDates API automation tests
 
   Background: Set config
@@ -28,11 +28,11 @@ Feature: PutBlackoutDates API automation tests
       # check that backout dates is now updated
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT|
-      | azhou1@scholastic.com               | password1 | 5633533          |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5782071          |
-      | sdevineni-consultant@scholastic.com | passw0rd  | current          |
-      | azhou1@scholastic.com               | password1 | current          |
+      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com               | password1 | 5633533           |
+      | sdevineni-consultant@scholastic.com | passw0rd  | 5782071           |
+      | sdevineni-consultant@scholastic.com | passw0rd  | current           |
+      | azhou1@scholastic.com               | password1 | current           |
 
   Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIR_ID>
     * def requestBody =
@@ -62,11 +62,11 @@ Feature: PutBlackoutDates API automation tests
     And match base == target
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT|
-      | azhou1@scholastic.com               | password1 | 5633533          |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038          |
-      | sdevineni-consultant@scholastic.com | passw0rd  | current          |
-      | azhou1@scholastic.com               | password1 | current          |
+      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com               | password1 | 5633533           |
+      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           |
+      | sdevineni-consultant@scholastic.com | passw0rd  | current           |
+      | azhou1@scholastic.com               | password1 | current           |
 
   Scenario Outline: Validate PutBlackoutDates API with invalid login session and valid fairId
     * def requestBody =
@@ -90,9 +90,9 @@ Feature: PutBlackoutDates API automation tests
     Then match responseStatus == 401
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT|
-      | azhou1@scholastic.com               | password1 | 5633533          |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038          |
+      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com               | password1 | 5633533           |
+      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           |
 
   Scenario Outline: Validate PutBlackoutDates API with valid login session and a invalid fairId
     * def requestBody =
@@ -117,8 +117,8 @@ Feature: PutBlackoutDates API automation tests
     Then match responseStatus == 403
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT|
-      | azhou1@scholastic.com               | password1 | 57752YU          |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 57752YU           |
 
   Scenario Outline: Validate with current keyword valid SCHL and invalid fairsession
     * def requestBody =
@@ -143,8 +143,8 @@ Feature: PutBlackoutDates API automation tests
     Then match responseStatus == 400
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com               | password1 | current           |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | current           |
 
   Scenario Outline: Validate PutBlackoutDates API with SCHL Session Cookie and no request payload
     * def requestBody = ""
@@ -152,6 +152,6 @@ Feature: PutBlackoutDates API automation tests
     Then match putBlackoutDatesResponse.responseStatus == 415
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT|
-      | azhou1@scholastic.com               | password1 | 5775209          |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038          |
+      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com               | password1 | 5775209           |
+      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           |

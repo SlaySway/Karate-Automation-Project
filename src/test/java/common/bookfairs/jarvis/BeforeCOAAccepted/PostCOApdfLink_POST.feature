@@ -1,4 +1,4 @@
-@PostCOApdfLinkTest
+@PostCOApdfLinkTest @PerformanceEnhancement
 Feature: PostCOApdfLink API automation tests
 
   Background: Set config
@@ -17,10 +17,10 @@ Feature: PostCOApdfLink API automation tests
     Then match postCOApdfLinkResponse.responseStatus == 200
     Then match postCOApdfLinkResponse.response == 'Successful'
 
-    Examples: 
+    Examples:
       | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                               | MESSAGE |
-      | azhou1@scholastic.com               | password1 |           5633533 | azhou1@scholastic.com               | test    |
-      | sdevineni-consultant@scholastic.com | passw0rd  |           5644038 | sdevineni-consultant@scholastic.com | TEST1   |
+      | azhou1@scholastic.com               | password1 | 5633533           | azhou1@scholastic.com               | test    |
+      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           | sdevineni-consultant@scholastic.com | TEST1   |
       | sdevineni-consultant@scholastic.com | passw0rd  | current           | sdevineni-consultant@scholastic.com | TEST2   |
       | azhou1@scholastic.com               | password1 | current           | azhou1@scholastic.com               | TEST3   |
 
@@ -44,10 +44,10 @@ Feature: PostCOApdfLink API automation tests
     Then print 'Differences any...', compResult
     And match base == target
 
-    Examples: 
+    Examples:
       | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                               | MESSAGE |
-      | azhou1@scholastic.com               | password1 |           5633533 | azhou1@scholastic.com               | test    |
-      | sdevineni-consultant@scholastic.com | passw0rd  |           5644037 | sdevineni-consultant@scholastic.com | TEST1   |
+      | azhou1@scholastic.com               | password1 | 5633533           | azhou1@scholastic.com               | test    |
+      | sdevineni-consultant@scholastic.com | passw0rd  | 5644037           | sdevineni-consultant@scholastic.com | TEST1   |
 
   Scenario Outline: Validate PostCOApdfLink API with a valid fairId SCHL and Session Cookie
     * def requestBody =
@@ -61,10 +61,10 @@ Feature: PostCOApdfLink API automation tests
     Then match postCOApdfLinkResponse.responseStatus == 200
     * print postCOApdfLinkResponse.response
 
-    Examples: 
+    Examples:
       | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                               | MESSAGE |
-      | azhou1@scholastic.com               | password1 |           5633533 | azhou1@scholastic.com               | test    |
-      | sdevineni-consultant@scholastic.com | passw0rd  |           5644038 | sdevineni-consultant@scholastic.com | TEST1   |
+      | azhou1@scholastic.com               | password1 | 5633533           | azhou1@scholastic.com               | test    |
+      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           | sdevineni-consultant@scholastic.com | TEST1   |
 
   Scenario Outline: Validate PostCOApdfLink API with current keyword SCHL and Session Cookie
     * def getCookie = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
@@ -79,7 +79,7 @@ Feature: PostCOApdfLink API automation tests
     Then match postCOApdfLinkResponse.responseStatus == 200
     * print postCOApdfLinkResponse.response
 
-    Examples: 
+    Examples:
       | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                               | MESSAGE |
       | azhou1@scholastic.com               | password1 | current           | azhou1@scholastic.com               | test    |
       | sdevineni-consultant@scholastic.com | passw0rd  | current           | sdevineni-consultant@scholastic.com | TEST2   |
@@ -101,9 +101,9 @@ Feature: PostCOApdfLink API automation tests
     Then match responseStatus == 403
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
 
-    Examples: 
+    Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
-      | azhou1@scholastic.com | password1 |              6598 | azhou1@scholastic.com | test    |
+      | azhou1@scholastic.com | password1 | 6598              | azhou1@scholastic.com | test    |
 
   Scenario Outline: Validate with invalid login session and a valid fairId
     * def requestBody =
@@ -121,8 +121,8 @@ Feature: PostCOApdfLink API automation tests
     Then match responseStatus == 401
 
     Examples:
-      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT| EMAIL                 | MESSAGE |
-      | azhou1@scholastic.com | password1 |          5775209 | azhou1@scholastic.com | test    |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
+      | azhou1@scholastic.com | password1 | 5775209           | azhou1@scholastic.com | test    |
 
   Scenario Outline: Validate PostCOApdfLink API with invalid keyword and SCHL cookie
     * def requestBody =
@@ -162,8 +162,8 @@ Feature: PostCOApdfLink API automation tests
     Then match responseStatus == 404
 
     Examples:
-      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT| EMAIL                 | MESSAGE |
-      | azhou1@scholastic.com | password1 |          5775209 | azhou1@scholastic.com | test    |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
+      | azhou1@scholastic.com | password1 | 5775209           | azhou1@scholastic.com | test    |
 
   Scenario Outline: Validate PostCOApdfLink API with SCHL Session Cookie and no request payload
     * def requestBody = ""

@@ -1,4 +1,4 @@
-@getPublicHomePageTest @public&userTests
+@getPublicHomePageTest @public&userTests @PerformanceEnhancement
 Feature: GetPublicHomepage API automation tests
 
   Background: Set config

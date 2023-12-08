@@ -1,4 +1,4 @@
-@UpdateFairHomepage
+@UpdateFairHomepage @PerformanceEnhancement
 Feature: UpdateFairHomepage PUT Api tests
 
   Background: Set config
@@ -32,12 +32,12 @@ Feature: UpdateFairHomepage PUT Api tests
 
     @QA
     Examples:
-      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | requestBody             |
-      | azhou1@scholastic.com | password1 | 5633533           | volunteerRequestBody    |
-      | azhou1@scholastic.com | password1 | 5633533           | contactRequestBody      |
-      | azhou1@scholastic.com | password1 | 5633533           | fairInfoRequestBody     |
-      | azhou1@scholastic.com | password1 | 5633533           | homepageUrlRequestBody  |
-      | azhou1@scholastic.com | password1 | 5633533           | toggleFairFinderBody    |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | requestBody            |
+      | azhou1@scholastic.com | password1 | 5633533           | volunteerRequestBody   |
+      | azhou1@scholastic.com | password1 | 5633533           | contactRequestBody     |
+      | azhou1@scholastic.com | password1 | 5633533           | fairInfoRequestBody    |
+      | azhou1@scholastic.com | password1 | 5633533           | homepageUrlRequestBody |
+      | azhou1@scholastic.com | password1 | 5633533           | toggleFairFinderBody   |
 
   @Unhappy
   Scenario Outline: Validate when invalid request body for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -73,7 +73,7 @@ Feature: UpdateFairHomepage PUT Api tests
 
     @QA
     Examples:
-      | EXPIRED_SCHL |
+      | EXPIRED_SCHL                                                                                                                                                                                                                                                      |
       | eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJpc3MiOiJNeVNjaGwiLCJhdWQiOiJTY2hvbGFzdGljIiwibmJmIjoxNjk5MzkwNzUyLCJzdWIiOiI5ODYzNTUyMyIsImlhdCI6MTY5OTM5MDc1NywiZXhwIjoxNjk5MzkyNTU3fQ.s3Czg7lmT6kETAcyupYDus8sxtFQMz7YOMKWz1_S-i8 |
 
   @Happy

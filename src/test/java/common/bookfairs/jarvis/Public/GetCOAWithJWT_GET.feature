@@ -1,4 +1,4 @@
-@getCOAWithJWTTest @public&userTests
+@getCOAWithJWTTest @public&userTests @PerformanceEnhancement
 Feature: GetCOAWithJWT API automation tests
 
   Background: Set config

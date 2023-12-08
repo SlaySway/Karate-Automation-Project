@@ -1,4 +1,4 @@
-@PutConfirmCOATest
+@PutConfirmCOATest @PerformanceEnhancement
 Feature: PutCOAConfirm API automation tests
 
   Background: Set config
@@ -52,5 +52,5 @@ Feature: PutCOAConfirm API automation tests
 
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com               | password1 | 56335             |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 56335             |

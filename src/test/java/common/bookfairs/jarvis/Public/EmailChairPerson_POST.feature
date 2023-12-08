@@ -1,4 +1,4 @@
-@emailChairPersonTest @public&userTests
+@emailChairPersonTest @public&userTests @PerformanceEnhancement
 Feature: EmailChairPerson API automation tests
 
   Background: Set config

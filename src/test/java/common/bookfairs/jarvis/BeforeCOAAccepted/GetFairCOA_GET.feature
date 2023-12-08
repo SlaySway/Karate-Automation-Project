@@ -1,4 +1,4 @@
-@GetCOATest
+@GetCOATest @PerformanceEnhancement
 Feature: GetFairCOA API automation tests
 
   Background: Set config
@@ -12,11 +12,11 @@ Feature: GetFairCOA API automation tests
     * print getCOAResponse.response
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT|
-      | azhou1@scholastic.com               | password1 | 5633533          |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038          |
-      | sdevineni-consultant@scholastic.com | passw0rd  | current          |
-      | azhou1@scholastic.com               | password1 | current          |
+      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com               | password1 | 5633533           |
+      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           |
+      | sdevineni-consultant@scholastic.com | passw0rd  | current           |
+      | azhou1@scholastic.com               | password1 | current           |
 
   Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIR_ID>
     * def BaseResponseMap = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOABase')
@@ -59,8 +59,8 @@ Feature: GetFairCOA API automation tests
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com               | password1 | 51345             |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 51345             |
 
   Scenario Outline: Validate with current keyword valid SCHL and invalid fairsession
     * def sbf_jarvis = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
@@ -71,9 +71,9 @@ Feature: GetFairCOA API automation tests
     Then match responseStatus == 200
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT|
-      | sdevineni-consultant@scholastic.com | passw0rd  | current          |
-      | azhou1@scholastic.com               | password1 | current          |
+      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
+      | sdevineni-consultant@scholastic.com | passw0rd  | current           |
+      | azhou1@scholastic.com               | password1 | current           |
 
   Scenario Outline: Validate without path param
     Given url BOOKFAIRS_JARVIS_URL + getCOAUri
@@ -81,6 +81,6 @@ Feature: GetFairCOA API automation tests
     Then match responseStatus == 404
 
     Examples:
-      | USER_NAME                           | PASSWORD  |
-      | azhou1@scholastic.com               | password1 |
+      | USER_NAME             | PASSWORD  |
+      | azhou1@scholastic.com | password1 |
 

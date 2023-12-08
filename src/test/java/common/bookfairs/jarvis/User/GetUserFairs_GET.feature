@@ -1,4 +1,4 @@
-@getUserFairsTest @public&userTests
+@getUserFairsTest @public&userTests @PerformanceEnhancement
 Feature: GetUserFairs API automation tests
 
   Background: Set config
@@ -24,7 +24,7 @@ Feature: GetUserFairs API automation tests
     Then status 200
 
     @QA
-    Examples: 
+    Examples:
       | USER_NAME              | PASSWORD |
       | mtodaro@scholastic.com | passw0rd |
 
@@ -49,7 +49,7 @@ Feature: GetUserFairs API automation tests
     And match BaseResponse == TargetResponse
 
     @QA
-    Examples: 
+    Examples:
       | USER_NAME                                              | PASSWORD  |
       #| mtodaro@scholastic.com                                 | passw0rd  |
       #| amomin-consultant@scholastic.com                       | Bookfair2 |

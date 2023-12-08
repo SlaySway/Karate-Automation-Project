@@ -24,10 +24,14 @@ public class ParallelRunner {
 
 	@Test
 	public void executeTest() {
+		// need to have path and tags be variables
+		String testPath = "classpath:common/bookfairs/jarvis";
+		String[] tags = {"@PerformanceEnhancement", "~@Regression"};
 
-		Results results = Runner.path("classpath:common").outputCucumberJson(true).outputJunitXml(true)
-				// .configDir("src/test/java").tags("@public&userTests").parallel(10);
-				.configDir("src/test/java").tags("@PutConfirmCOATest").parallel(5);
+
+
+		Results results = Runner.path(testPath).outputCucumberJson(true).outputJunitXml(true)
+				.configDir("src/test/java").tags(tags).parallel(5);
 
 		System.out.println("Total Feature => " + results.getFeaturesTotal());
 		System.out.println("Total Scenarios => " + results.getScenariosTotal());

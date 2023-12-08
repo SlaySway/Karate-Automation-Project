@@ -1,4 +1,4 @@
-@PostCOARequestChangeTest
+@PostCOARequestChangeTest @PerformanceEnhancement
 Feature: PostRequestChange API automation tests
 
   Background: Set config
@@ -20,11 +20,11 @@ Feature: PostRequestChange API automation tests
     Then match postCOAChangeRequestResponse.responseStatus == 201
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT| additionalDetails| Cnt_Method|
-      | azhou1@scholastic.com               | password1 | 5633533          | Test1            | Email     |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5782071          | TEST2            | PhoneNum  |
-      | sdevineni-consultant@scholastic.com | passw0rd  | current          | Siva             | Email     |
-      | azhou1@scholastic.com               | password1 | current          | And              | Phn       |
+      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
+      | azhou1@scholastic.com               | password1 | 5633533           | Test1             | Email      |
+      | sdevineni-consultant@scholastic.com | passw0rd  | 5782071           | TEST2             | PhoneNum   |
+      | sdevineni-consultant@scholastic.com | passw0rd  | current           | Siva              | Email      |
+      | azhou1@scholastic.com               | password1 | current           | And               | Phn        |
 
   Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIR_ID>
     * def requestBody =
@@ -51,11 +51,11 @@ Feature: PostRequestChange API automation tests
     And match base == target
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT| additionalDetails| Cnt_Method|
-      | azhou1@scholastic.com               | password1 | 5633533          | Test1            | Email     |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5782071          | TEST2            | PhoneNum  |
-      | sdevineni-consultant@scholastic.com | passw0rd  | current          | Siva             | Email     |
-      | azhou1@scholastic.com               | password1 | current          | And              | Phn       |
+      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
+      | azhou1@scholastic.com               | password1 | 5633533           | Test1             | Email      |
+      | sdevineni-consultant@scholastic.com | passw0rd  | 5782071           | TEST2             | PhoneNum   |
+      | sdevineni-consultant@scholastic.com | passw0rd  | current           | Siva              | Email      |
+      | azhou1@scholastic.com               | password1 | current           | And               | Phn        |
 
   Scenario Outline: Validate with invalid login session and a valid fairId
     * def requestBody =
@@ -76,11 +76,11 @@ Feature: PostRequestChange API automation tests
     Then match responseStatus == 401
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT| additionalDetails| Cnt_Method|
-      | azhou1@scholastic.com               | password1 | 5775209          | Test1            | Email     |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038          | TEST2            | PhoneNum  |
-      | sdevineni-consultant@scholastic.com | passw0rd  | current          | Siva             | Email     |
-      | azhou1@scholastic.com               | password1 | current          | And              | Phn       |
+      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
+      | azhou1@scholastic.com               | password1 | 5775209           | Test1             | Email      |
+      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           | TEST2             | PhoneNum   |
+      | sdevineni-consultant@scholastic.com | passw0rd  | current           | Siva              | Email      |
+      | azhou1@scholastic.com               | password1 | current           | And               | Phn        |
 
   Scenario Outline: Validate with valid login session and a invalid fairId
     * def requestBody =
@@ -102,13 +102,13 @@ Feature: PostRequestChange API automation tests
     Then match responseStatus == 403
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT| additionalDetails| Cnt_Method|
-      | azhou1@scholastic.com               | password1 | 57752ui          | Test1            | Email     |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 56440j8          | TEST2            | PhoneNum  |
+      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
+      | azhou1@scholastic.com               | password1 | 57752ui           | Test1             | Email      |
+      | sdevineni-consultant@scholastic.com | passw0rd  | 56440j8           | TEST2             | PhoneNum   |
 
 
-    Scenario Outline: Validate with current keyword valid SCHL and invalid fairsession
-      * def requestBody =
+  Scenario Outline: Validate with current keyword valid SCHL and invalid fairsession
+    * def requestBody =
      """
        {
         "additionalDetails": '<additionalDetails>',
@@ -118,18 +118,18 @@ Feature: PostRequestChange API automation tests
          ]
         }
       """
-      * def sbf_jarvis = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
-      And replace postCOARequestChangeUri.fairIdOrCurrent = FAIRID_OR_CURRENT
-      Given url BOOKFAIRS_JARVIS_URL + postCOARequestChangeUri
-      And cookies { SCHL : '#(sbf_jarvis.SCHL)',SBF_JARVIS  :eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoSMyNTYifQ}
-      And request requestBody
-      And method POST
-      Then match responseStatus == 400
+    * def sbf_jarvis = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
+    And replace postCOARequestChangeUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    Given url BOOKFAIRS_JARVIS_URL + postCOARequestChangeUri
+    And cookies { SCHL : '#(sbf_jarvis.SCHL)',SBF_JARVIS  :eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoSMyNTYifQ}
+    And request requestBody
+    And method POST
+    Then match responseStatus == 400
 
-      Examples:
-        | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT| additionalDetails| Cnt_Method|
-        | azhou1@scholastic.com               | password1 | current          | Test1            | Email     |
-        | sdevineni-consultant@scholastic.com | passw0rd  | current          | TEST2            | PhoneNum  |
+    Examples:
+      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
+      | azhou1@scholastic.com               | password1 | current           | Test1             | Email      |
+      | sdevineni-consultant@scholastic.com | passw0rd  | current           | TEST2             | PhoneNum   |
 
   Scenario Outline: Validate PostCOApdfLink API with SCHL Session Cookie and no request payload
     * def requestBody = ""
@@ -137,6 +137,6 @@ Feature: PostRequestChange API automation tests
     Then match postCOApdfLinkResponse.responseStatus == 415
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT|
-      | azhou1@scholastic.com               | password1 | 5775209          |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038          |
+      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com               | password1 | 5775209           |
+      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           |

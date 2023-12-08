@@ -20,7 +20,7 @@ Feature: GetFairsSettingsDates API automation tests
     * def ResponseDataMap = call read('classpath:common/bookfairs/jarvis/fair_settings_controller/FairSettingsRunnerHelper.feature@GetFairSettingsDatesBase'){USER_NAME : '<USER_NAME>', PASSWORD : '<PASSWORD>', FAIR_ID : '<FAIR_ID>'}
     Then match ResponseDataMap.responseStatus == 200
 
-    Examples: 
+    Examples:
       | USER_NAME                           | PASSWORD | FAIR_ID |
       | sdevineni-consultant@scholastic.com | passw0rd | 5383023 |
       | sdevineni-consultant@scholastic.com | passw0rd | 5734325 |
@@ -38,7 +38,7 @@ Feature: GetFairsSettingsDates API automation tests
     Then print "Response from current qa code base", TargetResponseMap.response
     Then print 'Differences any...', compResult
 
-    Examples: 
+    Examples:
       | USER_NAME                           | PASSWORD | FAIR_ID |
       | mtodaro@scholastic.com              | passw0rd | 5782058 |
       | mtodaro@scholastic.com              | passw0rd | 5782061 |

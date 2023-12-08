@@ -1,6 +1,6 @@
 {
   "volunteerRequestBody": {
-    "volunteerSignupUrl":"https://automationtest.com"
+    "volunteerSignupUrl": "https://automationtest.com"
   },
   "contactRequestBody": {
     "contactFirstName": "Automation",
@@ -9,8 +9,7 @@
     "contactPhoneNumber": "1111111111",
     "contactPhoneNumberCkbox": "N"
   },
-  "fairInfoRequestBody":
-  {
+  "fairInfoRequestBody": {
     "schoolName": "DAYTON ELEMENTARY SCHOOL",
     "fairStartDate": "2023-10-18",
     "fairEndDate": "2024-01-03",
@@ -26,16 +25,15 @@
     "paymentCcCkbox": "Y",
     "checkDescription": "(Payable to the school)"
   },
-  "homepageUrlRequestBody":
-  {
+  "homepageUrlRequestBody": {
     "homepageUrl": {
       "webUrl": "557broadwayelementary19999",
       "urlStatus": "RESERVED"
     }
   },
-  "toggleFairFinderBody":
-  {
-    "homepageUrl":{"fairFinderCkbok":"N"}
+  "toggleFairFinderBody": {
+    "homepageUrl": {
+      "fairFinderCkbok": "N"
+    }
   }
-
 }
