@@ -82,15 +82,16 @@ Feature: GetFairHomepage GET Api tests
 
     @QA
     Examples:
-      | USER_NAME                                              | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR | SCENARIO                                 |
-      | azhou1@scholastic.com                                  | password1 | 5633533           | 5633533       | Return path parameter fairId information |
-      | azhou1@scholastic.com                                  | password1 | current           | 5782595       | Has current, upcoming, and past fairs    |
-      | HasRecentlyEnded.AndOnlyUpcomingandPastFairs@schol.com | passw0rd  | current           | 5842804       | Has only upcoming, and past fairs        |
-      | upcomingAndPastFairs@schol.com                         | passw0rd  | current           | 5842814       | Has only upcoming and past fairs         |
-      | userhasonlypastfairs@scl.com                           | passw0rd  | current           | 5842806       | Has only past fairs                      |
-      | hasAllFairs@testing.com                                | password1 | current           | 5851574       | Has all fairs                            |
-      | hasUpcomingAndPastFairs@testing.com                    | password1 | current           | 5851576       | Has upcoming and past fairs              |
-      | hasPastFairs@testing.com                               | password1 | current           | 5851578       | Has past fairs                           |
+      | USER_NAME                                              | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR | SCENARIO                                     |
+      | azhou1@scholastic.com                                  | password1 | 5633533           | 5633533       | Return path parameter fairId information     |
+      | azhou1@scholastic.com                                  | password1 | current           | 5782595       | Has current, upcoming, and past fairs        |
+      | HasRecentlyEnded.AndOnlyUpcomingandPastFairs@schol.com | passw0rd  | current           | 5842804       | Has only upcoming, and past fairs            |
+      | upcomingAndPastFairs@schol.com                         | passw0rd  | current           | 5842814       | Has only upcoming and past fairs             |
+      | userhasonlypastfairs@scl.com                           | passw0rd  | current           | 5842806       | Has only past fairs                          |
+      | hasAllFairs@testing.com                                | password1 | current           | 5851574       | Has all fairs                                |
+      | hasUpcomingAndPastFairs@testing.com                    | password1 | current           | 5851576       | Has upcoming and past fairs                  |
+      | hasPastFairs@testing.com                               | password1 | current           | 5851578       | Has past fairs                               |
+      | hasRecentlyUpcomingAndPastFairs@testing.com            | password1 | current           | 5851611       | Has recently ended, upcoming, and past fairs |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current WITH SBF_JARVIS for DO_NOT_SELECT mode with user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, cookie fair:<SBF_JARVIS_FAIR>
