@@ -25,7 +25,9 @@ function fn() {
 		BOOKFAIRS_FATPIPE_REPORTS_BASE: 'https://fatpipe-reports-api.stage.apps.scholastic.tech',
 		BOOKFAIRS_FATPIPE_REPORTS_TARGET: 'https://fatpipe-reports-api.qa.apps.scholastic.tech',
 
-		BOOKFAIRS_SERVICE_URL: 'https://bookfairs-service.qa.apps.scholastic.tech'
+		BOOKFAIRS_SERVICE_URL: 'https://bookfairs-service.qa.apps.scholastic.tech',
+
+		BOOKFAIRS_PAYPORTAL_URL: 'https://payportal-service.qa.apps.scholastic.tech'
 	}
 
 	if (env == 'dev') {
