@@ -84,8 +84,8 @@ Feature: GetFairSettings GET Api tests
     Examples:
       | USER_NAME                                              | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR | SCENARIO                                     |
       | azhou1@scholastic.com                                  | password1 | 5633533           | 5633533       | Return path parameter fairId information     |
-      | azhou1@scholastic.com                                  | password1 | current           | 5782595       | Has current, upcoming, and past fairs        |
-      | HasRecentlyEnded.AndOnlyUpcomingandPastFairs@schol.com | passw0rd  | current           | 5842804       | Has only upcoming, and past fairs            |
+      | azhou1@scholastic.com                                  | password1 | current           | 5633533       | Has current, upcoming, and past fairs        |
+      | HasRecentlyEnded.AndOnlyUpcomingandPastFairs@schol.com | passw0rd  | current           | 5842803       | Has recently ended, upcoming, and past fairs |
       | upcomingAndPastFairs@schol.com                         | passw0rd  | current           | 5842814       | Has only upcoming and past fairs             |
       | userhasonlypastfairs@scl.com                           | passw0rd  | current           | 5842806       | Has only past fairs                          |
       | hasAllFairs@testing.com                                | password1 | current           | 5851574       | Has all fairs                                |
