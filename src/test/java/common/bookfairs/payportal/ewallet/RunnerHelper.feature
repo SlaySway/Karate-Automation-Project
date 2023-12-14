@@ -1,5 +1,5 @@
 @ignore @report=true
-Feature: Helper for running session-controller endpoints
+Feature: Helper for running ewallet-controller endpoints
 
   Background: Set config
     * string getWalletTransactionsUri = "/api/wallets/<walletId>/transactions"
