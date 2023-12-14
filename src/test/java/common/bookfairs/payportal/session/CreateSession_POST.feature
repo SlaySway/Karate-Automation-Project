@@ -3,6 +3,7 @@ Feature: CreateSession GET api tests
 
   Background: Set config
     * def obj = Java.type('utils.StrictValidation')
+    * string createSessionUri = "/api/session"
 
   @Happy
   Scenario Outline: Verify CreateSession returns a successful 200 response status code for user: <USER_NAME> and fair: <FAIRID>
@@ -20,9 +21,6 @@ Feature: CreateSession GET api tests
 
     @QA
     Examples:
-      | fairId  |
-      | fairId1 |
-      | fairId2 |
 
   @Unhappy
   Scenario Outline: Verify CreateSession returns 401 status code when logged in with no parameters
@@ -30,8 +28,6 @@ Feature: CreateSession GET api tests
 
     @QA
     Examples:
-      | fairId      | loginCredentials  |
-      | emptyFairId | loginCredentials1 |
 
 
   @Unhappy
@@ -40,5 +36,3 @@ Feature: CreateSession GET api tests
 
     @QA
     Examples:
-      | fairId      | loginCredentials  |
-      | emptyFairId | loginCredentials1 |

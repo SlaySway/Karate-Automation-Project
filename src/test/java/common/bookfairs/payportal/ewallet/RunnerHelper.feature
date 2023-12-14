@@ -2,39 +2,48 @@
 Feature: Helper for running session-controller endpoints
 
   Background: Set config
-    * string createWalletRefundUri = "/api/wallets/<walletId>/transactions"
+    * string getWalletTransactionsUri = "/api/wallets/<walletId>/transactions"
     * string createWalletTransactionsUri = "/api/wallets/<walletId>/transactions"
     * string getWalletsForFairUri = "/api/wallets"
-    * string getWalletTransactionsUri = "/api/wallets/<walletId>/transactions/<transactionId>/refunds"
+    * string createWalletRefundUri = "/api/wallets/<walletId>/transactions/<transactionId>/refunds"
 
-  # Input: USER_NAME, PASSWORD, FAIRID
+  # Input: USER_NAME, PASSWORD, FAIRID, WALLETID
   # Output: response
-  @CreateSession
-  Scenario: Run create payportal 2.0 session for user: <USER_NAME> and fair: <FAIRID_OR_CURRENT>
-    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
-    * param fairId = FAIRID
-    * url BOOKFAIRS_PAYPORTAL_URL + createSessionUri
-    * cookies { SCHL : '#(schlResponse.SCHL)'}
+  @GetWalletTransactions
+  Scenario: Get the transactions for the wallet for user: <USER_NAME>, fair: <FAIRID>, and wallet: <WALLETID>
+    Given def sessionResponse = call read('classpath:common/bookfairs/payportal/session/RunnerHelper.feature@CreateSession')
+    * replace getWalletTransactionsUri.walletId = WALLETID
+    * url BOOKFAIRS_PAYPORTAL_URL + getWalletTransactionsUri
+    * cookies { SCHL : '#(sessionResponse.SCHL)', PP2.0 : '#(sessionResponse.PP2)'}
+    Then method GET
+
+  # Input: USER_NAME, PASSWORD, FAIRID, WALLETID, REQUEST_BODY
+  # Output: response
+  @CreateWalletTransactions
+  Scenario: Create a transactions for the wallet for user: <USER_NAME>, fair: <FAIRID>, and wallet: <WALLETID>
+    Given def sessionResponse = call read('classpath:common/bookfairs/payportal/session/RunnerHelper.feature@CreateSession')
+    * replace createWalletTransactionsUri.walletId = WALLETID
+    * url BOOKFAIRS_PAYPORTAL_URL + createWalletTransactionsUri
+    * cookies { SCHL : '#(sessionResponse.SCHL)', PP2.0 : '#(sessionResponse.PP2)'}
+    * request REQUEST_BODY
     Then method POST
-    * def SCHL = schlResponse.SCHL
-    * print "cookies: ", responseCookies
-    * def PP2 = responseCookies["PP2.0"].value
 
   # Input: USER_NAME, PASSWORD, FAIRID
   # Output: response
-  @GetSessionInfo
-  Scenario: Run get session info for user: <USER_NAME> and fair: <FAIRID_OR_CURRENT>
-    Given def sessionResponse = call read('RunnerHelper.feature@CreateSession'){FAIR_ID: '#(FAIRID)'}
-    * url BOOKFAIRS_PAYPORTAL_URL + getSessionInfoUri
+  @GetWalletsForFair
+  Scenario: Get the wallets related to the fair for user: <USER_NAME> and fair: <FAIRID>
+    Given def sessionResponse = call read('classpath:common/bookfairs/payportal/session/RunnerHelper.feature@CreateSession')
+    * url BOOKFAIRS_PAYPORTAL_URL + getWalletsForFairUri
     * cookies { SCHL : '#(sessionResponse.SCHL)', PP2.0:'#(sessionResponse.PP2)'}
     Then method GET
 
-  # Input: USER_NAME, PASSWORD, FAIRID
+  # Input: USER_NAME, PASSWORD, FAIRID, WALLETID, TRANSACTIONID
   # Output: response
-  @GetSessionIdentifiers
-  Scenario: Run get session identigiers for user: <USER_NAME> and fair: <FAIRID_OR_CURRENT>
-    Given def sessionResponse = call read('RunnerHelper.feature@CreateSession'){FAIR_ID: '#(FAIRID)'}
-    * replace getFairHomepageUri.fairIdOrCurrent = FAIRID_OR_CURRENT
-    * url BOOKFAIRS_PAYPORTAL_URL + getSessionIdentifiersUri
+  @CreateWalletRefund
+  Scenario: Create a wallet refund on the transaction for user: <USER_NAME>, fair: <FAIRID>, wallet: <WALLETID> transaction: <TRANSACTIONID>
+    Given def sessionResponse = call read('classpath:common/bookfairs/payportal/session/RunnerHelper.feature@CreateSession')
+    * replace createWalletRefundUri.fairIdOrCurrent = WALLETID
+    * replace createWalletRefundUri.transactionId = TRANSACTIONID
+    * url BOOKFAIRS_PAYPORTAL_URL + createWalletRefundUri
     * cookies { SCHL : '#(sessionResponse.SCHL)', PP2.0:'#(sessionResponse.PP2)'}
-    Then method GET
+    Then method POST

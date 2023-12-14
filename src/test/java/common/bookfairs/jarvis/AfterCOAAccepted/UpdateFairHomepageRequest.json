@@ -1,11 +1,11 @@
 {
   "volunteerRequestBody": {
-    "volunteerSignupUrl": "https://automationtest.com"
+    "volunteerSignupUrl": "https://automationtesting.com"
   },
   "contactRequestBody": {
     "contactFirstName": "Automation",
     "contactLastName": "Test",
-    "contactEmail": "automation@test.com",
+    "contactEmail": "automationtesting@test.com",
     "contactPhoneNumber": "1111111111",
     "contactPhoneNumberCkbox": "N"
   },
@@ -18,8 +18,8 @@
     "schoolCity": "2023-11-07 13:01:53.913",
     "schoolState": "US",
     "schoolPostalcode": "92841",
-    "welcomeMessage": "Automation Test",
-    "thankYouMessage": "Automation Test, automation should have reset me to original values",
+    "welcomeMessage": "Automation Testing",
+    "thankYouMessage": "Automation Testing, automation should have reset me to original values",
     "paymentCashCkbox": "Y",
     "paymentCheckCkbox": "Y",
     "paymentCcCkbox": "Y",
@@ -27,7 +27,7 @@
   },
   "homepageUrlRequestBody": {
     "homepageUrl": {
-      "webUrl": "557broadwayelementary19999",
+      "webUrl": "557broadwayelementary19999testing",
       "urlStatus": "RESERVED"
     }
   },
