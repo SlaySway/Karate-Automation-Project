@@ -25,8 +25,8 @@ public class ParallelRunner {
 	@Test
 	public void executeTest() {
 		// need to have path and tags be variables
-		String testPath = "classpath:common/bookfairs/jarvis";
-		String[] tags = {"@PerformanceEnhancement", "~@Regression"};
+		String testPath = System.getProperty("testPath") == null ? "classpath:common/bookfairs/jarvis" : System.getProperty("testPath");
+		String[] tags = {"@PerformanceEnhancement","~@Regression"}; //System.getProperty("tags")
 
 
 
