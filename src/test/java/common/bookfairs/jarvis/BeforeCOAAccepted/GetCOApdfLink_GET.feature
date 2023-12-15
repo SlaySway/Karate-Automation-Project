@@ -17,26 +17,6 @@ Feature: GetCOApdfLink API automation tests
       | sdevineni-consultant@scholastic.com | passw0rd  | current           |
       | azhou1@scholastic.com               | password1 | current           |
 
-    # COA PDF link generates a new jwt token each time it's hit so it'll be different even in the same environment, so it can't be dynamically compared
-  @ignore
-  Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIR_ID>
-    * def BaseResponseMap = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOApdfLinkBase')
-    * def TargetResponseMap = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOApdfLink')
-    Then match BaseResponseMap.responseStatus == TargetResponseMap.responseStatus
-    Then match BaseResponseMap.response == TargetResponseMap.response
-
-    * string base = BaseResponseMap.response
-    * string target = TargetResponseMap.response
-    * def compResult = obj.strictCompare(base, target)
-    Then print "Response from production code base", base
-    Then print "Response from current qa code base", target
-    Then print 'Differences any...', compResult
-    And match BaseResponseMap.BaseResponse == TargetResponseMap.TargetResponse
-
-    Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com               | password1 | 5633533           |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           |
 
   Scenario Outline: Validate GetCOApdfLink API with a valid fairId invalid SCHL cookie
     And replace getCOApdfLinkUri.fairIdOrCurrent = FAIRID_OR_CURRENT

@@ -16,7 +16,7 @@ Feature: ToggleFairWalletStatus PUT Api tests
     * def REQUEST_BODY =
     """
       {
-        "enabled": "whatever"
+        "enabled": "false"
       }
     """
     * set REQUEST_BODY.enabled = !originalStatus

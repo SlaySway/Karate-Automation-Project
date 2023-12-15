@@ -31,7 +31,7 @@ public class ParallelRunner {
 
 
 		Results results = Runner.path(testPath).outputCucumberJson(true).outputJunitXml(true)
-				.configDir("src/test/java").tags(tags).parallel(5);
+				.configDir("src/test/java").tags(tags).parallel(1);
 
 		System.out.println("Total Feature => " + results.getFeaturesTotal());
 		System.out.println("Total Scenarios => " + results.getScenariosTotal());

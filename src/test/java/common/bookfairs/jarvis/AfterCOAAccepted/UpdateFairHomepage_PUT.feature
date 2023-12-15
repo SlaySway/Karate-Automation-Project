@@ -90,6 +90,7 @@ Feature: UpdateFairHomepage PUT Api tests
 
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to specific fair for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    * def REQUEST_BODY = {}
     Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFairHomepage')
     Then match updateHomepageResponse.responseStatus == 403
     And match updateHomepageResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"

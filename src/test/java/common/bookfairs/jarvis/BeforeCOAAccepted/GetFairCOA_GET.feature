@@ -18,6 +18,7 @@ Feature: GetFairCOA API automation tests
       | sdevineni-consultant@scholastic.com | passw0rd  | current           |
       | azhou1@scholastic.com               | password1 | current           |
 
+  @Regression
   Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIR_ID>
     * def BaseResponseMap = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOABase')
     * def TargetResponseMap = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOA')
