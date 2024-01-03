@@ -14,19 +14,20 @@ Feature: CreateHomepageEvents POST Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5633533           |
+      | azhou1@scholastic.com | password1 | 5694296           |
 
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
     * replace createHomepageEventsUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
     * url BOOKFAIRS_JARVIS_URL + createHomepageEventsUri
     Given method post
-    Then match responseStatus == 401
+    Then match responseStatus == 204
+    And match createHomepageEventsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
 
     @QA
     Examples:
       | FAIRID_OR_CURRENT |
-      | 5633533           |
+      | 5694296           |
       | current           |
 
   @Unhappy
@@ -35,12 +36,29 @@ Feature: CreateHomepageEvents POST Api tests
     * url BOOKFAIRS_JARVIS_URL + createHomepageEventsUri
     * cookies { SCHL : '<EXPIRED_SCHL>'}
     Given method post
-    Then match responseStatus == 401
+    Then match responseStatus == 204
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
 
     @QA
     Examples:
       | EXPIRED_SCHL                                                                                                                                                                                                                                                      |
       | eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJpc3MiOiJNeVNjaGwiLCJhdWQiOiJTY2hvbGFzdGljIiwibmJmIjoxNjk5MzkwNzUyLCJzdWIiOiI5ODYzNTUyMyIsImlhdCI6MTY5OTM5MDc1NywiZXhwIjoxNjk5MzkyNTU3fQ.s3Czg7lmT6kETAcyupYDus8sxtFQMz7YOMKWz1_S-i8 |
+
+  @Unhappy
+  Scenario Outline: Validate when current is used without SBF_JARVIS user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    * replace createHomepageEventsUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
+    * url BOOKFAIRS_JARVIS_URL + createHomepageEventsUri
+    * cookies { SCHL : '#(schlResponse.SCHL)'}
+    * request {}
+    Given method post
+    Then match responseStatus == 400
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SELECTED_FAIR"
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | current           |
 
   @Happy
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -52,7 +70,7 @@ Feature: CreateHomepageEvents POST Api tests
     @QA
     Examples:
       | USER_NAME           | PASSWORD  | FAIRID_OR_CURRENT |
-      | nofairs@testing.com | password1 | current           |
+      | nofairs@testing.com | password1 | 5694296           |
 
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to specific fair for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -76,7 +94,7 @@ Feature: CreateHomepageEvents POST Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5829187           |
+      | azhou1@scholastic.com | password1 | 5694300           |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<FAIRID_OR_CURRENT>
@@ -88,7 +106,7 @@ Feature: CreateHomepageEvents POST Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR |
-      | azhou1@scholastic.com | password1 | 5633533           | 5633533       |
+      | azhou1@scholastic.com | password1 | 5694296           | 5694296       |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current WITH SBF_JARVIS for DO_NOT_SELECT mode with user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, cookie fair:<SBF_JARVIS_FAIR>
@@ -104,5 +122,5 @@ Feature: CreateHomepageEvents POST Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR | SBF_JARVIS_FAIR |
-      | azhou1@scholastic.com | password1 | 5633533           | 5633533       | 5782595         |
-      | azhou1@scholastic.com | password1 | current           | 5633533       | 5633533         |
+      | azhou1@scholastic.com | password1 | 5694296           | 5694296       | 5694300         |
+      | azhou1@scholastic.com | password1 | current           | 5694296       | 5694296         |
