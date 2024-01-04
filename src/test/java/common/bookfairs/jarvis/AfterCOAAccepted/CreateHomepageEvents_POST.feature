@@ -22,7 +22,7 @@ Feature: CreateHomepageEvents POST Api tests
     * url BOOKFAIRS_JARVIS_URL + createHomepageEventsUri
     Given method post
     Then match responseStatus == 204
-    And match createHomepageEventsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
 
     @QA
     Examples:
