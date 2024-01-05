@@ -6,15 +6,28 @@ Feature: CreateHomepageEvents POST Api tests
     * def createHomepageEventsUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/homepage/events"
 
   @Unhappy
-  Scenario Outline: Validate when invalid request body for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    * def REQUEST_BODY = ""
+  Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    * def REQUEST_BODY = {}
     Given def createHomepageEventsResponse = call read('RunnerHelper.feature@CreateHomepageEvents')
-    Then match createHomepageEventsResponse.responseStatus == 415
+    Then match createHomepageEventsResponse.responseStatus == 204
+    And match createHomepageEventsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
+
+    @QA
+    Examples:
+      | USER_NAME           | PASSWORD  | FAIRID_OR_CURRENT |
+      | nofairs@testing.com | password1 | 5694296           |
+
+  @Unhappy
+  Scenario Outline: Validate when user attempts to access a non-COA Accepted fair:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    * def REQUEST_BODY = {}
+    Given def createHomepageEventsResponse = call read('RunnerHelper.feature@CreateHomepageEvents')
+    Then match createHomepageEventsResponse.responseStatus == 204
+    And match createHomepageEventsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NEEDS_COA_CONFIRMATION"
 
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password1 | 5694300           |
 
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
@@ -60,18 +73,6 @@ Feature: CreateHomepageEvents POST Api tests
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | current           |
 
-  @Happy
-  Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    * def REQUEST_BODY = {}
-    Given def createHomepageEventsResponse = call read('RunnerHelper.feature@CreateHomepageEvents')
-    Then match createHomepageEventsResponse.responseStatus == 204
-    And match createHomepageEventsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
-
-    @QA
-    Examples:
-      | USER_NAME           | PASSWORD  | FAIRID_OR_CURRENT |
-      | nofairs@testing.com | password1 | 5694296           |
-
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to specific fair for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     * def REQUEST_BODY = {}
@@ -85,16 +86,17 @@ Feature: CreateHomepageEvents POST Api tests
       | azhou1@scholastic.com | password1 | 5734325           |
 
   @Unhappy
-  Scenario Outline: Validate when user attempts to access a non-COA Accepted fair:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+  Scenario Outline: Validate when user uses an invalid fair ID for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     * def REQUEST_BODY = {}
     Given def createHomepageEventsResponse = call read('RunnerHelper.feature@CreateHomepageEvents')
-    Then match createHomepageEventsResponse.responseStatus == 204
-    And match createHomepageEventsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NEEDS_COA_CONFIRMATION"
+    Then match createHomepageEventsResponse.responseStatus == 404
+    And match createHomepageEventsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
 
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694300           |
+      | azhou1@scholastic.com | password1 | abc1234           |
+
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<FAIRID_OR_CURRENT>
@@ -124,3 +126,15 @@ Feature: CreateHomepageEvents POST Api tests
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR | SBF_JARVIS_FAIR |
       | azhou1@scholastic.com | password1 | 5694296           | 5694296       | 5694300         |
       | azhou1@scholastic.com | password1 | current           | 5694296       | 5694296         |
+
+
+  @Unhappy
+  Scenario Outline: Validate when invalid request body for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    * def REQUEST_BODY = ""
+    Given def createHomepageEventsResponse = call read('RunnerHelper.feature@CreateHomepageEvents')
+    Then match createHomepageEventsResponse.responseStatus == 415
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5694296           |
