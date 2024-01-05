@@ -5,43 +5,7 @@ Feature: GetFairWallets GET Api tests
     * def obj = Java.type('utils.StrictValidation')
     * def getFairWalletsUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/ewallets"
 
-  @Happy
-  Scenario Outline: Validate successful response for valid request for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    Given def getWalletsResponse = call read('RunnerHelper.feature@GetFairWallets')
-    Then match getWalletsResponse.responseStatus == 200
-
-    @QA
-    Examples:
-      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5633533           |
-
   @Unhappy
-  Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
-    * replace getFairWalletsUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
-    * url BOOKFAIRS_JARVIS_URL + getFairWalletsUri
-    Given method get
-    Then match responseStatus == 401
-
-    @QA
-    Examples:
-      | FAIRID_OR_CURRENT |
-      | 5633533           |
-      | current           |
-
-  @Unhappy
-  Scenario Outline: Validate when SCHL cookie is expired
-    * replace getFairWalletsUri.fairIdOrCurrent =  "current"
-    * url BOOKFAIRS_JARVIS_URL + getFairWalletsUri
-    * cookies { SCHL : '<EXPIRED_SCHL>'}
-    Given method get
-    Then match responseStatus == 401
-
-    @QA
-    Examples:
-      | EXPIRED_SCHL                                                                                                                                                                                                                                                      |
-      | eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJpc3MiOiJNeVNjaGwiLCJhdWQiOiJTY2hvbGFzdGljIiwibmJmIjoxNjk5MzkwNzUyLCJzdWIiOiI5ODYzNTUyMyIsImlhdCI6MTY5OTM5MDc1NywiZXhwIjoxNjk5MzkyNTU3fQ.s3Czg7lmT6kETAcyupYDus8sxtFQMz7YOMKWz1_S-i8 |
-
-  @Happy
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     Given def getWalletsResponse = call read('RunnerHelper.feature@GetFairWallets')
     Then match getWalletsResponse.responseStatus == 204
@@ -51,6 +15,45 @@ Feature: GetFairWallets GET Api tests
     Examples:
       | USER_NAME           | PASSWORD  | FAIRID_OR_CURRENT |
       | nofairs@testing.com | password1 | current           |
+
+  @Unhappy
+  Scenario Outline: Validate when user attempts to access a non-COA Accepted fair:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    Given def getWalletsResponse = call read('RunnerHelper.feature@GetFairWallets')
+    Then match getWalletsResponse.responseStatus == 204
+    And match getWalletsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NEEDS_COA_CONFIRMATION"
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5694300           |
+
+  @Unhappy
+  Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
+    * replace getFairWalletsUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
+    * url BOOKFAIRS_JARVIS_URL + getFairWalletsUri
+    Given method get
+    Then match responseStatus == 204
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
+
+    @QA
+    Examples:
+      | FAIRID_OR_CURRENT |
+      | 5694296           |
+      | current           |
+
+  @Unhappy
+  Scenario Outline: Validate when SCHL cookie is expired
+    * replace getFairWalletsUri.fairIdOrCurrent =  "current"
+    * url BOOKFAIRS_JARVIS_URL + getFairWalletsUri
+    * cookies { SCHL : '<EXPIRED_SCHL>'}
+    Given method get
+    Then match responseStatus == 204
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
+
+    @QA
+    Examples:
+      | EXPIRED_SCHL                                                                                                                                                                                                                                                      |
+      | eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJpc3MiOiJNeVNjaGwiLCJhdWQiOiJTY2hvbGFzdGljIiwibmJmIjoxNjk5MzkwNzUyLCJzdWIiOiI5ODYzNTUyMyIsImlhdCI6MTY5OTM5MDc1NywiZXhwIjoxNjk5MzkyNTU3fQ.s3Czg7lmT6kETAcyupYDus8sxtFQMz7YOMKWz1_S-i8 |
 
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to specific fair for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -64,15 +67,15 @@ Feature: GetFairWallets GET Api tests
       | azhou1@scholastic.com | password1 | 5734325           |
 
   @Unhappy
-  Scenario Outline: Validate when user attempts to access a non-COA Accepted fair:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+  Scenario Outline: Validate when user uses an invalid fair ID for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     Given def getWalletsResponse = call read('RunnerHelper.feature@GetFairWallets')
-    Then match getWalletsResponse.responseStatus == 204
-    And match getWalletsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NEEDS_COA_CONFIRMATION"
+    Then match getWalletsResponse.responseStatus == 404
+    And match getWalletsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
 
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5829187           |
+      | azhou1@scholastic.com | password1 | abc1234           |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, scenario:<SCENARIO>
@@ -82,16 +85,13 @@ Feature: GetFairWallets GET Api tests
 
     @QA
     Examples:
-      | USER_NAME                                              | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR | SCENARIO                                     |
-      | azhou1@scholastic.com                                  | password1 | 5633533           | 5633533       | Return path parameter fairId information     |
-      | azhou1@scholastic.com                                  | password1 | current           | 5633533       | Has current, upcoming, and past fairs        |
-      | HasRecentlyEnded.AndOnlyUpcomingandPastFairs@schol.com | passw0rd  | current           | 5842803       | Has recently ended, upcoming, and past fairs |
-      | upcomingAndPastFairs@schol.com                         | passw0rd  | current           | 5842814       | Has only upcoming and past fairs             |
-      | userhasonlypastfairs@scl.com                           | passw0rd  | current           | 5842806       | Has only past fairs                          |
-      | hasAllFairs@testing.com                                | password1 | current           | 5851574       | Has all fairs                                |
-      | hasUpcomingAndPastFairs@testing.com                    | password1 | current           | 5851576       | Has upcoming and past fairs                  |
-      | hasPastFairs@testing.com                               | password1 | current           | 5851578       | Has past fairs                               |
-      | hasRecentlyUpcomingAndPastFairs@testing.com            | password1 | current           | 5851611       | Has recently ended, upcoming, and past fairs |
+      | USER_NAME                                   | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR | SCENARIO                                     |
+      | azhou1@scholastic.com                       | password1 | 5694296           | 5694296       | Return path parameter fairId information     |
+      | azhou1@scholastic.com                       | password1 | current           | 5694296       | Has current, upcoming, and past fairs        |
+      | hasAllFairs@testing.com                     | password1 | current           | 5694301       | Has all fairs                                |
+      | hasUpcomingAndPastFairs@testing.com         | password1 | current           | 5694305       | Has upcoming and past fairs                  |
+      | hasPastFairs@testing.com                    | password1 | current           | 5694307       | Has past fairs                               |
+      | hasRecentlyUpcomingAndPastFairs@testing.com | password1 | current           | 5694303       | Has recently ended, upcoming, and past fairs |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current WITH SBF_JARVIS for DO_NOT_SELECT mode with user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, cookie fair:<SBF_JARVIS_FAIR>
@@ -106,8 +106,8 @@ Feature: GetFairWallets GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR | SBF_JARVIS_FAIR |
-      | azhou1@scholastic.com | password1 | 5633533           | 5633533       | 5782595         |
-      | azhou1@scholastic.com | password1 | current           | 5633533       | 5633533         |
+      | azhou1@scholastic.com | password1 | 5694296           | 5694296       | 5782595         |
+      | azhou1@scholastic.com | password1 | current           | 5694296       | 5694296         |
 
   @Regression
   Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIRID_OR_CURRENT>
@@ -121,5 +121,15 @@ Feature: GetFairWallets GET Api tests
     Then print 'Differences any...', compResult
 
     Examples:
-      | USER_NAME              | PASSWORD | FAIRID_OR_CURRENT |
-      | mtodaro@scholastic.com | passw0rd | 5782058           |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5694296           |
+
+  @Happy
+  Scenario Outline: Validate successful response for valid request for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    Given def getWalletsResponse = call read('RunnerHelper.feature@GetFairWallets')
+    Then match getWalletsResponse.responseStatus == 200
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5694296           |
