@@ -27,13 +27,13 @@
   },
   "homepageUrlRequestBody": {
     "homepageUrl": {
-      "webUrl": "557broadwayelementary19999testing",
+      "webUrl": "iAmAnAutomationUrl",
       "urlStatus": "RESERVED"
     }
   },
   "toggleFairFinderBody": {
     "homepageUrl": {
-      "fairFinderCkbok": "N"
+      "fairFinderCkbok": "Y"
     }
   }
 }
