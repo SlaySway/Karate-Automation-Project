@@ -24,7 +24,11 @@ Feature: UpdateFairHomepage PUT Api tests
       let newSet = {};
       for(var key in bigSet){
         if (subset[key]) {
-              newSet[key] =  bigSet[key]
+              if(typeof bigSet[key] === 'object' && typeof subset[key] === 'object'){
+                matchJsonFields(bigSet[key], subset[key])
+              } else {
+                newSet[key] =  bigSet[key]
+              }
           }
       }
       return newSet;
@@ -35,7 +39,7 @@ Feature: UpdateFairHomepage PUT Api tests
     * sleep(1000)
     Given def modifiedHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
     Then match modifiedHomepageResponse.responseStatus == 200
-    Then match originalHomepageResponse.response.online_homepage == modifiedHomepageResponse.response.online_homepage
+    Then match matchJsonFields(originalHomepageResponse.response.online_homepage, read('UpdateFairHomepageRequest.json')[requestBody]) == matchJsonFields(modifiedHomepageResponse.response.online_homepage, read('UpdateFairHomepageRequest.json')[requestBody])
 
     @QA
     Examples:
@@ -45,51 +49,6 @@ Feature: UpdateFairHomepage PUT Api tests
       | azhou1@scholastic.com | password1 | 5694296           | fairInfoRequestBody    |
       | azhou1@scholastic.com | password1 | 5694296           | homepageUrlRequestBody |
       | azhou1@scholastic.com | password1 | 5694296           | toggleFairFinderBody   |
-
-    Scenario: Quick test
-      * def a = {"inside": {"a": 1, "b": 2, "c":3}}
-      * def b = { "a": 4, "b": 5}
-      * def matchJsonFields =
-    """
-    function(originalSet, subset){
-      let newSet = {};
-      for(var key in originalSet){
-      console.log(key)
-        if (subset[key]) {
-              newSet[key] =  originalSet[key]
-          }
-      }
-      return newSet;
-    }
-    """
-      * def outcome = matchJsonFields(a["inside"], b)
-      Then print outcome
-      Then print "HELLO WORLD"
-
-      Scenario Outline: Longer test
-        Given def originalHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
-        * def REQUEST_BODY = originalHomepageResponse.response.online_homepage
-        * print REQUEST_BODY
-        * def matchJsonFields =
-    """
-    function(bigSet, subset){
-      let newSet = {};
-      console.log("OVER HERE LOOK AT ME")
-      for(var key in bigSet){
-        console.log(key)
-        if (subset[key]) {
-              newSet[key] =  bigSet[key]
-          }
-      }
-      return newSet;
-    }
-    """
-        * def REQUEST_BODY = matchJsonFields(REQUEST_BODY, read('UpdateFairHomepageRequest.json')[requestBody])
-        * print REQUEST_BODY
-
-        Examples:
-          | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | requestBody            |
-          | azhou1@scholastic.com | password1 | 5694296           | volunteerRequestBody   |
 
   @Unhappy
   Scenario Outline: Validate when invalid request body for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
