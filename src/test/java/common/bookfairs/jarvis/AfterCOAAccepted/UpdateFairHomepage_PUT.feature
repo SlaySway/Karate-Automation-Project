@@ -25,7 +25,7 @@ Feature: UpdateFairHomepage PUT Api tests
       for(var key in bigSet){
         if (subset[key]) {
               if(typeof bigSet[key] === 'object' && typeof subset[key] === 'object'){
-                matchJsonFields(bigSet[key], subset[key])
+                newSet[key] = matchJsonFields(bigSet[key], subset[key])
               } else {
                 newSet[key] =  bigSet[key]
               }
@@ -40,7 +40,8 @@ Feature: UpdateFairHomepage PUT Api tests
     Given def modifiedHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
     Then match modifiedHomepageResponse.responseStatus == 200
     Then match matchJsonFields(originalHomepageResponse.response.online_homepage, read('UpdateFairHomepageRequest.json')[requestBody]) == matchJsonFields(modifiedHomepageResponse.response.online_homepage, read('UpdateFairHomepageRequest.json')[requestBody])
-
+    * print matchJsonFields(originalHomepageResponse.response.online_homepage, read('UpdateFairHomepageRequest.json')[requestBody])
+    * print matchJsonFields(modifiedHomepageResponse.response.online_homepage, read('UpdateFairHomepageRequest.json')[requestBody])
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | requestBody            |
