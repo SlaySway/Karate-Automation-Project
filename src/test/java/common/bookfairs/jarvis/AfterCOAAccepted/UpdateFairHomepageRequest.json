@@ -1,9 +1,9 @@
 {
   "volunteerRequestBody": {
-    "volunteerSignupUrl": "https://automationstesting.com"
+    "volunteerSignupUrl": "https://automationssstesting.com"
   },
   "contactRequestBody": {
-    "contactFirstName": "Automations",
+    "contactFirstName": "Automationsss",
     "contactLastName": "Test",
     "contactEmail": "automationtesting@test.com",
     "contactPhoneNumber": "1111111111",
@@ -18,8 +18,8 @@
     "schoolCity": "2023-11-07 13:01:53.913",
     "schoolState": "US",
     "schoolPostalcode": "92841",
-    "welcomeMessage": "Automations Testing",
-    "thankYouMessage": "Automation Testing, automation should have reset me to original values",
+    "welcomeMessage": "Automations Testingsssss",
+    "thankYouMessage": "Automation Testingssss, automation should have reset me to original values",
     "paymentCashCkbox": "Y",
     "paymentCheckCkbox": "Y",
     "paymentCcCkbox": "Y",
@@ -27,7 +27,7 @@
   },
   "homepageUrlRequestBody": {
     "homepageUrl": {
-      "webUrl": "iAmAnAutomationUrl",
+      "webUrl": "iAmAnAutomationsUrl",
       "urlStatus": "RESERVED"
     }
   },

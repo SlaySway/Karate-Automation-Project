@@ -82,13 +82,13 @@ Feature: PutCOAConfirm API automation tests
     * def COA_STATUS = {"coaStatus": "Not Yet Accepted"}
     * def FAIR_ID = FAIRID_OR_CURRENT
     Given def cmdmUpdateCoaStatusResponse = call read('classpath:common/cmdm/fairs/CMDMRunnerHelper.feature@UpdateFairCOAStatus')
-    * sleep(1000)
+    * sleep(10000)
     Then def getCOAStatusResponse = call read('RunnerHelper.feature@GetCOA')
     Then match getCOAStatusResponse.responseStatus == 200
     Then match getCOAStatusResponse.response.fairInfo.coaStatus == "Not Yet Accepted"
     Then def confirmCOAResponse = call read('RunnerHelper.feature@PutConfirmCOA')
     Then match confirmCOAResponse.responseStatus == 200
-    * sleep(1000)
+    * sleep(10000)
     Then def getCOAStatusResponse = call read('RunnerHelper.feature@GetCOA')
     Then match getCOAStatusResponse.responseStatus == 200
     Then match getCOAStatusResponse.response.fairInfo.coaStatus == "Accepted"
