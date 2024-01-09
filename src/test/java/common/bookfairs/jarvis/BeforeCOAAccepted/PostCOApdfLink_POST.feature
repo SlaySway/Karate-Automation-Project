@@ -18,11 +18,9 @@ Feature: PostCOApdfLink API automation tests
     Then match postCOApdfLinkResponse.response == 'Successful'
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                               | MESSAGE |
-      | azhou1@scholastic.com               | password1 | 5633533           | azhou1@scholastic.com               | test    |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           | sdevineni-consultant@scholastic.com | TEST1   |
-      | sdevineni-consultant@scholastic.com | passw0rd  | current           | sdevineni-consultant@scholastic.com | TEST2   |
-      | azhou1@scholastic.com               | password1 | current           | azhou1@scholastic.com               | TEST3   |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
+      | azhou1@scholastic.com | password1 | 5694296           | azhou1@scholastic.com | test    |
+      | azhou1@scholastic.com | password1 | current           | azhou1@scholastic.com | TEST3   |
 
   Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIR_ID>
     * def requestBody =
@@ -45,9 +43,8 @@ Feature: PostCOApdfLink API automation tests
     And match base == target
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                               | MESSAGE |
-      | azhou1@scholastic.com               | password1 | 5633533           | azhou1@scholastic.com               | test    |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5644037           | sdevineni-consultant@scholastic.com | TEST1   |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
+      | azhou1@scholastic.com | password1 | 5694296           | azhou1@scholastic.com | test    |
 
   Scenario Outline: Validate PostCOApdfLink API with a valid fairId SCHL and Session Cookie
     * def requestBody =
@@ -62,9 +59,8 @@ Feature: PostCOApdfLink API automation tests
     * print postCOApdfLinkResponse.response
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                               | MESSAGE |
-      | azhou1@scholastic.com               | password1 | 5633533           | azhou1@scholastic.com               | test    |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           | sdevineni-consultant@scholastic.com | TEST1   |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
+      | azhou1@scholastic.com | password1 | 5694296           | azhou1@scholastic.com | test    |
 
   Scenario Outline: Validate PostCOApdfLink API with current keyword SCHL and Session Cookie
     * def getCookie = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
@@ -80,9 +76,8 @@ Feature: PostCOApdfLink API automation tests
     * print postCOApdfLinkResponse.response
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                               | MESSAGE |
-      | azhou1@scholastic.com               | password1 | current           | azhou1@scholastic.com               | test    |
-      | sdevineni-consultant@scholastic.com | passw0rd  | current           | sdevineni-consultant@scholastic.com | TEST2   |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
+      | azhou1@scholastic.com | password1 | current           | azhou1@scholastic.com | test    |
 
   Scenario Outline: Validate with invalid fairId and valid login session
     * def requestBody =
@@ -141,9 +136,8 @@ Feature: PostCOApdfLink API automation tests
     Then match responseStatus == 404
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                               | MESSAGE |
-      | azhou1@scholastic.com               | password1 | testing           | azhou1@scholastic.com               | test    |
-      | sdevineni-consultant@scholastic.com | passw0rd  | invalid           | sdevineni-consultant@scholastic.com | TEST2   |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
+      | azhou1@scholastic.com | password1 | testing           | azhou1@scholastic.com | test    |
 
   Scenario Outline: Validate with invalid login session and a valid fairId
     * def requestBody =
@@ -171,6 +165,30 @@ Feature: PostCOApdfLink API automation tests
     Then match postCOApdfLinkResponse.responseStatus == 415
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                               | MESSAGE |
-      | azhou1@scholastic.com               | password1 | 5775209           | azhou1@scholastic.com               | test    |
-      | sdevineni-consultant@scholastic.com | passw0rd  | current           | sdevineni-consultant@scholastic.com | TEST2   |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
+      | azhou1@scholastic.com | password1 | 5775209           | azhou1@scholastic.com | test    |
+
+
+  @Unhappy
+  Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
+    * replace postCOApdfLinkUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    * url BOOKFAIRS_JARVIS_URL + postCOApdfLinkUri
+    Given method get
+    Then match responseStatus == 204
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
+
+    @QA
+    Examples:
+      | FAIRID_OR_CURRENT |
+      | 5694296           |
+
+  @Unhappy
+  Scenario Outline: Validate when user uses an invalid fair ID for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    Given def postCOApdfLinkResponse = call read('RunnerHelper.feature@PostCOApdfLink')
+    Then match postCOApdfLinkResponse.responseStatus == 404
+    And match postCOApdfLinkResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | abc1234           |

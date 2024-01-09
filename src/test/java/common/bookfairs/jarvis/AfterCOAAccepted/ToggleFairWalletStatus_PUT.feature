@@ -8,11 +8,9 @@ Feature: ToggleFairWalletStatus PUT Api tests
 
   @Happy
   Scenario Outline: Validate successful response for valid change request for user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, request scenario:<requestBody>
-    # Get original homepage information
     Given def getFairSettingsResponse = call read('RunnerHelper.feature@GetFairSettings')
     Then getFairSettingsResponse.responseStatus == 200
     * def originalStatus = getFairSettingsResponse.response.ewallet.enabled
-    # Get response json config we are changing values to
     * def REQUEST_BODY =
     """
       {
@@ -20,19 +18,15 @@ Feature: ToggleFairWalletStatus PUT Api tests
       }
     """
     * set REQUEST_BODY.enabled = !originalStatus
-    # Call the endpoint to change to those values
     Given def toggleWalletStatusResponse = call read('RunnerHelper.feature@ToggleFairWalletStatus')
     Then toggleWalletStatusResponse.responseStatus == 200
-    # Verify that that it's been changed
     * sleep(1000)
     Given def getFairSettingsResponse = call read('RunnerHelper.feature@GetFairSettings')
     Then getFairSettingsResponse.responseStatus == 200
     Then match getFairSettingsResponse.response.ewallet.enabled != originalStatus
-    # Change all the values back to the original
     * set REQUEST_BODY.enabled = originalStatus
     Given def toggleWalletStatusResponse = call read('RunnerHelper.feature@ToggleFairWalletStatus')
     Then toggleWalletStatusResponse.responseStatus == 200
-    # Verify that that it's back to original values
     * sleep(1000)
     Given def getFairSettingsResponse = call read('RunnerHelper.feature@GetFairSettings')
     Then match getFairSettingsResponse.responseStatus == 200
@@ -41,7 +35,7 @@ Feature: ToggleFairWalletStatus PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5633533           |
+      | azhou1@scholastic.com | password1 | 5694296           |
 
   @Unhappy
   Scenario Outline: Validate when invalid request body for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -52,35 +46,9 @@ Feature: ToggleFairWalletStatus PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5633533           |
+      | azhou1@scholastic.com | password1 | 5694296           |
 
   @Unhappy
-  Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
-    * replace toggleFairWalletStatusUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
-    * url BOOKFAIRS_JARVIS_URL + toggleFairWalletStatusUri
-    Given method put
-    Then match responseStatus == 401
-
-    @QA
-    Examples:
-      | FAIRID_OR_CURRENT |
-      | 5633533           |
-      | current           |
-
-  @Unhappy
-  Scenario Outline: Validate when SCHL cookie is expired
-    * replace toggleFairWalletStatusUri.fairIdOrCurrent =  "current"
-    * url BOOKFAIRS_JARVIS_URL + toggleFairWalletStatusUri
-    * cookies { SCHL : '<EXPIRED_SCHL>'}
-    Given method put
-    Then match responseStatus == 401
-
-    @QA
-    Examples:
-      | EXPIRED_SCHL                                                                                                                                                                                                                                                      |
-      | eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJpc3MiOiJNeVNjaGwiLCJhdWQiOiJTY2hvbGFzdGljIiwibmJmIjoxNjk5MzkwNzUyLCJzdWIiOiI5ODYzNTUyMyIsImlhdCI6MTY5OTM5MDc1NywiZXhwIjoxNjk5MzkyNTU3fQ.s3Czg7lmT6kETAcyupYDus8sxtFQMz7YOMKWz1_S-i8 |
-
-  @Happy
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     * def REQUEST_BODY = {}
     Given def toggleFairWalletStatusResponse = call read('RunnerHelper.feature@ToggleFairWalletStatus')
@@ -90,7 +58,47 @@ Feature: ToggleFairWalletStatus PUT Api tests
     @QA
     Examples:
       | USER_NAME           | PASSWORD  | FAIRID_OR_CURRENT |
-      | nofairs@testing.com | password1 | current           |
+      | nofairs@testing.com | password1 | 5694296           |
+
+  @Unhappy
+  Scenario Outline: Validate when user attempts to access a non-COA Accepted fair:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    * def REQUEST_BODY = {}
+    Given def toggleFairWalletStatusResponse = call read('RunnerHelper.feature@ToggleFairWalletStatus')
+    Then match toggleFairWalletStatusResponse.responseStatus == 204
+    And match toggleFairWalletStatusResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NEEDS_COA_CONFIRMATION"
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5694300           |
+
+  @Unhappy
+  Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
+    * replace toggleFairWalletStatusUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
+    * url BOOKFAIRS_JARVIS_URL + toggleFairWalletStatusUri
+    Given method put
+    Then match responseStatus == 204
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
+
+    @QA
+    Examples:
+      | FAIRID_OR_CURRENT |
+      | 5694296           |
+      | current           |
+
+  @Unhappy
+  Scenario Outline: Validate when SCHL cookie is expired
+    * replace toggleFairWalletStatusUri.fairIdOrCurrent =  "current"
+    * url BOOKFAIRS_JARVIS_URL + toggleFairWalletStatusUri
+    * cookies { SCHL : '<EXPIRED_SCHL>'}
+    Given method put
+    Then match responseStatus == 204
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
+
+    @QA
+    Examples:
+      | EXPIRED_SCHL                                                                                                                                                                                                                                                      |
+      | eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJpc3MiOiJNeVNjaGwiLCJhdWQiOiJTY2hvbGFzdGljIiwibmJmIjoxNjk5MzkwNzUyLCJzdWIiOiI5ODYzNTUyMyIsImlhdCI6MTY5OTM5MDc1NywiZXhwIjoxNjk5MzkyNTU3fQ.s3Czg7lmT6kETAcyupYDus8sxtFQMz7YOMKWz1_S-i8 |
 
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to specific fair for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -105,16 +113,16 @@ Feature: ToggleFairWalletStatus PUT Api tests
       | azhou1@scholastic.com | password1 | 5734325           |
 
   @Unhappy
-  Scenario Outline: Validate when user attempts to access a non-COA Accepted fair:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+  Scenario Outline: Validate when user doesn't have access to specific fair for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     * def REQUEST_BODY = {}
     Given def toggleFairWalletStatusResponse = call read('RunnerHelper.feature@ToggleFairWalletStatus')
-    Then match toggleFairWalletStatusResponse.responseStatus == 204
-    And match toggleFairWalletStatusResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NEEDS_COA_CONFIRMATION"
+    Then match toggleFairWalletStatusResponse.responseStatus == 404
+    And match toggleFairWalletStatusResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
 
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5829187           |
+      | azhou1@scholastic.com | password1 | abc1234           |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<FAIRID_OR_CURRENT>
@@ -126,7 +134,7 @@ Feature: ToggleFairWalletStatus PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR |
-      | azhou1@scholastic.com | password1 | 5633533           | 5633533       |
+      | azhou1@scholastic.com | password1 | 5694296           | 5694296       |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current WITH SBF_JARVIS for DO_NOT_SELECT mode with user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, cookie fair:<SBF_JARVIS_FAIR>
@@ -142,5 +150,21 @@ Feature: ToggleFairWalletStatus PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR | SBF_JARVIS_FAIR |
-      | azhou1@scholastic.com | password1 | 5633533           | 5633533       | 5782595         |
-      | azhou1@scholastic.com | password1 | current           | 5633533       | 5633533         |
+      | azhou1@scholastic.com | password1 | 5694296           | 5694296       | 5694300         |
+      | azhou1@scholastic.com | password1 | current           | 5694296       | 5694296         |
+
+  @Unhappy
+  Scenario Outline: Validate when current is used without SBF_JARVIS user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    * replace toggleFairWalletStatusUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
+    * url BOOKFAIRS_JARVIS_URL + toggleFairWalletStatusUri
+    * cookies { SCHL : '#(schlResponse.SCHL)'}
+    * request {}
+    Given method put
+    Then match responseStatus == 400
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SELECTED_FAIR"
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | current           |

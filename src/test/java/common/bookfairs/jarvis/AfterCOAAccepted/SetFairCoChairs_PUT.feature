@@ -5,15 +5,7 @@ Feature: SetFairCoChairs PUT Api tests
     * def obj = Java.type('utils.StrictValidation')
     * def setFairCoChairsUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/homepage/events"
     * def sleep = function(millis){ java.lang.Thread.sleep(millis) }
-
-  @Happy
-  Scenario Outline: Validate successful response for valid change request for user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, request scenario:<requestBody>
-    # Get original cochairs information
-    Given def getFairSettingsResponse = call read('RunnerHelper.feature@GetFairSettings')
-    Then getFairSettingsResponse.responseStatus == 200
-    * def originalCoChairs = getFairSettingsResponse.response["co-chairs"].map(x => {delete x.salesforceId; return x})
-    # Get response json config we are changing values to
-    * def REQUEST_BODY =
+    * def defaultRequestBody =
     """
     {
       "co-chairs":[
@@ -25,19 +17,22 @@ Feature: SetFairCoChairs PUT Api tests
       ]
      }
     """
-    # Call the endpoint to change to those values
+
+  @Happy
+  Scenario Outline: Validate successful response for valid change request for user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, request scenario:<requestBody>
+    Given def getFairSettingsResponse = call read('RunnerHelper.feature@GetFairSettings')
+    Then getFairSettingsResponse.responseStatus == 200
+    * def originalCoChairs = getFairSettingsResponse.response["co-chairs"].map(x => {delete x.salesforceId; return x})
+    * def REQUEST_BODY = defaultRequestBody
     Given def setCoChairsResponse = call read('RunnerHelper.feature@SetFairCoChairs')
     Then setCoChairsResponse.responseStatus == 200
-    # Verify that that it's been changed
     * sleep(1000)
     Given def getFairSettingsResponse = call read('RunnerHelper.feature@GetFairSettings')
     Then getFairSettingsResponse.responseStatus == 200
     Then match getFairSettingsResponse.response contains deep REQUEST_BODY
-    # Change all the values back to the original
     * set REQUEST_BODY.co-chairs = originalCoChairs
     Given def setCoChairsResponse = call read('RunnerHelper.feature@SetFairCoChairs')
     Then setCoChairsResponse.responseStatus == 200
-    # Verify that that it's back to original values
     * sleep(1000)
     Given def getFairSettingsResponse = call read('RunnerHelper.feature@GetFairSettings')
     Then match getFairSettingsResponse.responseStatus == 200
@@ -46,7 +41,7 @@ Feature: SetFairCoChairs PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5633533           |
+      | azhou1@scholastic.com | password1 | 5694296           |
 
   @Happy
   Scenario Outline: Validate response for request with same email:<USER_NAME>, fair:<FAIRID_OR_CURRENT>
@@ -74,7 +69,7 @@ Feature: SetFairCoChairs PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5633533           |
+      | azhou1@scholastic.com | password1 | 5694296           |
 
   @Unhappy
   Scenario Outline: Validate when invalid request body for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -85,19 +80,44 @@ Feature: SetFairCoChairs PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5633533           |
+      | azhou1@scholastic.com | password1 | 5694296           |
+
+  @Unhappy
+  Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    * def REQUEST_BODY = defaultRequestBody
+    Given def setFairCochairsResponse = call read('RunnerHelper.feature@SetFairCoChairs')
+    Then match setFairCochairsResponse.responseStatus == 204
+    And match setFairCochairsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
+
+    @QA
+    Examples:
+      | USER_NAME           | PASSWORD  | FAIRID_OR_CURRENT |
+      | nofairs@testing.com | password1 | 5694296           |
+
+  @Unhappy
+  Scenario Outline: Validate when user attempts to access a non-COA Accepted fair:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    * def REQUEST_BODY = defaultRequestBody
+    Given def setFairCochairsResponse = call read('RunnerHelper.feature@SetFairCoChairs')
+    Then match setFairCochairsResponse.responseStatus == 204
+    And match setFairCochairsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NEEDS_COA_CONFIRMATION"
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5694300           |
 
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
     * replace setFairCoChairsUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
     * url BOOKFAIRS_JARVIS_URL + setFairCoChairsUri
     Given method put
-    Then match responseStatus == 401
+    Then match responseStatus == 204
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
 
     @QA
     Examples:
       | FAIRID_OR_CURRENT |
-      | 5633533           |
+      | 5694296           |
       | current           |
 
   @Unhappy
@@ -106,28 +126,17 @@ Feature: SetFairCoChairs PUT Api tests
     * url BOOKFAIRS_JARVIS_URL + setFairCoChairsUri
     * cookies { SCHL : '<EXPIRED_SCHL>'}
     Given method put
-    Then match responseStatus == 401
+    Then match responseStatus == 204
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
 
     @QA
     Examples:
       | EXPIRED_SCHL                                                                                                                                                                                                                                                      |
       | eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJpc3MiOiJNeVNjaGwiLCJhdWQiOiJTY2hvbGFzdGljIiwibmJmIjoxNjk5MzkwNzUyLCJzdWIiOiI5ODYzNTUyMyIsImlhdCI6MTY5OTM5MDc1NywiZXhwIjoxNjk5MzkyNTU3fQ.s3Czg7lmT6kETAcyupYDus8sxtFQMz7YOMKWz1_S-i8 |
 
-  @Happy
-  Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    * def REQUEST_BODY = {}
-    Given def setFairCochairsResponse = call read('RunnerHelper.feature@SetFairCoChairs')
-    Then match setFairCochairsResponse.responseStatus == 204
-    And match setFairCochairsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
-
-    @QA
-    Examples:
-      | USER_NAME           | PASSWORD  | FAIRID_OR_CURRENT |
-      | nofairs@testing.com | password1 | current           |
-
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to specific fair for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    * def REQUEST_BODY = {}
+    * def REQUEST_BODY = defaultRequestBody
     Given def setFairCochairsResponse = call read('RunnerHelper.feature@SetFairCoChairs')
     Then match setFairCochairsResponse.responseStatus == 403
     And match setFairCochairsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
@@ -138,20 +147,20 @@ Feature: SetFairCoChairs PUT Api tests
       | azhou1@scholastic.com | password1 | 5734325           |
 
   @Unhappy
-  Scenario Outline: Validate when user attempts to access a non-COA Accepted fair:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    * def REQUEST_BODY = {}
+  Scenario Outline: Validate when user uses invalid fair ID for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    * def REQUEST_BODY = defaultRequestBody
     Given def setFairCochairsResponse = call read('RunnerHelper.feature@SetFairCoChairs')
-    Then match setFairCochairsResponse.responseStatus == 204
-    And match setFairCochairsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NEEDS_COA_CONFIRMATION"
+    Then match setFairCochairsResponse.responseStatus == 404
+    And match setFairCochairsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
 
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5829187           |
+      | azhou1@scholastic.com | password1 | abc1234           |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<FAIRID_OR_CURRENT>
-    * def REQUEST_BODY = {}
+    * def REQUEST_BODY = defaultRequestBody
     Given def setFairCochairsResponse = call read('RunnerHelper.feature@SetFairCoChairs')
     Then match setFairCochairsResponse.responseHeaders['Sbf-Jarvis-Fair-Id'][0] == EXPECTED_FAIR
     And if(FAIRID_OR_CURRENT == 'current') karate.log(karate.match(setFairCochairsResponse.responseHeaders['Sbf-Jarvis-Default-Fair'][0], 'AUTOMATICALLY_SELECTED_THIS_REQUEST'))
@@ -159,12 +168,12 @@ Feature: SetFairCoChairs PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR |
-      | azhou1@scholastic.com | password1 | 5633533           | 5633533       |
+      | azhou1@scholastic.com | password1 | 5694296           | 5694296       |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current WITH SBF_JARVIS for DO_NOT_SELECT mode with user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, cookie fair:<SBF_JARVIS_FAIR>
     Given def selectFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){FAIRID_OR_CURRENT: <SBF_JARVIS_FAIR>}
-    * def REQUEST_BODY = {}
+    * def REQUEST_BODY = defaultRequestBody
     * replace setFairCoChairsUri.fairIdOrCurrent = FAIRID_OR_CURRENT
     * url BOOKFAIRS_JARVIS_URL + setFairCoChairsUri
     * cookies { SCHL : '#(selectFairResponse.SCHL)', SBF_JARVIS: '#(selectFairResponse.SBF_JARVIS)'}
@@ -175,5 +184,21 @@ Feature: SetFairCoChairs PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR | SBF_JARVIS_FAIR |
-      | azhou1@scholastic.com | password1 | 5633533           | 5633533       | 5782595         |
-      | azhou1@scholastic.com | password1 | current           | 5633533       | 5633533         |
+      | azhou1@scholastic.com | password1 | 5694296           | 5694296       | 5694300         |
+      | azhou1@scholastic.com | password1 | current           | 5694296       | 5694296         |
+
+  @Unhappy
+  Scenario Outline: Validate when current is used without SBF_JARVIS user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    * replace setFairCoChairsUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
+    * url BOOKFAIRS_JARVIS_URL + setFairCoChairsUri
+    * cookies { SCHL : '#(schlResponse.SCHL)'}
+    * request {}
+    Given method put
+    Then match responseStatus == 400
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SELECTED_FAIR"
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | current           |

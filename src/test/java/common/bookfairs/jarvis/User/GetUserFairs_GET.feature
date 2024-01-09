@@ -8,13 +8,15 @@ Feature: GetUserFairs API automation tests
   Scenario: Validate request when SCHL session is not passed
     Given url BOOKFAIRS_JARVIS_URL + getUserFairsURL
     And method get
-    Then status 401
+    Then match responseStatus == 204
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
 
   Scenario: Validate request when SCHL session is invalid
     Given url BOOKFAIRS_JARVIS_URL + getUserFairsURL
     And cookies { SCHL : 'abcdeabcdeabcdeabcdeabcdeabcde12345.abcd'}
     And method get
-    Then status 401
+    Then match responseStatus == 204
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
 
   Scenario Outline: Validate a 200 status code for a valid request
     Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
@@ -27,6 +29,7 @@ Feature: GetUserFairs API automation tests
     Examples:
       | USER_NAME              | PASSWORD |
       | mtodaro@scholastic.com | passw0rd |
+
 
   Scenario Outline: Validate regression | <USER_NAME>
     * def TargetCall = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
@@ -51,13 +54,14 @@ Feature: GetUserFairs API automation tests
     @QA
     Examples:
       | USER_NAME                                              | PASSWORD  |
-      #| mtodaro@scholastic.com                                 | passw0rd  |
-      #| amomin-consultant@scholastic.com                       | Bookfair2 |
-      #| sdevineni-consultant@scholastic.com                    | passw0rd  |
-      | RPallerla-consultant@Scholastic.com                    | Test@1234 |
-      #| qaeduc032@gmail.com                                    | passw0rd  |
+#      | mtodaro@scholastic.com                                 | passw0rd  |
+#      | amomin-consultant@scholastic.com                       | Bookfair2 |
+#      | sdevineni-consultant@scholastic.com                    | passw0rd  |
+#      | RPallerla-consultant@Scholastic.com                    | Test@1234 |
+#      | qaeduc032@gmail.com                                    | passw0rd  |
       | bradpitt@gmail.com                                     | passw0rd  |
-      #| slam@scholastic.com                                    | passw0rd  |
-      #| userhas.OnlyPastFairs@schl.com                         | passw0rd  |
+#      | slam@scholastic.com                                    | passw0rd  |
+#      | userhas.OnlyPastFairs@schl.com                         | passw0rd  |
       | HasRecentlyEnded.AndOnlyUpcomingandPastFairs@schol.com | passw0rd  |
       | upcomingAndPastFairs@schol.com                         | passw0rd  |
+      | azhou1@scholastic.com                                  | password1 |

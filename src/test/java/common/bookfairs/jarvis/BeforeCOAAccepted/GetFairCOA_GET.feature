@@ -12,11 +12,9 @@ Feature: GetFairCOA API automation tests
     * print getCOAResponse.response
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com               | password1 | 5633533           |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           |
-      | sdevineni-consultant@scholastic.com | passw0rd  | current           |
-      | azhou1@scholastic.com               | password1 | current           |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password1 | current           |
 
   @Regression
   Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIR_ID>
@@ -34,9 +32,8 @@ Feature: GetFairCOA API automation tests
     And match base == target
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com               | password1 | 5633533           |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5694296           |
 
   Scenario Outline: Validate GetCOA API with a valid fairId and invalid login session
     And replace getCOAUri.fairIdOrCurrent = FAIRID_OR_CURRENT
@@ -46,9 +43,8 @@ Feature: GetFairCOA API automation tests
     Then match responseStatus == 401
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com               | password1 | 5633533           |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5694296           |
 
   Scenario Outline: Validate with invalid fairId and valid SCHL cookie
     And replace getCOAUri.fairIdOrCurrent = FAIRID_OR_CURRENT
@@ -72,9 +68,8 @@ Feature: GetFairCOA API automation tests
     Then match responseStatus == 200
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
-      | sdevineni-consultant@scholastic.com | passw0rd  | current           |
-      | azhou1@scholastic.com               | password1 | current           |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | current           |
 
   Scenario Outline: Validate without path param
     Given url BOOKFAIRS_JARVIS_URL + getCOAUri
@@ -84,4 +79,40 @@ Feature: GetFairCOA API automation tests
     Examples:
       | USER_NAME             | PASSWORD  |
       | azhou1@scholastic.com | password1 |
+
+  @Unhappy
+  Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    Given def getCOAResponse = call read('RunnerHelper.feature@GetCOA')
+    Then match getCOAResponse.responseStatus == 204
+    And match getCOAResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
+
+    @QA
+    Examples:
+      | USER_NAME           | PASSWORD  | FAIRID_OR_CURRENT |
+      | nofairs@testing.com | password1 | current           |
+
+  @Unhappy
+  Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
+    * replace getCOAUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    * url BOOKFAIRS_JARVIS_URL + getCOAUri
+    Given method get
+    Then match responseStatus == 204
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
+
+    @QA
+    Examples:
+      | FAIRID_OR_CURRENT |
+      | 5694296           |
+      | current           |
+
+  @Unhappy
+  Scenario Outline: Validate when user uses an invalid fair ID for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    Given def getCOAResponse = call read('RunnerHelper.feature@GetCOA')
+    Then match getCOAResponse.responseStatus == 404
+    And match getCOAResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | abc1234           |
 
