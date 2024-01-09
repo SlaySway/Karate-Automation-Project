@@ -71,7 +71,7 @@ Feature: UpdateFairHomepage PUT Api tests
     @QA
     Examples:
       | USER_NAME           | PASSWORD  | FAIRID_OR_CURRENT |
-      | nofairs@testing.com | password1 | current           |
+      | nofairs@testing.com | password1 | 5694296           |
 
   @Unhappy
   Scenario Outline: Validate when user attempts to access a non-COA Accepted fair:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -163,5 +163,21 @@ Feature: UpdateFairHomepage PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR | SBF_JARVIS_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296           | 5694296       | 5782595         |
+      | azhou1@scholastic.com | password1 | 5694296           | 5694296       | 5694300         |
       | azhou1@scholastic.com | password1 | current           | 5694296       | 5694296         |
+
+  @Unhappy
+  Scenario Outline: Validate when current is used without SBF_JARVIS user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    * replace updateHomepageUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
+    * url BOOKFAIRS_JARVIS_URL + updateHomepageUri
+    * cookies { SCHL : '#(schlResponse.SCHL)'}
+    * request {}
+    Given method put
+    Then match responseStatus == 400
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SELECTED_FAIR"
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | current           |

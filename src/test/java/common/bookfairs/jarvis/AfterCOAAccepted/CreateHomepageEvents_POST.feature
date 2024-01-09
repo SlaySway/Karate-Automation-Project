@@ -19,7 +19,7 @@ Feature: CreateHomepageEvents POST Api tests
 
   @Unhappy
   Scenario Outline: Validate when user attempts to access a non-COA Accepted fair:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    * def REQUEST_BODY = {}
+    * def REQUEST_BODY = read('UpdateHomepageEventsRequest.json')
     Given def createHomepageEventsResponse = call read('RunnerHelper.feature@CreateHomepageEvents')
     Then match createHomepageEventsResponse.responseStatus == 204
     And match createHomepageEventsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NEEDS_COA_CONFIRMATION"

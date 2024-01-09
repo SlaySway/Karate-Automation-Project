@@ -90,7 +90,7 @@ Feature: DeleteHomepageEvents DELETE Api tests
     * def REQUEST_BODY = {}
     Given def deleteHomepageEventsResponse = call read('RunnerHelper.feature@DeleteHomepageEvents')
     Then match deleteHomepageEventsResponse.responseStatus == 404
-    And match deleteHomepageEventsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
+    And match deleteHomepageEventsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
 
     @QA
     Examples:
