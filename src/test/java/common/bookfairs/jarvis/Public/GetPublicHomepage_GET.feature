@@ -45,8 +45,8 @@ Feature: GetPublicHomepage API automation tests
 
     @QA
     Examples:
-      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | WEB_URL            |
-      | azhou1@scholastic.com | password1 | 5694296           | iAmAnAutomationUrl |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | WEB_URL              |
+      | azhou1@scholastic.com | password1 | 5694296           | iAmAnAutomationssUrl |
 
   Scenario Outline: Validate request when optioanl query parameter 'fairId' is valid
     Given url BOOKFAIRS_JARVIS_URL + getPublicHomepageUrl
