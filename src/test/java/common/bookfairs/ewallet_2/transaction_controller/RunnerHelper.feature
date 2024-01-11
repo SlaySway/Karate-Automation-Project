@@ -2,15 +2,24 @@
 Feature: Helper for running After COA Accepted endpoints
 
   Background: Set config
-    * string getFairWalletsUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/ewallets"
+    * string createWalletTransactionUri = "/api/wallets/<walletId>/transaction"
+    * string createWalletReleaseUri = "/api/wallets/<walletId>/release"
 
 
-  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
+  # Input: WALLETID, REQUEST_BODY
   # Output: response
-  @GetFairWallets
-  Scenario: Run get wallets for fair for user: <USER_NAME> and fair: <FAIRID_OR_CURRENT>
-    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
-    * replace getFairWalletsUri.fairIdOrCurrent = FAIRID_OR_CURRENT
-    * url BOOKFAIRS_JARVIS_URL + getFairWalletsUri
-    * cookies { SCHL : '#(schlResponse.SCHL)'}
-    Then method get
+  @CreateWalletTransaction
+  Scenario: Create a sales transaction for wallet: <WALLETID>
+    * replace createWalletTransactionUri.walletId = WALLETID
+    * url BOOKFAIRS_EWALLET_2_URL + createWalletTransactionUri
+    * request REQUEST_BODY
+    Then method POST
+
+  # Input: WALLETID, REQUEST_BODY
+  # Output: response
+  @CreateWalletRelease
+  Scenario: Create release of wallet balance for wallet: <WALLETID>
+    * replace createWalletTransactionUri.walletId = WALLETID
+    * url BOOKFAIRS_EWALLET_2_URL + createWalletTransactionUri
+    * request REQUEST_BODY
+    Then method POST

@@ -1,16 +1,31 @@
 @ignore @report=true
-Feature: Helper for running After COA Accepted endpoints
+Feature: Helper for fund-controller endpoints
 
   Background: Set config
-    * string getFairWalletsUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/ewallets"
+    * string createReconciliationsUri = "/reconciliations"
+    * string getReconciliationByReconciliationId = "/reconciliations/<reconciliationId>"
+    * string getReconciliationReportByReconciliationId = "/reconciliations/<reconciliationId>/report"
 
-
-  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
+  # Input: REQUEST_BODY
   # Output: response
-  @GetFairWallets
-  Scenario: Run get wallets for fair for user: <USER_NAME> and fair: <FAIRID_OR_CURRENT>
-    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
-    * replace getFairWalletsUri.fairIdOrCurrent = FAIRID_OR_CURRENT
-    * url BOOKFAIRS_JARVIS_URL + getFairWalletsUri
-    * cookies { SCHL : '#(schlResponse.SCHL)'}
-    Then method get
+  @CreateReconciliations
+  Scenario: Create reconciliations for wallets
+    * url BOOKFAIRS_EWALLET_2_URL + createReconciliationsUri
+    * request REQUEST_BODY
+    Then method POST
+
+  # Input: RECONCILIATION_ID
+  # Output: response
+  @GetReconciliationById
+  Scenario: Get reconciliation by reconciliation id
+    * replace getReconciliationByReconciliationId.reconciliationId = RECONCILIATION_ID
+    * url BOOKFAIRS_EWALLET_2_URL + getReconciliationByReconciliationId
+    Then method GET
+
+  # Input: RECONCILIATION_ID
+  # Output: response
+  @GetReconciliationReportById
+  Scenario: Get reconciliation report by reconciliation id
+    * replace getReconciliationReportByReconciliationId.reconciliationId = RECONCILIATION_ID
+    * url BOOKFAIRS_EWALLET_2_URL + getReconciliationReportByReconciliationId
+    Then method GET

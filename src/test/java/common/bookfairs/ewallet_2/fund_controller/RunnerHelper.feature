@@ -1,16 +1,14 @@
 @ignore @report=true
-Feature: Helper for running After COA Accepted endpoints
+Feature: Helper for fund-controller endpoints
 
   Background: Set config
-    * string getFairWalletsUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/ewallets"
+    * string fundWalletByWalletIdUri = "/api/wallets/<walletId>/fund"
 
-
-  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
+  # Input: WALLETID, REQUEST_BODY
   # Output: response
-  @GetFairWallets
-  Scenario: Run get wallets for fair for user: <USER_NAME> and fair: <FAIRID_OR_CURRENT>
-    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
-    * replace getFairWalletsUri.fairIdOrCurrent = FAIRID_OR_CURRENT
-    * url BOOKFAIRS_JARVIS_URL + getFairWalletsUri
-    * cookies { SCHL : '#(schlResponse.SCHL)'}
-    Then method get
+  @FundWalletByWalletId
+  Scenario: Fund a wallet for wallet: <WALLETID>
+    * replace fundWalletByWalletIdUri.walletId = WALLETID
+    * url BOOKFAIRS_EWALLET_2_URL + fundWalletByWalletIdUri
+    * request REQUEST_BODY
+    Then method POST
