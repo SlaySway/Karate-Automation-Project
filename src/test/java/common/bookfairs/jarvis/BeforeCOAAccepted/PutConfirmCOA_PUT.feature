@@ -96,7 +96,7 @@ Feature: PutCOAConfirm API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password1 | 5697025           |
 
   @Unhappy
   Scenario Outline: Verify that coa confirm sends 404 if fair doesn't exist on SQL database for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
