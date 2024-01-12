@@ -1,16 +1,62 @@
 @ignore @report=true
-Feature: Helper for running After COA Accepted endpoints
+Feature: Helper for running legacy-controller endpoints
 
   Background: Set config
-    * string getFairWalletsUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/ewallets"
+    * string getWalletByVoucherParametersUri = "/vouchers"
+    * string createVoucherUri = "/vouchers"
+    * string createVoucherTransactionsUri = "/vouchers/<voucherId>/transactions"
+    * string getWalletsByCustomerIdUri = "/wallets"
+    * string getVoucherByVoucherIdUri = "/vouchers/<voucherId>"
+    * string getTransactionByTransactionIdUri = "/transactions/<transactionId>"
 
-
-  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
+  # Input: type, key, fairId, grade, transactions, showTransactions, status, showNonLegacyFields
   # Output: response
-  @GetFairWallets
-  Scenario: Run get wallets for fair for user: <USER_NAME> and fair: <FAIRID_OR_CURRENT>
-    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
-    * replace getFairWalletsUri.fairIdOrCurrent = FAIRID_OR_CURRENT
-    * url BOOKFAIRS_JARVIS_URL + getFairWalletsUri
-    * cookies { SCHL : '#(schlResponse.SCHL)'}
-    Then method get
+  @GetWalletByVoucherParameters
+  Scenario: Get voucher/wallet by voucher parameters
+    * url BOOKFAIRS_EWALLET_2_URL + getWalletByVoucherParametersUri
+    * def attribute = { fairid : '#(fairId)', grade :  '#(grade)'}
+    * params {type:'#(type)',key:'#(key)', attribute:'#(attribute)',transactions:'#(transactions)',showTransactions:'#(showTransactions)',status:'#(status)',showNonLegacyFields:'#(showNonLegacyFields)'}
+    Then method GET
+
+  # Input: type, fairId, showNonLegacyFields
+  # Output: response
+  @CreateVoucher
+  Scenario: Create voucher/wallet
+    * url BOOKFAIRS_EWALLET_2_URL + createVoucherUri
+    * def attribute = { fairid : '#(fairId)'}
+    * params {type:'#(type)',key:'#(key)', attribute:'#(attribute)',showNonLegacyFields:'#(showNonLegacyFields)'}
+    Then method PUT
+
+  # Input: VOUCHERID, REQUEST_BODY
+  # Output: response
+  @CreateVoucherTransactions
+  Scenario: Create a voucher transaction
+    * replace createVoucherTransactionsUri.voucherId = VOUCHERID
+    * url BOOKFAIRS_EWALLET_2_URL + createVoucherTransactionsUri
+    * request REQUEST_BODY
+    Then method POST
+
+  # Input: customerProfileId
+  # Output: response
+  @GetWalletsByCustomerId
+  Scenario: Get vouchers for a customer
+    * url BOOKFAIRS_EWALLET_2_URL + getWalletsByCustomerIdUri
+    * params {customerProfileId: '#(customerProfileId)'}
+    Then method GET
+
+  # Input: VOUCHERID
+  # Output: response
+  @GetVoucherByVoucherId
+  Scenario: Get a voucher
+    * replace getVoucherByVoucherIdUri.voucherId = VOUCHERID
+    * url BOOKFAIRS_EWALLET_2_URL + getVoucherByVoucherIdUri
+    Then method GET
+
+  # Input: TRANSACTIONID
+  # Output: response
+  @GetTransactionByTransactionId
+  Scenario: Get a voucher
+    * replace getTransactionByTransactionIdUri.voucherId = TRANSACTIONID
+    * url BOOKFAIRS_EWALLET_2_URL + getTransactionByTransactionIdUri
+    Then method GET
+
