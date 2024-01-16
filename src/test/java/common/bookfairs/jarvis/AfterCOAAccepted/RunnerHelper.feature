@@ -14,6 +14,7 @@ Feature: Helper for running After COA Accepted endpoints
     * string toggleFairWalletStatusUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/settings/ewallets"
     * string toggleFairOnlineFairStatusUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/settings/online-fair"
 
+    * string updateFinFormPurchaseOrdersUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/purchaseorder"
     * string updateFinFormSalesUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/sales"
 
   # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
@@ -160,6 +161,17 @@ Feature: Helper for running After COA Accepted endpoints
     * cookies { SCHL : '#(schlResponse.SCHL)'}
     * request REQUEST_BODY
     Then method put
+
+  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT, REQUEST_BODY
+  # Output: response
+  @UpdateFinFormPurchaseOrders
+  Scenario: Run toggle fair online fair status for user: <USER_NAME>, fair: <FAIRID_OR_CURRENT>, and request body: <REQUEST_BODY>
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    * replace updateFinFormPurchaseOrdersUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    * url BOOKFAIRS_JARVIS_URL + updateFinFormPurchaseOrdersUri
+    * cookies { SCHL : '#(schlResponse.SCHL)'}
+    * request REQUEST_BODY
+    Then method patch
 
   # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT, REQUEST_BODY
   @UpdateFinFormSales
