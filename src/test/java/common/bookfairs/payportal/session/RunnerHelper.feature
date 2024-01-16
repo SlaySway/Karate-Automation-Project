@@ -33,7 +33,7 @@ Feature: Helper for running session-controller endpoints
   @GetSessionIdentifiers
   Scenario: Run get session identigiers for user: <USER_NAME> and fair: <FAIRID>
     Given def sessionResponse = call read('RunnerHelper.feature@CreateSession'){FAIR_ID: '#(FAIRID)'}
-    * replace getFairHomepageUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    * replace getSessionIdentifiersUri
     * url BOOKFAIRS_PAYPORTAL_URL + getSessionIdentifiersUri
     * cookies { SCHL : '#(sessionResponse.SCHL)', PP2.0:'#(sessionResponse.PP2)'}
     Then method GET

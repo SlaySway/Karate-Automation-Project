@@ -77,11 +77,12 @@ Feature: GetFairCOA API automation tests
       | azhou1@scholastic.com               | password1 | current           |
 
   Scenario Outline: Validate without path param
+#    And replace getCOAUri.fairIdOrCurrent = FAIRID_OR_CURRENT
     Given url BOOKFAIRS_JARVIS_URL + getCOAUri
     And method GET
     Then match responseStatus == 404
 
     Examples:
-      | USER_NAME             | PASSWORD  |
-      | azhou1@scholastic.com | password1 |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 |                   |
 
