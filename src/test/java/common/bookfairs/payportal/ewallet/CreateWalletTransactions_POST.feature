@@ -14,6 +14,7 @@ Feature: CreateWalletTransactions POST api tests
      "note": "Postman test"
      }
     """
+
     Given def createWalletTransactionResponse = call read('RunnerHelper.feature@CreateWalletTransactions')
     Then match createWalletTransactionResponse.responseStatus == 201
 
