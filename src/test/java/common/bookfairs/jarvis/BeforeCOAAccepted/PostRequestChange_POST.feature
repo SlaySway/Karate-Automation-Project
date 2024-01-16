@@ -21,7 +21,7 @@ Feature: PostRequestChange API automation tests
 
     Examples:
       | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
-      | azhou1@scholastic.com               | password1 | 5633533           | Test1             | Email      |
+      | azhou1@scholastic.com               | password1 | 5694296           | Test1             | Email      |
       | sdevineni-consultant@scholastic.com | passw0rd  | 5782071           | TEST2             | PhoneNum   |
       | sdevineni-consultant@scholastic.com | passw0rd  | current           | Siva              | Email      |
       | azhou1@scholastic.com               | password1 | current           | And               | Phn        |
@@ -51,11 +51,9 @@ Feature: PostRequestChange API automation tests
     And match base == target
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
-      | azhou1@scholastic.com               | password1 | 5633533           | Test1             | Email      |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5782071           | TEST2             | PhoneNum   |
-      | sdevineni-consultant@scholastic.com | passw0rd  | current           | Siva              | Email      |
-      | azhou1@scholastic.com               | password1 | current           | And               | Phn        |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
+      | azhou1@scholastic.com | password1 | 5694296           | Test1             | Email      |
+      | azhou1@scholastic.com | password1 | current           | And               | Phn        |
 
   Scenario Outline: Validate with invalid login session and a valid fairId
     * def requestBody =
@@ -76,11 +74,9 @@ Feature: PostRequestChange API automation tests
     Then match responseStatus == 401
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
-      | azhou1@scholastic.com               | password1 | 5775209           | Test1             | Email      |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           | TEST2             | PhoneNum   |
-      | sdevineni-consultant@scholastic.com | passw0rd  | current           | Siva              | Email      |
-      | azhou1@scholastic.com               | password1 | current           | And               | Phn        |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
+      | azhou1@scholastic.com | password1 | 5775209           | Test1             | Email      |
+      | azhou1@scholastic.com | password1 | current           | And               | Phn        |
 
   Scenario Outline: Validate with valid login session and a invalid fairId
     * def requestBody =
@@ -102,9 +98,8 @@ Feature: PostRequestChange API automation tests
     Then match responseStatus == 403
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
-      | azhou1@scholastic.com               | password1 | 57752ui           | Test1             | Email      |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 56440j8           | TEST2             | PhoneNum   |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
+      | azhou1@scholastic.com | password1 | 57752ui           | Test1             | Email      |
 
 
   Scenario Outline: Validate with current keyword valid SCHL and invalid fairsession
@@ -127,9 +122,8 @@ Feature: PostRequestChange API automation tests
     Then match responseStatus == 400
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
-      | azhou1@scholastic.com               | password1 | current           | Test1             | Email      |
-      | sdevineni-consultant@scholastic.com | passw0rd  | current           | TEST2             | PhoneNum   |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
+      | azhou1@scholastic.com | password1 | current           | Test1             | Email      |
 
   Scenario Outline: Validate PostCOApdfLink API with SCHL Session Cookie and no request payload
     * def requestBody = ""
@@ -137,6 +131,29 @@ Feature: PostRequestChange API automation tests
     Then match postCOApdfLinkResponse.responseStatus == 415
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com               | password1 | 5775209           |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5775209           |
+
+  @Unhappy
+  Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
+    * replace postCOARequestChangeUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    * url BOOKFAIRS_JARVIS_URL + postCOARequestChangeUri
+    Given method post
+    Then match responseStatus == 204
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
+
+    @QA
+    Examples:
+      | FAIRID_OR_CURRENT |
+      | 5694296           |
+
+  @Unhappy
+  Scenario Outline: Validate when user uses an invalid fair ID for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    Given def getCoaDatesResponse = call read('RunnerHelper.feature@PostChangeRequest')
+    Then match getCoaDatesResponse.responseStatus == 404
+    And match getCoaDatesResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | requestBody |
+      | azhou1@scholastic.com | password1 | abc1234           | {}          |

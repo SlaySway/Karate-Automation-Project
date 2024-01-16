@@ -28,9 +28,9 @@ Feature: GetCOAWithJWT API automation tests
     Then match responseStatus == 200
 
     @QA
-    Examples: 
-      | USER_NAME              | PASSWORD | FAIRID_OR_CURRENT |
-      | mtodaro@scholastic.com | passw0rd |           5795068 |
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5694296           |
 
   #Delete this scenraio after the DEC release
   Scenario Outline: Validate regression with current prod version | <USER_NAME> | <FAIRID_OR_CURRENT> |
@@ -57,21 +57,9 @@ Feature: GetCOAWithJWT API automation tests
     And match BaseResponse == TargetResponse
 
     @QA
-    Examples: 
+    Examples:
       | USER_NAME              | PASSWORD | FAIRID_OR_CURRENT |
-      | mtodaro@scholastic.com | passw0rd |           5795066 |
-      | mtodaro@scholastic.com | passw0rd |           5795071 |
-      | mtodaro@scholastic.com | passw0rd |           5797220 |
-      | mtodaro@scholastic.com | passw0rd |           5814798 |
-      | mtodaro@scholastic.com | passw0rd |           5795061 |
-      | mtodaro@scholastic.com | passw0rd |           5795064 |
-      | mtodaro@scholastic.com | passw0rd |           5795065 |
-      | mtodaro@scholastic.com | passw0rd |           5795067 |
-      | mtodaro@scholastic.com | passw0rd |           5795068 |
-      | mtodaro@scholastic.com | passw0rd |           5795069 |
-      | mtodaro@scholastic.com | passw0rd |           5795070 |
-      | mtodaro@scholastic.com | passw0rd |           5795068 |
-      | mtodaro@scholastic.com | passw0rd |           5731888 |
+      | azhou1@scholastic.com | password1 | 5694296           |
 
   #Enable this after the DEC release
   @ignore
@@ -99,18 +87,6 @@ Feature: GetCOAWithJWT API automation tests
     And match BaseResponse == TargetResponse
 
     @QA
-    Examples: 
+    Examples:
       | USER_NAME              | PASSWORD | FAIRID_OR_CURRENT |
-      | mtodaro@scholastic.com | passw0rd |           5795066 |
-      | mtodaro@scholastic.com | passw0rd |           5795071 |
-      | mtodaro@scholastic.com | passw0rd |           5797220 |
-      | mtodaro@scholastic.com | passw0rd |           5814798 |
-      | mtodaro@scholastic.com | passw0rd |           5795061 |
-      | mtodaro@scholastic.com | passw0rd |           5795064 |
-      | mtodaro@scholastic.com | passw0rd |           5795065 |
-      | mtodaro@scholastic.com | passw0rd |           5795067 |
-      | mtodaro@scholastic.com | passw0rd |           5795068 |
-      | mtodaro@scholastic.com | passw0rd |           5795069 |
-      | mtodaro@scholastic.com | passw0rd |           5795070 |
-      | mtodaro@scholastic.com | passw0rd |           5795068 |
-      | mtodaro@scholastic.com | passw0rd |           5731888 |
+      | azhou1@scholastic.com | password1 | 5694296           |

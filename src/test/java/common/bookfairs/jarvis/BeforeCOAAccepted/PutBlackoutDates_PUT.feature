@@ -28,11 +28,9 @@ Feature: PutBlackoutDates API automation tests
       # check that backout dates is now updated
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com               | password1 | 5633533           |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5782071           |
-      | sdevineni-consultant@scholastic.com | passw0rd  | current           |
-      | azhou1@scholastic.com               | password1 | current           |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password1 | current           |
 
   Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIR_ID>
     * def requestBody =
@@ -62,11 +60,9 @@ Feature: PutBlackoutDates API automation tests
     And match base == target
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com               | password1 | 5633533           |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           |
-      | sdevineni-consultant@scholastic.com | passw0rd  | current           |
-      | azhou1@scholastic.com               | password1 | current           |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password1 | current           |
 
   Scenario Outline: Validate PutBlackoutDates API with invalid login session and valid fairId
     * def requestBody =
@@ -90,9 +86,8 @@ Feature: PutBlackoutDates API automation tests
     Then match responseStatus == 401
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com               | password1 | 5633533           |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5694296           |
 
   Scenario Outline: Validate PutBlackoutDates API with valid login session and a invalid fairId
     * def requestBody =
@@ -152,6 +147,40 @@ Feature: PutBlackoutDates API automation tests
     Then match putBlackoutDatesResponse.responseStatus == 415
 
     Examples:
-      | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com               | password1 | 5775209           |
-      | sdevineni-consultant@scholastic.com | passw0rd  | 5644038           |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5775209           |
+
+  @Unhappy
+  Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    Given def getCoaDatesResponse = call read('RunnerHelper.feature@GetCOAdates')
+    Then match getCoaDatesResponse.responseStatus == 204
+    And match getCoaDatesResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
+
+    @QA
+    Examples:
+      | USER_NAME           | PASSWORD  | FAIRID_OR_CURRENT |
+      | nofairs@testing.com | password1 | current           |
+
+  @Unhappy
+  Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
+    * replace putBlackoutDatesUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    * url BOOKFAIRS_JARVIS_URL + putBlackoutDatesUri
+    Given method get
+    Then match responseStatus == 204
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
+
+    @QA
+    Examples:
+      | FAIRID_OR_CURRENT |
+      | 5694296           |
+
+  @Unhappy
+  Scenario Outline: Validate when user uses an invalid fair ID for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    Given def getCoaDatesResponse = call read('RunnerHelper.feature@PutBlackoutDates')
+    Then match getCoaDatesResponse.responseStatus == 404
+    And match getCoaDatesResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | requestBody |
+      | azhou1@scholastic.com | password1 | abc1234           | {}          |
