@@ -27,7 +27,7 @@ function fn() {
 
 		BOOKFAIRS_SERVICE_URL: 'https://bookfairs-service.qa.apps.scholastic.tech',
 
-		BOOKFAIRS_PAYPORTAL_URL: 'https://payportal-service.qa.apps.scholastic.tech'
+		BOOKFAIRS_PAYPORTAL_URL: 'https://payportal-service.qa.apps.scholastic.tech',
 	}
 
 	if (env == 'dev') {
