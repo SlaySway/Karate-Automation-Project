@@ -13,22 +13,35 @@ Feature: GetSessionInfo GET api tests
     @QA
     Examples:
       | FAIRID  | USER_NAME             | PASSWORD  |
-      | 5633533 | azhou1@scholastic.com | password1 |
+      | 5694329 | mtodaro@scholastic.com | passw0rd |
 
   @Regression @GETSessionInfo
   Scenario Outline: Verify SessionInfo returns 401 status code when user is not logged in myscholastic
-    # TODO
+    Given url BOOKFAIRS_PAYPORTAL_URL + getSessionInfoUri
+    * url BOOKFAIRS_PAYPORTAL_URL + getSessionInfoUri
+    * cookies { SCHL : '#(schlResponse.SCHL)'}
+    Then method GET
+    Then match responseStatus == 401
+    Then match response.errorMessage == "Not a valid session. Please make sure that a valid SCHL cookie is specified."
 
     @QA
     Examples:
-      | FAIRID  | USER_NAME             | PASSWORD  |
-      | 5633533 | azhou1@scholastic.com | password1 |
+      | FAIRID  |
+      | 5694316 |
+      | 5694329 |
 
   @Unhappy
   Scenario Outline: Verify SessionInfo returns 401 status code when a new fair session is not created
-    # TODO
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    Given url BOOKFAIRS_PAYPORTAL_URL + getSessionInfoUri
+#    * param FAIRID = FAIRID
+    * url BOOKFAIRS_PAYPORTAL_URL + getSessionInfoUri
+    * cookies { SCHL : '#(schlResponse.SCHL)'}
+    Then method GET
+    Then match responseStatus == 401
+    Then match response.errorMessage ==  "No valid fair. Please make sure that PP2.0 cookie is specified"
 
     @QA
     Examples:
-      | FAIRID  | USER_NAME             | PASSWORD  |
-      | 5633533 | azhou1@scholastic.com | password1 |
+      | FAIRID | USER_NAME              | PASSWORD |
+      | 563353 | mtodaro@scholastic.com | passw0rd |

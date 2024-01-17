@@ -42,8 +42,9 @@ Feature: Helper for running ewallet-controller endpoints
   @CreateWalletRefund
   Scenario: Create a wallet refund on the transaction for user: <USER_NAME>, fair: <FAIRID>, wallet: <WALLETID> transaction: <TRANSACTIONID>
     Given def sessionResponse = call read('classpath:common/bookfairs/payportal/session/RunnerHelper.feature@CreateSession')
-    * replace createWalletRefundUri.fairIdOrCurrent = WALLETID
+    * replace createWalletRefundUri.walletId = WALLETID
     * replace createWalletRefundUri.transactionId = TRANSACTIONID
     * url BOOKFAIRS_PAYPORTAL_URL + createWalletRefundUri
     * cookies { SCHL : '#(sessionResponse.SCHL)', PP2.0:'#(sessionResponse.PP2)'}
+    * request REQUEST_BODY
     Then method POST
