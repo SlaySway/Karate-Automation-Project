@@ -1,0 +1,16 @@
+{
+  "invalidAmount": {
+    "purchaseOrders": [
+      {
+        "purchaseOrderNumber": 1,
+        "amount": "invalid amount",
+        "contactName": 2,
+        "agencyName": 3,
+        "address": 4,
+        "city": 5,
+        "state": 6,
+        "zipcode": 7
+      }
+    ]
+  }
+}
