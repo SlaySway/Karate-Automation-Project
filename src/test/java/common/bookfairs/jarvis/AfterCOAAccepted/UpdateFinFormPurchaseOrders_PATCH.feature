@@ -7,7 +7,7 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
     * def sleep = function(millis){ java.lang.Thread.sleep(millis) }
 
   @Unhappy
-  Scenario Outline: Validate when invalid request body for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+  Scenario Outline: Validate when invalid request body type for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     * def REQUEST_BODY = ""
     Given def updateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
     Then match updateFinFormPurchaseOrdersResponse.responseStatus == 415
@@ -138,4 +138,30 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | current           |
 
+  @Unhappy
+  Scenario Outline: Validate when current is used without SBF_JARVIS user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    * replace updateFinFormPurchaseOrdersUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
+    * url BOOKFAIRS_JARVIS_URL + updateFinFormPurchaseOrdersUri
+    * cookies { SCHL : '#(schlResponse.SCHL)'}
+    * request {}
+    Given method patch
+    Then match responseStatus == 400
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SELECTED_FAIR"
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | current           |
+
     #TODO: Test for checking that its been updated (will be added when test for GET endpoint is made)
+  @Unhappy
+  Scenario Outline: Validate when invalid request body for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    * def REQUEST_BODY = read('UpdateFinFormPurchaseOrdersRequests.json')[requestBodyJson]
+    Given def updateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
+    Then match updateFinFormPurchaseOrdersResponse.responseStatus == 400
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | requestBodyJson            |
+      | azhou1@scholastic.com | password1 | 5694296           | invalidAmount              |
