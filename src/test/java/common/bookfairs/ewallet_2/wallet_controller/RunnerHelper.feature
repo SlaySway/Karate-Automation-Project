@@ -40,6 +40,7 @@ Feature: Helper for running wallet-controller endpoints
   @MoveWalletToOtherFair
   Scenario: Move wallet to other fair for wallet: <WALLETID> and fair:<FAIRID>
     * replace moveWalletToOtherFairUri.walletId = WALLETID
+    * replace moveWalletToOtherFairUri.fairId = FAIRID
     * url BOOKFAIRS_EWALLET_2_URL + moveWalletToOtherFairUri
     Then method PUT
 
@@ -48,7 +49,7 @@ Feature: Helper for running wallet-controller endpoints
   @GetWalletsByParameters
   Scenario: Get wallet by parameters: idamUserId: <idamUserId>, fairId: <fairId>, activeWallets: <activeWallets>, remainingBalance: <remainingBalance>
     * url BOOKFAIRS_EWALLET_2_URL + getWalletsByParametersUri
-    * params {idamUserId: '#(idamUserId)', fairId:'#(fairId)', activeWallets:''#(activeWallets)', remainingBalance:'#(remainingBalance)'}
+    * params {idamUserId: '#(idamUserId)', fairId:'#(fairId)', activeWallets:'#(activeWallets)', remainingBalance:'#(remainingBalance)'}
     Then method GET
 
   # Input: REQUEST_BODY
