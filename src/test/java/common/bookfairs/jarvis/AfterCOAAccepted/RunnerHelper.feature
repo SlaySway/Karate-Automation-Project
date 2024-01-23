@@ -16,6 +16,8 @@ Feature: Helper for running After COA Accepted endpoints
 
     * string updateFinFormPurchaseOrdersUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/purchaseorder"
     * string updateFinFormSalesUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/sales"
+    * string updateFinFormEarningsUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/earnings"
+
 
   # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
   # Output: response
@@ -179,6 +181,16 @@ Feature: Helper for running After COA Accepted endpoints
     Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
     * replace updateFinFormSalesUri.fairIdOrCurrent = FAIRID_OR_CURRENT
     * url BOOKFAIRS_JARVIS_URL + updateFinFormSalesUri
+    * cookies { SCHL : '#(schlResponse.SCHL)'}
+    * request REQUEST_BODY
+    Then method put
+
+  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT, REQUEST_BODY
+  @UpdateFinFormEarnings
+  Scenario: Run update fair financial form earnings for user: <USER_NAME>, fair: <FAIRID_OR_CURRENT>, and request body: <REQUEST_BODY>
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    * replace updateFinFormEarningsUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    * url BOOKFAIRS_JARVIS_URL + updateFinFormEarningsUri
     * cookies { SCHL : '#(schlResponse.SCHL)'}
     * request REQUEST_BODY
     Then method put
