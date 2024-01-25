@@ -3,7 +3,7 @@ Feature: UpdateFinFormSales PUT Api tests
 
   Background: Set config
     * def obj = Java.type('utils.StrictValidation')
-    * def updateFinFormSalesUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/sales"
+    * def updateFinFormSalesUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/form/sales"
     * def sleep = function(millis){ java.lang.Thread.sleep(millis) }
 
   @Unhappy

@@ -3,7 +3,7 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
 
   Background: Set config
     * def obj = Java.type('utils.StrictValidation')
-    * def updateFinFormPurchaseOrdersUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/purchaseorder"
+    * def updateFinFormPurchaseOrdersUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/form/purchaseorder"
     * def sleep = function(millis){ java.lang.Thread.sleep(millis) }
 
   @Unhappy
@@ -45,7 +45,7 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
     * replace updateFinFormPurchaseOrdersUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
     * url BOOKFAIRS_JARVIS_URL + updateFinFormPurchaseOrdersUri
-    Given method patch
+    Given method put
     Then match responseStatus == 204
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
 
@@ -60,7 +60,7 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
     * replace updateFinFormPurchaseOrdersUri.fairIdOrCurrent =  "current"
     * url BOOKFAIRS_JARVIS_URL + updateFinFormPurchaseOrdersUri
     * cookies { SCHL : '<EXPIRED_SCHL>'}
-    Given method patch
+    Given method put
     Then match responseStatus == 204
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
 
@@ -112,7 +112,7 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
     * replace updateFinFormPurchaseOrdersUri.fairIdOrCurrent = FAIRID_OR_CURRENT
     * url BOOKFAIRS_JARVIS_URL + updateFinFormPurchaseOrdersUri
     * cookies { SCHL : '#(selectFairResponse.SCHL)', SBF_JARVIS: '#(selectFairResponse.SBF_JARVIS)'}
-    Then method patch
+    Then method put
     Then match responseHeaders['Sbf-Jarvis-Fair-Id'][0] == EXPECTED_FAIR
     And if(FAIRID_OR_CURRENT == 'current') karate.log(karate.match(responseHeaders['Sbf-Jarvis-Default-Fair'][0], 'PREVIOUSLY_SELECTED'))
 
@@ -129,7 +129,7 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
     * url BOOKFAIRS_JARVIS_URL + updateFinFormPurchaseOrdersUri
     * cookies { SCHL : '#(schlResponse.SCHL)'}
     * request {}
-    Given method patch
+    Given method put
     Then match responseStatus == 400
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SELECTED_FAIR"
 
@@ -145,7 +145,7 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
     * url BOOKFAIRS_JARVIS_URL + updateFinFormPurchaseOrdersUri
     * cookies { SCHL : '#(schlResponse.SCHL)'}
     * request {}
-    Given method patch
+    Given method put
     Then match responseStatus == 400
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SELECTED_FAIR"
 

@@ -3,7 +3,7 @@ Feature: UpdateFinFormSales PUT Api tests
 
   Background: Set config
     * def obj = Java.type('utils.StrictValidation')
-    * def updateFinFormEarningsUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/earnings"
+    * def updateFinFormEarningsUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/form/earnings"
     * def sleep = function(millis){ java.lang.Thread.sleep(millis) }
 
   @Unhappy
@@ -138,4 +138,22 @@ Feature: UpdateFinFormSales PUT Api tests
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | current           |
 
-    #TODO: Test for checking that its been updated (will be added when test for GET endpoint is made)
+  @Happy
+  Scenario Outline: Validate mongo is updated in appropriate fields for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    * def REQUEST_BODY = { scholasticDollars:"1", cash:"2" }
+    Given def UpdateFinFormEarningsResponse = call read('RunnerHelper.feature@UpdateFinFormEarnings')
+    Then match UpdateFinFormEarningsResponse.responseStatus == 200
+    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"5694296"}
+    And match mongoJson.document.fairEarning.scholasticDollars == REQUEST_BODY.scholasticDollars
+    And match mongoJson.document.fairEarning.cash == REQUEST_BODY.cash
+    * def REQUEST_BODY = { scholasticDollars:"2", cash:"1" }
+    Given def UpdateFinFormEarningsResponse = call read('RunnerHelper.feature@UpdateFinFormEarnings')
+    Then match UpdateFinFormEarningsResponse.responseStatus == 200
+    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"5694296"}
+    And match mongoJson.document.fairEarning.scholasticDollars == REQUEST_BODY.scholasticDollars
+    And match mongoJson.document.fairEarning.cash == REQUEST_BODY.cash
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5694296           |
