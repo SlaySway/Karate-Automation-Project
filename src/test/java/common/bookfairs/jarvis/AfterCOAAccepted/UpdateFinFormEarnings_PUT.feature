@@ -140,18 +140,24 @@ Feature: UpdateFinFormSales PUT Api tests
 
   @Happy
   Scenario Outline: Validate mongo is updated in appropriate fields for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
+    And def originalDocument = mongoJson.document
     * def REQUEST_BODY = { scholasticDollars:"1", cash:"2" }
+    * def expectedDocument = originalDocument
+    * expectedDocument.fairEarning.scholasticDollars = REQUEST_BODY.scholasticDollars
+    * expectedDocument.fairEarning.cash = REQUEST_BODY.cash
     Given def UpdateFinFormEarningsResponse = call read('RunnerHelper.feature@UpdateFinFormEarnings')
     Then match UpdateFinFormEarningsResponse.responseStatus == 200
-    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"5694296"}
-    And match mongoJson.document.fairEarning.scholasticDollars == REQUEST_BODY.scholasticDollars
-    And match mongoJson.document.fairEarning.cash == REQUEST_BODY.cash
+    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
+    And match mongoJson.document contains deep expectedDocument
     * def REQUEST_BODY = { scholasticDollars:"2", cash:"1" }
+    * expectedDocument.fairEarning.scholasticDollars = REQUEST_BODY.scholasticDollars
+    * expectedDocument.fairEarning.cash = REQUEST_BODY.cash
     Given def UpdateFinFormEarningsResponse = call read('RunnerHelper.feature@UpdateFinFormEarnings')
     Then match UpdateFinFormEarningsResponse.responseStatus == 200
-    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"5694296"}
-    And match mongoJson.document.fairEarning.scholasticDollars == REQUEST_BODY.scholasticDollars
-    And match mongoJson.document.fairEarning.cash == REQUEST_BODY.cash
+    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
+    And match mongoJson.document contains deep expectedDocument
+
 
     @QA
     Examples:

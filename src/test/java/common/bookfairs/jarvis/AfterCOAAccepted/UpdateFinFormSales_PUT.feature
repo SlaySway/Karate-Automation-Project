@@ -138,4 +138,87 @@ Feature: UpdateFinFormSales PUT Api tests
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | current           |
 
-    #TODO: Test for checking that its been updated (will be added when test for GET endpoint is made)
+  @Happy
+  Scenario Outline: Validate mongo is updated in appropriate fields for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
+    And def originalDocument = mongoJson.document
+    * def setBigSetFieldsToSubsetValues =
+    """
+    function(bigSet, subset){
+      for(var key in subset){
+          if(typeof bigSet[key] === 'object' && typeof subset[key] === 'object'){
+            bigSet[key] = setBigSetFieldsToSubsetValues(bigSet[key], subset[key]);
+          } else {
+            bigSet[key] =  subset[key];
+          }
+      }
+      return bigSet;
+    }
+    """
+    * def REQUEST_BODY =
+    """
+    {
+        "sales": {
+            "scholasticDollars": {
+                "totalRedeemed": "1",
+                "taxExemptSales": "2",
+                "taxableDollarSales": "3"
+            },
+            "tenderTotals": {
+                "cashAndChecks": "4",
+                "creditCards": "5",
+                "purchaseOrders": "6"
+            },
+            "grossSales": {
+                "taxExemptSales": "7",
+                "taxableSales": "8"
+            },
+            "netSales": {
+                "shareTheFairFunds": {
+                    "collected": "9",
+                    "redeemed": "10"
+                }
+            }
+        }
+    }
+    """
+    Given def UpdateFinFormEarningsResponse = call read('RunnerHelper.feature@UpdateFinFormSales')
+    Then match UpdateFinFormEarningsResponse.responseStatus == 200
+    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
+    And match mongoJson.document contains deep setBigSetFieldsToSubsetValues(originalDocument, REQUEST_BODY)
+    * def REQUEST_BODY =
+    """
+    {
+        "sales": {
+            "scholasticDollars": {
+                "totalRedeemed": "10",
+                "taxExemptSales": "9",
+                "taxableDollarSales": "8"
+            },
+            "tenderTotals": {
+                "cashAndChecks": "7",
+                "creditCards": "6",
+                "purchaseOrders": "5"
+            },
+            "grossSales": {
+                "taxExemptSales": "4",
+                "taxableSales": "3"
+            },
+            "netSales": {
+                "shareTheFairFunds": {
+                    "collected": "2",
+                    "redeemed": "1"
+                }
+            }
+        }
+    }
+    """
+    Given def UpdateFinFormEarningsResponse = call read('RunnerHelper.feature@UpdateFinFormSales')
+    Then match UpdateFinFormEarningsResponse.responseStatus == 200
+    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
+    And match mongoJson.document contains deep setBigSetFieldsToSubsetValues(originalDocument, REQUEST_BODY)
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5694296           |
