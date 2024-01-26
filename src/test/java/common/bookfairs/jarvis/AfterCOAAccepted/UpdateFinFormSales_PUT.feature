@@ -182,8 +182,8 @@ Feature: UpdateFinFormSales PUT Api tests
         }
     }
     """
-    Given def UpdateFinFormEarningsResponse = call read('RunnerHelper.feature@UpdateFinFormSales')
-    Then match UpdateFinFormEarningsResponse.responseStatus == 200
+    Given def UpdateFinFormSalesResponse = call read('RunnerHelper.feature@UpdateFinFormSales')
+    Then match UpdateFinFormSalesResponse.responseStatus == 200
     Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
     And match mongoJson.document contains deep setBigSetFieldsToSubsetValues(originalDocument, REQUEST_BODY)
     * def REQUEST_BODY =
@@ -213,8 +213,8 @@ Feature: UpdateFinFormSales PUT Api tests
         }
     }
     """
-    Given def UpdateFinFormEarningsResponse = call read('RunnerHelper.feature@UpdateFinFormSales')
-    Then match UpdateFinFormEarningsResponse.responseStatus == 200
+    Given def UpdateFinFormSalesResponse = call read('RunnerHelper.feature@UpdateFinFormSales')
+    Then match UpdateFinFormSalesResponse.responseStatus == 200
     Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
     And match mongoJson.document contains deep setBigSetFieldsToSubsetValues(originalDocument, REQUEST_BODY)
 

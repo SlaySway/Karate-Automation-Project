@@ -14,7 +14,7 @@ Feature: Helper for running After COA Accepted endpoints
     * string toggleFairWalletStatusUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/settings/ewallets"
     * string toggleFairOnlineFairStatusUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/settings/online-fair"
 
-    * string updateFinFormPurchaseOrdersUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/form/purchaseorder"
+    * string updateFinFormPurchaseOrdersUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/form/purchase-orders"
     * string updateFinFormSalesUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/form/sales"
     * string updateFinFormEarningsUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/form/earnings"
 
