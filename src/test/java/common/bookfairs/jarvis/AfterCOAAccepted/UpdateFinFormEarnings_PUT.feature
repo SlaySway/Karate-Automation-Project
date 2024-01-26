@@ -1,16 +1,16 @@
-@UpdateFinFormPurchaseOrders @PerformanceEnhancement
-Feature: UpdateFinFormPurchaseOrders PATCH Api tests
+@UpdateFinFormEarnings @PerformanceEnhancement
+Feature: UpdateFinFormSales PUT Api tests
 
   Background: Set config
     * def obj = Java.type('utils.StrictValidation')
-    * def updateFinFormPurchaseOrdersUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/purchaseorder"
+    * def updateFinFormEarningsUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/form/earnings"
     * def sleep = function(millis){ java.lang.Thread.sleep(millis) }
 
   @Unhappy
-  Scenario Outline: Validate when invalid request body type for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+  Scenario Outline: Validate when invalid request body for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     * def REQUEST_BODY = ""
-    Given def updateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
-    Then match updateFinFormPurchaseOrdersResponse.responseStatus == 415
+    Given def updateFinFormEarningsResponse = call read('RunnerHelper.feature@UpdateFinFormEarnings')
+    Then match updateFinFormEarningsResponse.responseStatus == 415
 
     @QA
     Examples:
@@ -20,7 +20,7 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     * def REQUEST_BODY = {}
-    Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
+    Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFinFormEarnings')
     Then match updateHomepageResponse.responseStatus == 204
     And match updateHomepageResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
 
@@ -32,7 +32,7 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
   @Unhappy
   Scenario Outline: Validate when user attempts to access a non-COA Accepted fair:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     * def REQUEST_BODY = {}
-    Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
+    Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFinFormEarnings')
     Then match updateHomepageResponse.responseStatus == 204
     And match updateHomepageResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NEEDS_COA_CONFIRMATION"
 
@@ -43,9 +43,9 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
 
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
-    * replace updateFinFormPurchaseOrdersUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
-    * url BOOKFAIRS_JARVIS_URL + updateFinFormPurchaseOrdersUri
-    Given method patch
+    * replace updateFinFormEarningsUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
+    * url BOOKFAIRS_JARVIS_URL + updateFinFormEarningsUri
+    Given method put
     Then match responseStatus == 204
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
 
@@ -57,10 +57,10 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
 
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is expired
-    * replace updateFinFormPurchaseOrdersUri.fairIdOrCurrent =  "current"
-    * url BOOKFAIRS_JARVIS_URL + updateFinFormPurchaseOrdersUri
+    * replace updateFinFormEarningsUri.fairIdOrCurrent =  "current"
+    * url BOOKFAIRS_JARVIS_URL + updateFinFormEarningsUri
     * cookies { SCHL : '<EXPIRED_SCHL>'}
-    Given method patch
+    Given method put
     Then match responseStatus == 204
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
 
@@ -72,7 +72,7 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to specific fair for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     * def REQUEST_BODY = {}
-    Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
+    Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFinFormEarnings')
     Then match updateHomepageResponse.responseStatus == 403
     And match updateHomepageResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
 
@@ -84,7 +84,7 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
   @Unhappy
   Scenario Outline: Validate when user uses invalid fair ID for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     * def REQUEST_BODY = {}
-    Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
+    Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFinFormEarnings')
     Then match updateHomepageResponse.responseStatus == 404
     And match updateHomepageResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
 
@@ -95,8 +95,8 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<FAIRID_OR_CURRENT>
-    * def REQUEST_BODY = {}
-    Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
+    * def REQUEST_BODY = { scholasticDollars:1, cash:2 }
+    Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFinFormEarnings')
     Then match updateHomepageResponse.responseHeaders['Sbf-Jarvis-Fair-Id'][0] == EXPECTED_FAIR
     And if(FAIRID_OR_CURRENT == 'current') karate.log(karate.match(updateHomepageResponse.responseHeaders['Sbf-Jarvis-Default-Fair'][0], 'AUTOMATICALLY_SELECTED_THIS_REQUEST'))
 
@@ -109,10 +109,10 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
   Scenario Outline: Validate when user inputs different configurations for fairId/current WITH SBF_JARVIS for user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, cookie fair:<SBF_JARVIS_FAIR>
     Given def selectFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){FAIRID_OR_CURRENT: <SBF_JARVIS_FAIR>}
     * def REQUEST_BODY = {}
-    * replace updateFinFormPurchaseOrdersUri.fairIdOrCurrent = FAIRID_OR_CURRENT
-    * url BOOKFAIRS_JARVIS_URL + updateFinFormPurchaseOrdersUri
+    * replace updateFinFormEarningsUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    * url BOOKFAIRS_JARVIS_URL + updateFinFormEarningsUri
     * cookies { SCHL : '#(selectFairResponse.SCHL)', SBF_JARVIS: '#(selectFairResponse.SBF_JARVIS)'}
-    Then method patch
+    Then method put
     Then match responseHeaders['Sbf-Jarvis-Fair-Id'][0] == EXPECTED_FAIR
     And if(FAIRID_OR_CURRENT == 'current') karate.log(karate.match(responseHeaders['Sbf-Jarvis-Default-Fair'][0], 'PREVIOUSLY_SELECTED'))
 
@@ -125,11 +125,11 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
   @Unhappy
   Scenario Outline: Validate when current is used without SBF_JARVIS user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
-    * replace updateFinFormPurchaseOrdersUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
-    * url BOOKFAIRS_JARVIS_URL + updateFinFormPurchaseOrdersUri
+    * replace updateFinFormEarningsUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
+    * url BOOKFAIRS_JARVIS_URL + updateFinFormEarningsUri
     * cookies { SCHL : '#(schlResponse.SCHL)'}
     * request {}
-    Given method patch
+    Given method put
     Then match responseStatus == 400
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SELECTED_FAIR"
 
@@ -138,30 +138,28 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | current           |
 
-  @Unhappy
-  Scenario Outline: Validate when current is used without SBF_JARVIS user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
-    * replace updateFinFormPurchaseOrdersUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
-    * url BOOKFAIRS_JARVIS_URL + updateFinFormPurchaseOrdersUri
-    * cookies { SCHL : '#(schlResponse.SCHL)'}
-    * request {}
-    Given method patch
-    Then match responseStatus == 400
-    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SELECTED_FAIR"
+  @Happy
+  Scenario Outline: Validate mongo is updated in appropriate fields for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
+    And def originalDocument = mongoJson.document
+    * def REQUEST_BODY = { scholasticDollars:"1", cash:"2" }
+    * def expectedDocument = originalDocument
+    * expectedDocument.fairEarning.scholasticDollars = REQUEST_BODY.scholasticDollars
+    * expectedDocument.fairEarning.cash = REQUEST_BODY.cash
+    Given def UpdateFinFormEarningsResponse = call read('RunnerHelper.feature@UpdateFinFormEarnings')
+    Then match UpdateFinFormEarningsResponse.responseStatus == 200
+    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
+    And match mongoJson.document contains deep expectedDocument
+    * def REQUEST_BODY = { scholasticDollars:"2", cash:"1" }
+    * expectedDocument.fairEarning.scholasticDollars = REQUEST_BODY.scholasticDollars
+    * expectedDocument.fairEarning.cash = REQUEST_BODY.cash
+    Given def UpdateFinFormEarningsResponse = call read('RunnerHelper.feature@UpdateFinFormEarnings')
+    Then match UpdateFinFormEarningsResponse.responseStatus == 200
+    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
+    And match mongoJson.document contains deep expectedDocument
+
 
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | current           |
-
-    #TODO: Test for checking that its been updated (will be added when test for GET endpoint is made)
-  @Unhappy
-  Scenario Outline: Validate when invalid request body for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    * def REQUEST_BODY = read('UpdateFinFormPurchaseOrdersRequests.json')[requestBodyJson]
-    Given def updateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
-    Then match updateFinFormPurchaseOrdersResponse.responseStatus == 400
-
-    @QA
-    Examples:
-      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | requestBodyJson            |
-      | azhou1@scholastic.com | password1 | 5694296           | invalidAmount              |
+      | azhou1@scholastic.com | password1 | 5694296           |
