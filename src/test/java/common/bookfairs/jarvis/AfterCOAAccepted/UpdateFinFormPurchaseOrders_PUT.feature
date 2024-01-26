@@ -162,8 +162,8 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
 
     @QA
     Examples:
-      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | requestBodyJson            |
-      | azhou1@scholastic.com | password1 | 5694296           | invalidAmount              |
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | requestBodyJson |
+      | azhou1@scholastic.com | password1 | 5694296           | invalidAmount   |
 
   @Happy
   Scenario Outline: Validate mongo is updated in appropriate fields for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -262,8 +262,8 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
             "state": "ssss",
             "zipCode": "223344"
         }
-    ]
-}
+      ]
+    }
     """
     And def expectedDocument = mongoJson.document
     And set expectedDocument.sales.purchaseOrdersList = updatePurchaseOrdersList(expectedDocument.sales.purchaseOrdersList, REQUEST_BODY.purchaseOrders)
@@ -276,141 +276,3 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5694296           |
-
-    Scenario: Test
-      * def updatePurchaseOrdersList =
-    """
-    function(currentDocument, updatedFields){
-      let updatedPOs = new Map(updatedFields.map(purchaseOrder=>[purchaseOrder.purchaseOrderNumber, purchaseOrder]));
-      let currentPOs = new Map(currentDocument.map(purchaseOrder=>[purchaseOrder.purchaseOrderNumber, purchaseOrder]));
-      let purchaseOrderSchema = {
-        "purchaseOrderNumber" : "1",
-        "amount" : "2",
-        "contactName" : "3",
-        "agencyName" : "4",
-        "address" : "5",
-        "city" : "6",
-        "state" : "7",
-        "zipCode" : "8"
-      };
-      updatedPOs.forEach((updatedFields, updateOrCreatePurchaseNumber) => {
-          const purchaseOrderToUpdateOrCreate = currentPOs.get(updateOrCreatePurchaseNumber)
-          if(purchaseOrderToUpdateOrCreate){
-              purchaseOrderToUpdateOrCreate.keySet().forEach(key => {
-                  if(Object.keys(purchaseOrderSchema).includes(key)){
-                      purchaseOrderToUpdateOrCreate[key] = updatedFields[key]
-                  }
-              })
-          }else{
-              let newEntry = {}
-              Object.keys(purchaseOrderSchema).forEach(key => {
-                  if(Object.keys(purchaseOrderSchema).includes(key)){
-                      newEntry[key] = updatedFields[key]
-                  }
-              })
-              currentPOs.set(updateOrCreatePurchaseNumber, newEntry)
-          }
-      })
-     return Array.from(currentPOs.values())
-    }
-    """
-      * def d =
-      """
-    {
-    "_id": "5694296",
-    "sales": {
-    "scholasticDollars": {
-    "totalRedeemed": "1",
-    "taxExemptSales": "2",
-    "taxableDollarSales": "3"
-    },
-    "tenderTotals": {
-    "cashAndChecks": "4",
-    "creditCards": "5",
-    "purchaseOrders": "6"
-    },
-    "grossSales": {
-    "taxExemptSales": "7",
-    "taxableSales": "8"
-    },
-    "netSales": {
-    "shareTheFairFunds": {
-    "collected": "9",
-    "redeemed": "10"
-    }
-    },
-    "purchaseOrdersList": [
-    {
-    "purchaseOrderNumber": "1",
-    "amount": "1",
-    "contactName": "PostmanTesting",
-    "agencyName": "Scholastic",
-    "address": "NYE",
-    "city": "Marryland",
-    "state": "ss",
-    "zipCode": "34567"
-    },
-    {
-    "purchaseOrderNumber": "143",
-    "amount": "2",
-    "contactName": "PostTesting",
-    "agencyName": "sd",
-    "address": "asfh",
-    "city": "dave",
-    "state": "ss",
-    "zipCode": "112233"
-    },
-    {
-    "purchaseOrderNumber": "3",
-    "amount": "2",
-    "contactName": "PostTesting",
-    "agencyName": "sd",
-    "address": "asfh",
-    "city": "david",
-    "state": "ss",
-    "zipCode": "112233"
-    },
-    {
-    "purchaseOrderNumber": "7",
-    "amount": "2",
-    "contactName": "PostTesting",
-    "agencyName": "sd",
-    "address": "asfh",
-    "city": "david",
-    "state": "ss",
-    "zipCode": "112233"
-    }
-    ]
-    },
-    "_class": "com.scholastic.bookfairs.models.FinancialDetails"
-    }
-      """
-      * def e =
-      """
-      [
-  {
-    "purchaseOrderNumber": "1",
-    "amount": "1",
-    "contactName": "IFinally",
-    "agencyName": "Worked",
-    "address": "NYE",
-    "city": "Marryland",
-    "state": "ss",
-    "zipCode": "12345"
-  },
-  {
-    "purchaseOrderNumber": "5",
-    "amount": "1",
-    "contactName": "IFinally",
-    "agencyName": "Worked",
-    "address": "NYE",
-    "city": "Marryland",
-    "state": "ss",
-    "zipCode": "12345"
-  }
-]
-      """
-      * def result = updatePurchaseOrdersList(d.sales.purchaseOrdersList, e)
-      * print result
-
-
