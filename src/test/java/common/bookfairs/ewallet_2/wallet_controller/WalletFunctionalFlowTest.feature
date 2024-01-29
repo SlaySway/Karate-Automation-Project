@@ -1,9 +1,10 @@
 Feature: Wallet Flow Api tests
 
-  Scenario: User creates wallet, gets the wallet, updates the wallet details, moves the wallet to another fair, then closes the wallet
+  Scenario Outline: User creates wallet, gets the wallet, updates the wallet details, moves the wallet to another fair, then closes the wallet
     # Create an ewallet for an active and existing fair
-    * string fairId = '5694296'
-    * string userId = '98483103'
+    * string fairId = FAIR_ID
+    * string userId = USER_ID
+    # Create an ewallet for user and fair then check its been created in getWallet and getFairWallets
     * def createWalletRequestBody =
     """
       {
@@ -19,27 +20,25 @@ Feature: Wallet Flow Api tests
         "recipientType": "TEACHER"
       }
     """
-    # TODO restore below lines when done with temp testing, and delete the harcoded walletId and walletUuid
-#    Given def createWalletResponse = call read('RunnerHelper.feature@CreateWallet') {REQUEST_BODY:'#(createWalletRequestBody)'}
-#    Then match createWalletResponse.response ==
-#    """
-#    {
-#      id: '#regex[0-9]+',
-#      uuid: '#regex[0-9,a-z,-]+'
-#    }
-#    """
-#    * def walletId = createWalletResponse.response.id
-#    * def walletUuid = createWalletResponse.response.uuid
-    * def walletId = 1214819
-    * def walletUuid = "710fb0f1-6377-4250-9dbe-625621f670e7"
+    Given def createWalletResponse = call read('RunnerHelper.feature@CreateWallet') {REQUEST_BODY:'#(createWalletRequestBody)'}
+    Then match createWalletResponse.response ==
+    """
+    {
+      id: '#regex[0-9]+',
+      uuid: '#regex[0-9,a-z,-]+'
+    }
+    """
+    * def walletId = createWalletResponse.response.id
+    * def walletUuid = createWalletResponse.response.uuid
     Given def getFairWalletsResponse = call read('classpath:common/bookfairs/ewallet_2/fair_controller/RunnerHelper.feature@GetWalletsByFairId') {FAIRID:'#(fairId)'}
-      Then match getFairWalletsResponse.responseStatus == 200
-      And def createdWallet = karate.jsonPath(getFairWalletsResponse.response, "$[?(@.id==" + walletId + ")]" )[0]
-      And match createdWallet.uuid == walletUuid
-      And match createdWallet contains createWalletRequestBody
+    Then match getFairWalletsResponse.responseStatus == 200
+    And def createdWallet = karate.jsonPath(getFairWalletsResponse.response, "$[?(@.id==" + walletId + ")]" )[0]
+    And match createdWallet.uuid == walletUuid
+    And match createdWallet contains createWalletRequestBody
+    # Update eWallet details
     Given def getWalletResponse = call read('RunnerHelper.feature@GetWalletByWalletID') {WALLETID:'#(walletId)'}
-      Then match getWalletResponse.responseStatus == 200
-      And match getWalletResponse.response == createdWallet
+    Then match getWalletResponse.responseStatus == 200
+    And match getWalletResponse.response == createdWallet
     * def updateWalletRequestBody =
     """
       {
@@ -52,50 +51,32 @@ Feature: Wallet Flow Api tests
       }
     """
     Given def updateWalletResponse = call read('RunnerHelper.feature@UpdateWalletInfoByWalletId') {WALLETID:'#(walletId)', REQUEST_BODY:'#(updateWalletRequestBody)'}
-      Then match updateWalletResponse.responseStatus == 200
-      And match updateWalletResponse.response.id == walletId + ""
-      And match updateWalletResponse.response.uuid == walletUuid
+    Then match updateWalletResponse.responseStatus == 200
+    And match updateWalletResponse.response.id == walletId + ""
+    And match updateWalletResponse.response.uuid == walletUuid
     Given def getWalletResponse = call read('RunnerHelper.feature@GetWalletByWalletID') {WALLETID:'#(walletId)'}
-      Then match getWalletResponse.responseStatus == 200
-      And match getWalletResponse.response contains updateWalletRequestBody
-    # TODO Delete 57 - 69, temp code to change the details back so I can rerun this multi times
-    * def updateWalletRequestBody =
-    """
-      {
-        "studentFirstName": "KarateAutomated",
-        "studentLastName": "Testing",
-        "teacherFirstName": "CreatingWallet",
-        "teacherLastName": "Step",
-        "parentFirstName": "NextStep",
-        "parentLastName": "IsChangingDetails"
-      }
-    """
-    Given def updateWalletResponse = call read('RunnerHelper.feature@UpdateWalletInfoByWalletId') {WALLETID:'#(walletId)', REQUEST_BODY:'#(updateWalletRequestBody)'}
-      Then match updateWalletResponse.responseStatus == 200
-    Given def getWalletResponse = call read('RunnerHelper.feature@GetWalletByWalletID') {WALLETID:'#(walletId)'}
-      Then match getWalletResponse.responseStatus == 200
-      And match getWalletResponse.response contains updateWalletRequestBody
-    # end of TODO delete
-    * def fairToTransferTo = '5697025'
+    Then match getWalletResponse.responseStatus == 200
+    And match getWalletResponse.response contains updateWalletRequestBody
+    # Transfer wallet and check that it's been properly transferred
+    * def fairToTransferTo = FAIR_TO_TRANSFER_TO
     Given def moveWalletToFairResponse = call read('RunnerHelper.feature@MoveWalletToOtherFair') {WALLETID:'#(walletId)', FAIRID:'#(fairToTransferTo)'}
-      Then match moveWalletToFairResponse.responseStatus == 200
+    Then match moveWalletToFairResponse.responseStatus == 200
     Given def getFairWalletsResponse = call read('classpath:common/bookfairs/ewallet_2/fair_controller/RunnerHelper.feature@GetWalletsByFairId') {FAIRID:'#(fairToTransferTo)'}
-      Then match getFairWalletsResponse.responseStatus == 200
-      And def wallet = karate.jsonPath(getFairWalletsResponse.response, "$[?(@.id==" + walletId + ")]" )[0]
-      And match wallet.uuid == walletUuid
+    Then match getFairWalletsResponse.responseStatus == 200
+    And def wallet = karate.jsonPath(getFairWalletsResponse.response, "$[?(@.id==" + walletId + ")]" )[0]
+    And match wallet.uuid == walletUuid
     Given def getFairWalletsResponse = call read('classpath:common/bookfairs/ewallet_2/fair_controller/RunnerHelper.feature@GetWalletsByFairId') {FAIRID:'#(fairId)'}
-      Then match getFairWalletsResponse.responseStatus == 200
+    Then match getFairWalletsResponse.responseStatus == 200
     * def attemptToFindWallet = karate.jsonPath(getFairWalletsResponse.response, "$[?(@.id==" + walletId + ")]" )
     And match [] == attemptToFindWallet
-  # Transfer fair back
+    # Transfer wallet back
     Given def moveWalletToFairResponse = call read('RunnerHelper.feature@MoveWalletToOtherFair') {WALLETID:'#(walletId)', FAIRID:'#(fairId)'}
-     Then match moveWalletToFairResponse.responseStatus == 200
+    Then match moveWalletToFairResponse.responseStatus == 200
     Given def getFairWalletsResponse = call read('classpath:common/bookfairs/ewallet_2/fair_controller/RunnerHelper.feature@GetWalletsByFairId') {FAIRID:'#(fairId)'}
-      Then match getFairWalletsResponse.responseStatus == 200
-      And def wallet = karate.jsonPath(getFairWalletsResponse.response, "$[?(@.id==" + walletId + ")]" )[0]
-      And match wallet.uuid == walletUuid
-  # End of transferring fair back
-    # fund wallet
+    Then match getFairWalletsResponse.responseStatus == 200
+    And def wallet = karate.jsonPath(getFairWalletsResponse.response, "$[?(@.id==" + walletId + ")]" )[0]
+    And match wallet.uuid == walletUuid
+    # Fund the wallet
     * def walletTracker = wallet
     * def getDate =
     """
@@ -122,10 +103,10 @@ Feature: Wallet Flow Api tests
         }
     }
     """
-  Given def fundWalletResponse = call read('classpath:common/bookfairs/ewallet_2/fund_controller/RunnerHelper.feature@FundWalletByWalletId') {WALLETID:'#(walletId)'}
+    Given def fundWalletResponse = call read('classpath:common/bookfairs/ewallet_2/fund_controller/RunnerHelper.feature@FundWalletByWalletId') {WALLETID:'#(walletId)'}
     Then match fundWalletResponse.responseStatus == 201
     * def transactionId = fundWalletResponse.response.id
-  Given def getWalletResponse = call read('RunnerHelper.feature@GetWalletByWalletID') {WALLETID:'#(walletId)'}
+    Given def getWalletResponse = call read('RunnerHelper.feature@GetWalletByWalletID') {WALLETID:'#(walletId)'}
     Then match getWalletResponse.responseStatus == 200
     Then def createdTransaction = karate.jsonPath(getWalletResponse.response.transactions, "$[?(@.id==" + transactionId + ")]" )[0]
     And match createdTransaction.amount == REQUEST_BODY.amount
@@ -139,7 +120,7 @@ Feature: Wallet Flow Api tests
     * match getWalletResponse.response.amount == walletTracker.amount
     * match getWalletResponse.response.saleAmount  == walletTracker.saleAmount
     * match getWalletResponse.response.refundAmount == walletTracker.refundAmount
-    # wallet transaction
+    # Create wallet SALE transaction
     * def REQUEST_BODY =
     """
     {
@@ -165,13 +146,12 @@ Feature: Wallet Flow Api tests
     And match createdTransaction.note == REQUEST_BODY.note
     And match createdTransaction.source == REQUEST_BODY.source
     And match createdTransaction.cashier == REQUEST_BODY.cashier
-
     * set walletTracker.amount = walletTracker.amount - REQUEST_BODY.amount
     * set walletTracker.saleAmount = walletTracker.saleAmount + REQUEST_BODY.amount
     * match getWalletResponse.response.amount == walletTracker.amount
     * match getWalletResponse.response.saleAmount  == walletTracker.saleAmount
     * match getWalletResponse.response.refundAmount == walletTracker.refundAmount
-    # wallet release
+    # Create wallet release
     * def REQUEST_BODY =
     """
     {
@@ -190,64 +170,18 @@ Feature: Wallet Flow Api tests
     And match createdTransaction.type == "RELEASE"
     And match createdTransaction.orderId == REQUEST_BODY.orderId
     And match createdTransaction.reference == REQUEST_BODY.reference
-
     * set walletTracker.amount = walletTracker.amount - REQUEST_BODY.amount
     * match getWalletResponse.response.amount == walletTracker.amount
     * match getWalletResponse.response.saleAmount  == walletTracker.saleAmount
     * match getWalletResponse.response.refundAmount == walletTracker.refundAmount
+    # Close wallet
+    Given def closeWalletResponse = call read('RunnerHelper.feature@CloseWalletByWalletId') {WALLETID:'#(walletId)'}
+    Then match closeWalletResponse.responseStatus == 204
+    Given def getWalletResponse = call read('RunnerHelper.feature@GetWalletByWalletID') {WALLETID:'#(walletId)'}
+    Then match getWalletResponse.responseStatus == 200
+    And match getWalletResponse.response.status == "CLOSED"
 
-
-
-
-  Scenario: test
-  * def getDate =
-    """
-    function() {
-      var DateTimeFormatter = Java.type('java.time.format.DateTimeFormatter');
-      var dtf = DateTimeFormatter.ofPattern('ddHHmmss');
-      var ldt = java.time.LocalDateTime.now();
-      return ldt.format(dtf);
-    }
-    """
-    * def REQUEST_BODY =
-    """
-    {
-    "orderId": "#(getDate())",
-    "amount": 2,
-    "fundType": "cc",
-    "purchaserInfo": {
-        "idamUserId": "#(userId)",
-        "firstName": "KarateAPITesting",
-        "lastName": "AutomatedTests",
-        "email": "azhou1@scholastic.com",
-        "state": "NY",
-        "walletOwner": true
-        }
-    }
-    """
-    * def test =
-    """
-    {
-    "amount" : 5
-    }
-    """
-    * def test2 =
-    """
-    {
-    "amount" : 7
-    }
-    """
-#  * print REQUEST_BODY
-  * print test2.amount == REQUEST_BODY.amount + test.amount
-  * match test2.amount == REQUEST_BODY.amount + test.amount
-
-
-
-
-
-    # Close the wallet
-    # Get wallet details and make sure its closed
-
-    # All things to possibly do before ewallet is closed
-
-  # Add move ewallet test when fair is not active
+    @QA
+    Examples:
+      | USER_ID  | FAIR_ID | FAIR_TO_TRANSFER_TO |
+      | 98483103 | 5694296 | 5697025             |
