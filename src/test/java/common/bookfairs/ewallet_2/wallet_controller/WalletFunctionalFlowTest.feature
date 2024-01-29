@@ -245,17 +245,9 @@ Feature: Wallet Flow Api tests
 
 
 
-    # ?? fund the wallet
-    # Get the wallet details and verify funding
     # Close the wallet
     # Get wallet details and make sure its closed
 
     # All things to possibly do before ewallet is closed
-    # Possibly fund the wallet?
-    # Verify fund is created
-    # Create transaction
-    # Verify transaction is created
-    # Create wallet release
-    # Verify fund in wallet has been released
 
   # Add move ewallet test when fair is not active
