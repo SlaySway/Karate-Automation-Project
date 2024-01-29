@@ -23,7 +23,7 @@ Feature: Helper for running fair-controller endpoints
   Scenario: Update the checks for closing the fair for fair: <FAIRID_OR_CURRENT>
     * replace updateFairChecksByFairIdUri.fairId = FAIRID
     * url BOOKFAIRS_EWALLET_2_URL + updateFairChecksByFairIdUri
-    * params {disableFairApiCheck: disableFairApiCheck, disbalePosApiCheck: disablePosApiCheck}
+    * params {disableFairApiCheck: '#(disableFairApiCheck)', disbalePosApiCheck: '#(disablePosApiCheck)'}
     Then method POST
 
   # Input: FAIRID

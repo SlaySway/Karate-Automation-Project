@@ -19,7 +19,7 @@ Feature: Helper for running After COA Accepted endpoints
   # Output: response
   @CreateWalletRelease
   Scenario: Create release of wallet balance for wallet: <WALLETID>
-    * replace createWalletTransactionUri.walletId = WALLETID
-    * url BOOKFAIRS_EWALLET_2_URL + createWalletTransactionUri
+    * replace createWalletReleaseUri.walletId = WALLETID
+    * url BOOKFAIRS_EWALLET_2_URL + createWalletReleaseUri
     * request REQUEST_BODY
     Then method POST
