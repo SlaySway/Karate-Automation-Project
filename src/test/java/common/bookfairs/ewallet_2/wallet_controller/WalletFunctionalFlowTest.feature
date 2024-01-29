@@ -35,10 +35,16 @@ Feature: Wallet Flow Api tests
     And def createdWallet = karate.jsonPath(getFairWalletsResponse.response, "$[?(@.id==" + walletId + ")]" )[0]
     And match createdWallet.uuid == walletUuid
     And match createdWallet contains createWalletRequestBody
-    # Update eWallet details
     Given def getWalletResponse = call read('RunnerHelper.feature@GetWalletByWalletID') {WALLETID:'#(walletId)'}
     Then match getWalletResponse.responseStatus == 200
     And match getWalletResponse.response == createdWallet
+    Given def getWalletByParametersResponse = call read('RunnerHelper.feature@GetWalletsByParameters') {idamUserId:'#(userId)', fairId:'#(fairId)', remainingBalance:'', activeWallets:''}
+    Then match getWalletByParametersResponse.responseStatus == 200
+    And def createdWallet = karate.jsonPath(getWalletByParametersResponse.response, "$[?(@.id==" + walletId + ")]" )[0]
+    And match createdWallet.uuid == walletUuid
+    And match createdWallet contains createWalletRequestBody
+    * def voucherKey = getWalletResponse.response.voucherKey
+    # Update eWallet details
     * def updateWalletRequestBody =
     """
       {
@@ -91,7 +97,7 @@ Feature: Wallet Flow Api tests
     """
     {
     "orderId": '#(getDate())',
-    "amount": 2,
+    "amount": 4,
     "fundType": "cc",
     "purchaserInfo": {
         "idamUserId": "98220298",
@@ -180,6 +186,81 @@ Feature: Wallet Flow Api tests
     Given def getWalletResponse = call read('RunnerHelper.feature@GetWalletByWalletID') {WALLETID:'#(walletId)'}
     Then match getWalletResponse.responseStatus == 200
     And match getWalletResponse.response.status == "CLOSED"
+    # Attempt creating a transaction sale
+    * def REQUEST_BODY =
+    """
+    {
+      "type": "SALE",
+      "amount": 1,
+      "timestamp": '#(getDate())',
+      "reference": '#(getDate())',
+      "note": "From Karate API Testing",
+      "source": "string",
+      "cashier": {
+        "idamUserId": "string"
+      }
+    }
+    """
+    Given def createTransactionResponse = call read('classpath:common/bookfairs/ewallet_2/transaction_controller/RunnerHelper.feature@CreateWalletTransaction') {WALLETID:'#(walletId)'}
+    Then match createTransactionResponse.responseStatus == 404
+    Given def getWalletResponse = call read('RunnerHelper.feature@GetWalletByWalletID') {WALLETID:'#(walletId)'}
+    Then match getWalletResponse.responseStatus == 200
+    * match getWalletResponse.response.amount == walletTracker.amount
+    * match getWalletResponse.response.saleAmount  == walletTracker.saleAmount
+    * match getWalletResponse.response.refundAmount == walletTracker.refundAmount
+    # Attempt funding the wallet
+    * def REQUEST_BODY =
+    """
+    {
+    "orderId": '#(getDate())',
+    "amount": 1,
+    "fundType": "cc",
+    "purchaserInfo": {
+        "idamUserId": "98220298",
+        "firstName": "KarateAPITesting",
+        "lastName": "AutomatedTests",
+        "email": "azhou1@scholastic.com",
+        "state": "NY",
+        "walletOwner": false
+        }
+    }
+    """
+    Given def fundWalletResponse = call read('classpath:common/bookfairs/ewallet_2/fund_controller/RunnerHelper.feature@FundWalletByWalletId') {WALLETID:'#(walletId)'}
+    Then match fundWalletResponse.responseStatus == 404
+    Given def getWalletResponse = call read('RunnerHelper.feature@GetWalletByWalletID') {WALLETID:'#(walletId)'}
+    Then match getWalletResponse.responseStatus == 200
+    * match getWalletResponse.response.amount == walletTracker.amount
+    * match getWalletResponse.response.saleAmount  == walletTracker.saleAmount
+    * match getWalletResponse.response.refundAmount == walletTracker.refundAmount
+    # Create a reconciliation
+    * def REQUEST_BODY =
+    """
+    [
+      {
+        "amount": 1,
+        "voucherKey": "#(voucherKey)",
+        "fairId": "#(fairId)",
+        "reference": "#(getDate())"
+      }
+    ]
+    """
+    Given def createReconciliationResponse = call read('classpath:common/bookfairs/ewallet_2/reconciliation_controller/RunnerHelper.feature@CreateReconciliations')
+    Then match createReconciliationResponse.responseStatus == 201
+    * def reconciliationId = createReconciliationResponse.response.id
+    * def reconciliationReference = createReconciliationResponse.response.result.reference
+    Given def getReconciliationResponse = call read('classpath:common/bookfairs/ewallet_2/reconciliation_controller/RunnerHelper.feature@GetReconciliationById'){RECONCILIATION_ID:'#(reconciliationId)'}
+    Then match getReconciliationResponse.responseStatus == 200
+    Given def getReconciliationReportResponse = call read('classpath:common/bookfairs/ewallet_2/reconciliation_controller/RunnerHelper.feature@GetReconciliationReportById'){RECONCILIATION_ID:'#(reconciliationId)'}
+    Then match getReconciliationReportResponse.responseStatus == 200
+    Given def getWalletResponse = call read('RunnerHelper.feature@GetWalletByWalletID') {WALLETID:'#(walletId)'}
+    Then match getWalletResponse.responseStatus == 200
+    Then def createdTransaction = karate.jsonPath(getWalletResponse.response.transactions, "$[?(@.reference==" + reconciliationReference + ")]" )[0]
+    And match createdTransaction.amount == REQUEST_BODY[0].amount
+    * set walletTracker.amount = walletTracker.amount - REQUEST_BODY[0].amount
+    * set walletTracker.saleAmount = walletTracker.saleAmount + REQUEST_BODY[0].amount
+    * match getWalletResponse.response.amount == walletTracker.amount
+    * match getWalletResponse.response.saleAmount  == walletTracker.saleAmount
+    * match getWalletResponse.response.refundAmount == walletTracker.refundAmount
 
     @QA
     Examples:
