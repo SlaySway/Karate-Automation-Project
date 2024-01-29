@@ -163,7 +163,7 @@ Feature: UpdateFinFormSales PUT Api tests
       }
       for(let field in json){
           let isFieldObject = (typeof json[field] === 'object');
-          if(isFieldObject && json[field].containsKey('$numberDecimal')){
+          if(!Array.isArray(json[field]) && isFieldObject && json[field].containsKey('$numberDecimal')){
               json[field] = Number(json[field]['$numberDecimal']);
           }
           else if (isFieldObject){
@@ -251,25 +251,36 @@ Feature: UpdateFinFormSales PUT Api tests
         "scholasticDollars": {
         "totalRedeemed": {
         "$numberDecimal": "1.5"
-        }}}}
+        }}},
+        "c" : [
+            {
+            "d": {
+                        "$numberDecimal" : "4.0"
+            }
+            },
+            {
+            "e": {
+                        "$numberDecimal" : "3.0"
+            }
+            }
+          ]}
       """
       * def convertNumberDecimal =
       """
-
     function(json){
       if(typeof json !== 'object' || json == null) {
           return json;
       }
       for(let field in json){
           let isFieldObject = (typeof json[field] === 'object');
-          if(isFieldObject && json[field].containsKey('$numberDecimal')){
+          if(!Array.isArray(json[field]) && isFieldObject && json[field].containsKey('$numberDecimal')){
               json[field] = Number(json[field]['$numberDecimal']);
           }
           else if (isFieldObject){
               convertNumberDecimal(json[field]);
           }
         }
-    }      """
+    }"""
 #      * def b = testFun(a)
       * convertNumberDecimal(a)
       * print a
@@ -280,16 +291,30 @@ Feature: UpdateFinFormSales PUT Api tests
         {
           "b" : {
             "$numberDecimal" : "24.0"
-          }
+          },
+          "c" : [
+            {
+            "d": {
+                        "$numberDecimal" : "4.0"
+            }
+            },
+            {
+            "e": {
+                        "$numberDecimal" : "3.0"
+            }
+            }
+          ]
         }
         """
         * def test =
         """
         function(a){
           console.log(a)
-          console.log(a.containsKey('$numebrDecimal'))
+          console.log(a.containsKey('numberDecimal'))
           console.log(a['b'].containsKey('$numberDecimal'))
-          Object.entries(a).forEach((key,value) => {
+          console.log(typeof a['c'])
+          console.log(Array.isArray(a['c']))
+          Object.entries(a['c']).forEach((key,value) => {
           console.log(key, ": ", value)
           });
         }

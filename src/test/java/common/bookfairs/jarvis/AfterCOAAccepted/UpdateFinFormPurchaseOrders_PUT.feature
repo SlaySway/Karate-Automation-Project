@@ -175,7 +175,7 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
       }
       for(let field in json){
           let isFieldObject = (typeof json[field] === 'object');
-          if(isFieldObject && json[field].containsKey('$numberDecimal')){
+          if(!Array.isArray(json[field]) && isFieldObject && json[field].containsKey('$numberDecimal')){
               json[field] = Number(json[field]['$numberDecimal']);
           }
           else if (isFieldObject){
