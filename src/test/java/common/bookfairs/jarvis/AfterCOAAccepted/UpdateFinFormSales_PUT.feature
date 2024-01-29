@@ -140,8 +140,6 @@ Feature: UpdateFinFormSales PUT Api tests
 
   @Happy
   Scenario Outline: Validate mongo is updated in appropriate fields for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
-    And def originalDocument = mongoJson.document
     * def setBigSetFieldsToSubsetValues =
     """
     function(bigSet, subset){
@@ -172,6 +170,9 @@ Feature: UpdateFinFormSales PUT Api tests
         }
     }
     """
+    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
+    * convertNumberDecimal(mongoJson.document)
+    And def originalDocument = mongoJson.document
     * def REQUEST_BODY =
     """
     {
@@ -241,82 +242,3 @@ Feature: UpdateFinFormSales PUT Api tests
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5694296           |
-
-    Scenario: Test
-      * def a =
-      """
-      {
-        "_id": "5694296",
-        "sales": {
-        "scholasticDollars": {
-        "totalRedeemed": {
-        "$numberDecimal": "1.5"
-        }}},
-        "c" : [
-            {
-            "d": {
-                        "$numberDecimal" : "4.0"
-            }
-            },
-            {
-            "e": {
-                        "$numberDecimal" : "3.0"
-            }
-            }
-          ]}
-      """
-      * def convertNumberDecimal =
-      """
-    function(json){
-      if(typeof json !== 'object' || json == null) {
-          return json;
-      }
-      for(let field in json){
-          let isFieldObject = (typeof json[field] === 'object');
-          if(!Array.isArray(json[field]) && isFieldObject && json[field].containsKey('$numberDecimal')){
-              json[field] = Number(json[field]['$numberDecimal']);
-          }
-          else if (isFieldObject){
-              convertNumberDecimal(json[field]);
-          }
-        }
-    }"""
-#      * def b = testFun(a)
-      * convertNumberDecimal(a)
-      * print a
-
-      Scenario: Test 2
-        * def a =
-        """
-        {
-          "b" : {
-            "$numberDecimal" : "24.0"
-          },
-          "c" : [
-            {
-            "d": {
-                        "$numberDecimal" : "4.0"
-            }
-            },
-            {
-            "e": {
-                        "$numberDecimal" : "3.0"
-            }
-            }
-          ]
-        }
-        """
-        * def test =
-        """
-        function(a){
-          console.log(a)
-          console.log(a.containsKey('numberDecimal'))
-          console.log(a['b'].containsKey('$numberDecimal'))
-          console.log(typeof a['c'])
-          console.log(Array.isArray(a['c']))
-          Object.entries(a['c']).forEach((key,value) => {
-          console.log(key, ": ", value)
-          });
-        }
-        """
-        * test(a)

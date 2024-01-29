@@ -248,6 +248,7 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
     }
     """
     Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
+    * convertNumberDecimal(mongoJson.document)
     And def expectedDocument = mongoJson.document
     * def newPurchaseOrdersList = updatePurchaseOrdersList(expectedDocument.sales.purchaseOrdersList, REQUEST_BODY.purchaseOrders)
     And set expectedDocument.sales.purchaseOrdersList = newPurchaseOrdersList
