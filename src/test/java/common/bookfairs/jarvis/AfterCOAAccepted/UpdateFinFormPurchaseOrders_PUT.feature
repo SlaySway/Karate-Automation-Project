@@ -167,6 +167,23 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
 
   @Happy
   Scenario Outline: Validate mongo is updated in appropriate fields for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    * def convertNumberDecimal =
+    """
+    function(json){
+      if(typeof json !== 'object' || json == null) {
+          return json;
+      }
+      for(let field in json){
+          let isFieldObject = (typeof json[field] === 'object');
+          if(isFieldObject && json[field].containsKey('$numberDecimal')){
+              json[field] = Number(json[field]['$numberDecimal']);
+          }
+          else if (isFieldObject){
+              convertNumberDecimal(json[field]);
+          }
+        }
+    }
+    """
     * def updatePurchaseOrdersList =
     """
     function(currentDocument, updatedFields){
@@ -237,6 +254,7 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
     Given def UpdateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
     Then match UpdateFinFormPurchaseOrdersResponse.responseStatus == 200
     Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
+    * convertNumberDecimal(mongoJson.document)
     And match mongoJson.document contains expectedDocument
     * def REQUEST_BODY =
     """
@@ -270,6 +288,7 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
     Given def UpdateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
     Then match UpdateFinFormPurchaseOrdersResponse.responseStatus == 200
     Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
+    * convertNumberDecimal(mongoJson.document)
     And match mongoJson.document contains expectedDocument
 
     @QA

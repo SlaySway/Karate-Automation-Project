@@ -155,28 +155,45 @@ Feature: UpdateFinFormSales PUT Api tests
       return bigSet;
     }
     """
+    * def convertNumberDecimal =
+    """
+    function(json){
+      if(typeof json !== 'object' || json == null) {
+          return json;
+      }
+      for(let field in json){
+          let isFieldObject = (typeof json[field] === 'object');
+          if(isFieldObject && json[field].containsKey('$numberDecimal')){
+              json[field] = Number(json[field]['$numberDecimal']);
+          }
+          else if (isFieldObject){
+              convertNumberDecimal(json[field]);
+          }
+        }
+    }
+    """
     * def REQUEST_BODY =
     """
     {
         "sales": {
             "scholasticDollars": {
-                "totalRedeemed": "1",
-                "taxExemptSales": "2",
-                "taxableDollarSales": "3"
+                "totalRedeemed": 1.50,
+                "taxExemptSales": 2,
+                "taxableDollarSales": 3.0
             },
             "tenderTotals": {
-                "cashAndChecks": "4",
-                "creditCards": "5",
-                "purchaseOrders": "6"
+                "cashAndChecks": 4,
+                "creditCards": 5.05,
+                "purchaseOrders": 6.0
             },
             "grossSales": {
-                "taxExemptSales": "7",
-                "taxableSales": "8"
+                "taxExemptSales": 7.00,
+                "taxableSales": 8
             },
             "netSales": {
                 "shareTheFairFunds": {
-                    "collected": "9",
-                    "redeemed": "10"
+                    "collected": 9,
+                    "redeemed": 10
                 }
             }
         }
@@ -185,29 +202,30 @@ Feature: UpdateFinFormSales PUT Api tests
     Given def UpdateFinFormSalesResponse = call read('RunnerHelper.feature@UpdateFinFormSales')
     Then match UpdateFinFormSalesResponse.responseStatus == 200
     Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
+    * convertNumberDecimal(mongoJson.document)
     And match mongoJson.document contains deep setBigSetFieldsToSubsetValues(originalDocument, REQUEST_BODY)
     * def REQUEST_BODY =
     """
     {
         "sales": {
             "scholasticDollars": {
-                "totalRedeemed": "10",
-                "taxExemptSales": "9",
-                "taxableDollarSales": "8"
+                "totalRedeemed": 10.50,
+                "taxExemptSales": 9,
+                "taxableDollarSales": 8
             },
             "tenderTotals": {
-                "cashAndChecks": "7",
-                "creditCards": "6",
-                "purchaseOrders": "5"
+                "cashAndChecks": 7,
+                "creditCards": 6,
+                "purchaseOrders": 5
             },
             "grossSales": {
-                "taxExemptSales": "4",
-                "taxableSales": "3"
+                "taxExemptSales": 4,
+                "taxableSales": 3
             },
             "netSales": {
                 "shareTheFairFunds": {
-                    "collected": "2",
-                    "redeemed": "1"
+                    "collected": 2,
+                    "redeemed": 1
                 }
             }
         }
@@ -216,9 +234,64 @@ Feature: UpdateFinFormSales PUT Api tests
     Given def UpdateFinFormSalesResponse = call read('RunnerHelper.feature@UpdateFinFormSales')
     Then match UpdateFinFormSalesResponse.responseStatus == 200
     Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
+    * convertNumberDecimal(mongoJson.document)
     And match mongoJson.document contains deep setBigSetFieldsToSubsetValues(originalDocument, REQUEST_BODY)
 
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5694296           |
+
+    Scenario: Test
+      * def a =
+      """
+      {
+        "_id": "5694296",
+        "sales": {
+        "scholasticDollars": {
+        "totalRedeemed": {
+        "$numberDecimal": "1.5"
+        }}}}
+      """
+      * def convertNumberDecimal =
+      """
+
+    function(json){
+      if(typeof json !== 'object' || json == null) {
+          return json;
+      }
+      for(let field in json){
+          let isFieldObject = (typeof json[field] === 'object');
+          if(isFieldObject && json[field].containsKey('$numberDecimal')){
+              json[field] = Number(json[field]['$numberDecimal']);
+          }
+          else if (isFieldObject){
+              convertNumberDecimal(json[field]);
+          }
+        }
+    }      """
+#      * def b = testFun(a)
+      * convertNumberDecimal(a)
+      * print a
+
+      Scenario: Test 2
+        * def a =
+        """
+        {
+          "b" : {
+            "$numberDecimal" : "24.0"
+          }
+        }
+        """
+        * def test =
+        """
+        function(a){
+          console.log(a)
+          console.log(a.containsKey('$numebrDecimal'))
+          console.log(a['b'].containsKey('$numberDecimal'))
+          Object.entries(a).forEach((key,value) => {
+          console.log(key, ": ", value)
+          });
+        }
+        """
+        * test(a)
