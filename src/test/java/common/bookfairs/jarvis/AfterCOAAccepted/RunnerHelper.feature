@@ -198,6 +198,8 @@ Feature: Helper for running After COA Accepted endpoints
     Then method put
 
   # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
+  # Output: response
+
   @GetFinancialForm
   Scenario: Run get financial form for user: <USER_NAME> and fair: <FAIRID_OR_CURRENT>
     Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
