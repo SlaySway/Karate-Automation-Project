@@ -21,8 +21,8 @@ Feature: Helper for running cybersource-controller endpoints
   # Input: USER_NAME, PASSWORD, FAIRID, REQUEST_BODY
   # Output: response
   @RecordCreditCardTransactionPostback
-    Given def sessionResponse = call read('classpath:common/bookfairs/payportal/session/RunnerHelper.feature@CreateSession')
   Scenario: Create a postback record for the transaction in the request body for user: <USER_NAME>, fair: <FAIRID>, and wallet: <WALLETID>
+    Given def sessionResponse = call read('classpath:common/bookfairs/payportal/session/RunnerHelper.feature@CreateSession')
     * url BOOKFAIRS_PAYPORTAL_URL + recordCreditCardTransactionPostbackUri
     * cookies { SCHL : '#(sessionResponse.SCHL)', PP2.0 : '#(sessionResponse.PP2)'}
     * request REQUEST_BODY
@@ -40,9 +40,10 @@ Feature: Helper for running cybersource-controller endpoints
 
   # Input: REQUEST_BODY
   # Output: response
-  @GetWalletsForFair @QA
+  @CyberSourceSecureAcceptanceTransaction @QA
   Scenario: Create the transaction by sending cybersource the modified signature body
     * url cybersourceSecureAcceptanceUrl
-    * request REQUEST_BODY
+    And header contentType = 'application/x-www-form-urlencoded'
+    * request INPUT_BODY
     Then method POST
 
