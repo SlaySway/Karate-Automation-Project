@@ -1,5 +1,7 @@
 package utils;
 
+import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.UpdateResult;
 import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -181,6 +183,31 @@ public class MongoDBUtils {
                     }
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public UpdateResult findByFieldThenUpdate(String collection, String findField, String value, String updateField, String updateValue) {
+        try {
+            MongoCollection<Document> mongoCollection = mongoClient.getDatabase(dbName).getCollection(collection);
+            FindIterable<Document> docs = mongoClient.getDatabase(dbName).getCollection(collection).find(eq(findField, value));
+            Document foundDocument = null;
+            if (docs == null){
+                return null;
+            }else{
+                for(Document doc: docs){
+                    if(doc.get(findField).equals(value)){
+                        foundDocument = doc;
+                    }
+                }
+            }
+            Bson updates = Updates.set(updateField, updateValue);
+
+            UpdateResult result = mongoCollection.updateOne(foundDocument, updates);
+            return result;
+
         } catch (Exception e) {
             e.printStackTrace();
         }
