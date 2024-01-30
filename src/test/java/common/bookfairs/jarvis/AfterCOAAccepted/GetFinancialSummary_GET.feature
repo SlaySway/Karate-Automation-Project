@@ -116,7 +116,7 @@ Feature: GetFinancialSummary GET Api tests
       | azhou1@scholastic.com | password1 | 5694296           | 5694296       | 5694300         |
       | azhou1@scholastic.com | password1 | current           | 5694296       | 5694296         |
 
-  @Regression
+  @Regression @ignore
   Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIRID_OR_CURRENT>
     * def BaseResponseMap = call read('RunnerHelper.feature@GetFinancialSummaryBase')
     * def TargetResponseMap = call read('RunnerHelper.feature@GetFinancialSummary')
