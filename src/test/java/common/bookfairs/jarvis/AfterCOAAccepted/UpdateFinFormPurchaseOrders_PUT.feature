@@ -1,16 +1,16 @@
-@UpdateFinFormSales @PerformanceEnhancement
-Feature: UpdateFinFormSales PUT Api tests
+@UpdateFinFormPurchaseOrders @PerformanceEnhancement
+Feature: UpdateFinFormPurchaseOrders PATCH Api tests
 
   Background: Set config
     * def obj = Java.type('utils.StrictValidation')
-    * def updateFinFormSalesUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/form/sales"
+    * def updateFinFormPurchaseOrdersUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/form/purchase-orders"
     * def sleep = function(millis){ java.lang.Thread.sleep(millis) }
 
   @Unhappy
-  Scenario Outline: Validate when invalid request body for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+  Scenario Outline: Validate when invalid request body type for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     * def REQUEST_BODY = ""
-    Given def updateFinFormSalesResponse = call read('RunnerHelper.feature@UpdateFinFormSales')
-    Then match updateFinFormSalesResponse.responseStatus == 415
+    Given def updateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
+    Then match updateFinFormPurchaseOrdersResponse.responseStatus == 415
 
     @QA
     Examples:
@@ -20,7 +20,7 @@ Feature: UpdateFinFormSales PUT Api tests
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     * def REQUEST_BODY = {}
-    Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFinFormSales')
+    Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
     Then match updateHomepageResponse.responseStatus == 204
     And match updateHomepageResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
 
@@ -32,7 +32,7 @@ Feature: UpdateFinFormSales PUT Api tests
   @Unhappy
   Scenario Outline: Validate when user attempts to access a non-COA Accepted fair:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     * def REQUEST_BODY = {}
-    Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFinFormSales')
+    Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
     Then match updateHomepageResponse.responseStatus == 204
     And match updateHomepageResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NEEDS_COA_CONFIRMATION"
 
@@ -43,8 +43,8 @@ Feature: UpdateFinFormSales PUT Api tests
 
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
-    * replace updateFinFormSalesUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
-    * url BOOKFAIRS_JARVIS_URL + updateFinFormSalesUri
+    * replace updateFinFormPurchaseOrdersUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
+    * url BOOKFAIRS_JARVIS_URL + updateFinFormPurchaseOrdersUri
     Given method put
     Then match responseStatus == 204
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
@@ -57,8 +57,8 @@ Feature: UpdateFinFormSales PUT Api tests
 
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is expired
-    * replace updateFinFormSalesUri.fairIdOrCurrent =  "current"
-    * url BOOKFAIRS_JARVIS_URL + updateFinFormSalesUri
+    * replace updateFinFormPurchaseOrdersUri.fairIdOrCurrent =  "current"
+    * url BOOKFAIRS_JARVIS_URL + updateFinFormPurchaseOrdersUri
     * cookies { SCHL : '<EXPIRED_SCHL>'}
     Given method put
     Then match responseStatus == 204
@@ -72,7 +72,7 @@ Feature: UpdateFinFormSales PUT Api tests
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to specific fair for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     * def REQUEST_BODY = {}
-    Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFinFormSales')
+    Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
     Then match updateHomepageResponse.responseStatus == 403
     And match updateHomepageResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
 
@@ -84,7 +84,7 @@ Feature: UpdateFinFormSales PUT Api tests
   @Unhappy
   Scenario Outline: Validate when user uses invalid fair ID for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     * def REQUEST_BODY = {}
-    Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFinFormSales')
+    Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
     Then match updateHomepageResponse.responseStatus == 404
     And match updateHomepageResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
 
@@ -96,7 +96,7 @@ Feature: UpdateFinFormSales PUT Api tests
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<FAIRID_OR_CURRENT>
     * def REQUEST_BODY = {}
-    Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFinFormSales')
+    Given def updateHomepageResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
     Then match updateHomepageResponse.responseHeaders['Sbf-Jarvis-Fair-Id'][0] == EXPECTED_FAIR
     And if(FAIRID_OR_CURRENT == 'current') karate.log(karate.match(updateHomepageResponse.responseHeaders['Sbf-Jarvis-Default-Fair'][0], 'AUTOMATICALLY_SELECTED_THIS_REQUEST'))
 
@@ -109,8 +109,8 @@ Feature: UpdateFinFormSales PUT Api tests
   Scenario Outline: Validate when user inputs different configurations for fairId/current WITH SBF_JARVIS for user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, cookie fair:<SBF_JARVIS_FAIR>
     Given def selectFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){FAIRID_OR_CURRENT: <SBF_JARVIS_FAIR>}
     * def REQUEST_BODY = {}
-    * replace updateFinFormSalesUri.fairIdOrCurrent = FAIRID_OR_CURRENT
-    * url BOOKFAIRS_JARVIS_URL + updateFinFormSalesUri
+    * replace updateFinFormPurchaseOrdersUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    * url BOOKFAIRS_JARVIS_URL + updateFinFormPurchaseOrdersUri
     * cookies { SCHL : '#(selectFairResponse.SCHL)', SBF_JARVIS: '#(selectFairResponse.SBF_JARVIS)'}
     Then method put
     Then match responseHeaders['Sbf-Jarvis-Fair-Id'][0] == EXPECTED_FAIR
@@ -125,8 +125,8 @@ Feature: UpdateFinFormSales PUT Api tests
   @Unhappy
   Scenario Outline: Validate when current is used without SBF_JARVIS user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
-    * replace updateFinFormSalesUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
-    * url BOOKFAIRS_JARVIS_URL + updateFinFormSalesUri
+    * replace updateFinFormPurchaseOrdersUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
+    * url BOOKFAIRS_JARVIS_URL + updateFinFormPurchaseOrdersUri
     * cookies { SCHL : '#(schlResponse.SCHL)'}
     * request {}
     Given method put
@@ -138,21 +138,35 @@ Feature: UpdateFinFormSales PUT Api tests
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | current           |
 
+  @Unhappy
+  Scenario Outline: Validate when current is used without SBF_JARVIS user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    * replace updateFinFormPurchaseOrdersUri.fairIdOrCurrent =  FAIRID_OR_CURRENT
+    * url BOOKFAIRS_JARVIS_URL + updateFinFormPurchaseOrdersUri
+    * cookies { SCHL : '#(schlResponse.SCHL)'}
+    * request {}
+    Given method put
+    Then match responseStatus == 400
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SELECTED_FAIR"
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | current           |
+
+  @Unhappy
+  Scenario Outline: Validate when invalid request body for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    * def REQUEST_BODY = read('UpdateFinFormPurchaseOrdersRequests.json')[requestBodyJson]
+    Given def updateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
+    Then match updateFinFormPurchaseOrdersResponse.responseStatus == 400
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | requestBodyJson |
+      | azhou1@scholastic.com | password1 | 5694296           | invalidAmount   |
+
   @Happy
   Scenario Outline: Validate mongo is updated in appropriate fields for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    * def setBigSetFieldsToSubsetValues =
-    """
-    function(bigSet, subset){
-      for(var key in subset){
-          if(typeof bigSet[key] === 'object' && typeof subset[key] === 'object'){
-            bigSet[key] = setBigSetFieldsToSubsetValues(bigSet[key], subset[key]);
-          } else {
-            bigSet[key] =  subset[key];
-          }
-      }
-      return bigSet;
-    }
-    """
     * def convertNumberDecimal =
     """
     function(json){
@@ -170,73 +184,113 @@ Feature: UpdateFinFormSales PUT Api tests
         }
     }
     """
-    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
-    * convertNumberDecimal(mongoJson.document)
-    And def originalDocument = mongoJson.document
+    * def updatePurchaseOrdersList =
+    """
+    function(currentDocument, updatedFields){
+      let updatedPOs = new Map(updatedFields.map(purchaseOrder=>[purchaseOrder.purchaseOrderNumber, purchaseOrder]));
+      let currentPOs = new Map(currentDocument.map(purchaseOrder=>[purchaseOrder.purchaseOrderNumber, purchaseOrder]));
+      let purchaseOrderSchema = {
+        "purchaseOrderNumber" : "1",
+        "amount" : "2",
+        "contactName" : "3",
+        "agencyName" : "4",
+        "address" : "5",
+        "city" : "6",
+        "state" : "7",
+        "zipCode" : "8"
+      };
+      updatedPOs.forEach((updatedFields, updateOrCreatePurchaseNumber) => {
+          const purchaseOrderToUpdateOrCreate = currentPOs.get(updateOrCreatePurchaseNumber)
+          if(purchaseOrderToUpdateOrCreate){
+              purchaseOrderToUpdateOrCreate.keySet().forEach(key => {
+                  if(Object.keys(purchaseOrderSchema).includes(key)){
+                      purchaseOrderToUpdateOrCreate[key] = updatedFields[key]
+                  }
+              })
+          }else{
+              let newEntry = {}
+              Object.keys(purchaseOrderSchema).forEach(key => {
+                  if(Object.keys(purchaseOrderSchema).includes(key)){
+                      newEntry[key] = updatedFields[key]
+                  }
+              })
+              currentPOs.set(updateOrCreatePurchaseNumber, newEntry)
+          }
+      })
+     return Array.from(currentPOs.values())
+    }
+    """
     * def REQUEST_BODY =
     """
     {
-        "sales": {
-            "scholasticDollars": {
-                "totalRedeemed": 1.50,
-                "taxExemptSales": 2,
-                "taxableDollarSales": 3.0
+        "purchaseOrders": [
+            {
+                "purchaseOrderNumber": "1",
+                "amount": 1,
+                "contactName": "PostmanTesting",
+                "agencyName": "Scholastic",
+                "address": "NYE",
+                "city": "Marryland",
+                "state": "ss",
+                "zipCode": "34567"
             },
-            "tenderTotals": {
-                "cashAndChecks": 4,
-                "creditCards": 5.05,
-                "purchaseOrders": 6.0
-            },
-            "grossSales": {
-                "taxExemptSales": 7.00,
-                "taxableSales": 8
-            },
-            "netSales": {
-                "shareTheFairFunds": {
-                    "collected": 9,
-                    "redeemed": 10
-                }
+            {
+                "purchaseOrderNumber": "3",
+                "amount": 2,
+                "contactName": "PostTesting",
+                "agencyName": "sd",
+                "address": "asfh",
+                "city": "david",
+                "state": "ss",
+                "zipCode": "112233"
             }
-        }
+        ]
     }
     """
-    Given def UpdateFinFormSalesResponse = call read('RunnerHelper.feature@UpdateFinFormSales')
-    Then match UpdateFinFormSalesResponse.responseStatus == 200
     Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
     * convertNumberDecimal(mongoJson.document)
-    And match mongoJson.document contains deep setBigSetFieldsToSubsetValues(originalDocument, REQUEST_BODY)
+    And def expectedDocument = mongoJson.document
+    * def newPurchaseOrdersList = updatePurchaseOrdersList(expectedDocument.sales.purchaseOrdersList, REQUEST_BODY.purchaseOrders)
+    And set expectedDocument.sales.purchaseOrdersList = newPurchaseOrdersList
+    Given def UpdateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
+    Then match UpdateFinFormPurchaseOrdersResponse.responseStatus == 200
+    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
+    * convertNumberDecimal(mongoJson.document)
+    And match mongoJson.document contains expectedDocument
     * def REQUEST_BODY =
     """
     {
-        "sales": {
-            "scholasticDollars": {
-                "totalRedeemed": 10.50,
-                "taxExemptSales": 9,
-                "taxableDollarSales": 8
-            },
-            "tenderTotals": {
-                "cashAndChecks": 7,
-                "creditCards": 6,
-                "purchaseOrders": 5
-            },
-            "grossSales": {
-                "taxExemptSales": 4,
-                "taxableSales": 3
-            },
-            "netSales": {
-                "shareTheFairFunds": {
-                    "collected": 2,
-                    "redeemed": 1
-                }
-            }
+    "purchaseOrders": [
+        {
+            "purchaseOrderNumber": "1",
+            "amount": 3,
+            "contactName": "PostmanTestingss",
+            "agencyName": "Scholasticssss",
+            "address": "NYEsss",
+            "city": "Marrylandsss",
+            "state": "ssss",
+            "zipCode": "445566"
+        },
+        {
+            "purchaseOrderNumber": "3",
+            "amount": 4,
+            "contactName": "PostTestingsss",
+            "agencyName": "sdss",
+            "address": "asfhss",
+            "city": "davesss",
+            "state": "ssss",
+            "zipCode": "223344"
         }
+      ]
     }
     """
-    Given def UpdateFinFormSalesResponse = call read('RunnerHelper.feature@UpdateFinFormSales')
-    Then match UpdateFinFormSalesResponse.responseStatus == 200
+    And def expectedDocument = mongoJson.document
+    And set expectedDocument.sales.purchaseOrdersList = updatePurchaseOrdersList(expectedDocument.sales.purchaseOrdersList, REQUEST_BODY.purchaseOrders)
+    Given def UpdateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
+    Then match UpdateFinFormPurchaseOrdersResponse.responseStatus == 200
     Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
     * convertNumberDecimal(mongoJson.document)
-    And match mongoJson.document contains deep setBigSetFieldsToSubsetValues(originalDocument, REQUEST_BODY)
+    And match mongoJson.document contains expectedDocument
 
     @QA
     Examples:
