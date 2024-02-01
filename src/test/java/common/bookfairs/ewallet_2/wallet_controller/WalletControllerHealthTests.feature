@@ -5,7 +5,7 @@ Feature: Wallet Controller api tests for general health
     Given call read('RunnerHelper.feature@' + api) apiParamsAsJson
     Then match responseStatus == EXPECTED_CODE * 1
 
-    @QA
+    @CoveredInWalletFunctionalFlowTestAsThisTestIsntDynamicEnough
     Examples:
       | api                        | EXPECTED_CODE | apiParams                                                                                                                                                                                                                                                                                                             |
       | GetWalletByWalletID        | 200           | {WALLETID:1211335}                                                                                                                                                                                                                                                                                                    |

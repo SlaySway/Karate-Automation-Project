@@ -29,6 +29,7 @@ Feature: Test the endpoints necessary for scheduled job to change satus of fair
     Given def mongoJson = call read('classpath:common/bookfairs/ewallet_2/MongoDBRunner.feature@FindDocumentByField') {collection:"fair", field:"_id", value:"#(FAIRID_OR_CURRENT)"}
     Then match mongoJson.document.status == "REOPENED"
 
+    @QA
     Examples:
       | FAIRID_OR_CURRENT |
       | 5694296           |
