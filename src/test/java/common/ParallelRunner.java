@@ -25,8 +25,12 @@ public class ParallelRunner {
 	@Test
 	public void executeTest() {
 		// need to have path and tags be variables
-		String testPath = System.getProperty("testPath") == null ? "classpath:common/bookfairs/jarvis" : System.getProperty("testPath");
-		String[] tags = System.getProperty("tags") == null ? new String[]{"@QA", "@PerformanceEnhancement", "~@Regression"} : new String[]{System.getProperty("tags")};
+		System.out.println(System.getProperty("testPath"));
+		String testPath = System.getProperty("testPath"); //== null ? "classpath:common/bookfairs/jarvis" : System.getProperty("testPath");
+		String[] tags = new String[]{System.getProperty("tags")}; //== null ? new String[]{"@QA", "~@Regression"} : new String[]{System.getProperty("tags")};
+		System.out.println("testPath: " + testPath);
+		System.out.println("tags: " + tags);
+
 
 		Results results = Runner.path(testPath).outputCucumberJson(true).outputJunitXml(true)
 				.configDir("src/test/java").tags(tags).parallel(1);
