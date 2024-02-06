@@ -25,11 +25,33 @@ Feature: Save Library details API automation tests
     Then match saveLibraryDetailsResponseMap.response.barcodePrefix == getLibraryDetailsResponseMap.response.barcodePrefix
     Then match saveLibraryDetailsResponseMap.response.libraryName == getLibraryDetailsResponseMap.response.libraryName
 
-
     @QA
     Examples:
       | ORG_UCN | requestBody       |
       | 77789   | putLibraryDetails |
+
+  Scenario Outline: Validate 400 response code when no request payload is passed
+    * def REQUEST_BODY =
+    """
+
+    """
+    * def saveLibraryDetailsResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@PutLibraryDetails'){ORG_UCN : '<ORG_UCN>'}
+    Then match saveLibraryDetailsResponseMap.responseStatus == 400
+
+    @QA
+      Examples:
+    |ORG_UCN  |
+    |77789    |
+
+  Scenario Outline: Validate 404 response code when no orgUcn is passed
+    * def REQUEST_BODY = read('SaveLibraryDetails.json')[requestBody]
+    * def saveLibraryDetailsResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@PutLibraryDetails'){ORG_UCN : '<ORG_UCN>'}
+    Then match saveLibraryDetailsResponseMap.responseStatus == 404
+
+    @QA
+    Examples:
+      | ORG_UCN | requestBody       |
+      |         | putLibraryDetails |
 
   @Regression @ignore
   Scenario Outline: Validate regression using dynamic comparison || orgUcn=<ORG_UCN>

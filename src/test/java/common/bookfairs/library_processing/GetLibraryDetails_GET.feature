@@ -28,6 +28,24 @@ Feature: Library details API automation tests
       | ORG_UCN |
       | 12345   |
 
+  Scenario Outline: Validate 200 response code for an orgUcn not existing in database
+    * def getLibraryDetailsResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@GetLibraryDetails'){ORG_UCN : '<ORG_UCN>'}
+    Then match getLibraryDetailsResponseMap.responseStatus == 200
+
+    @QA
+    Examples:
+      | ORG_UCN  |
+      | abcd1234 |
+
+  Scenario Outline: Validate 404 response code for passing no orgUcn
+    * def getLibraryDetailsResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@GetLibraryDetails'){ORG_UCN : '<ORG_UCN>'}
+    Then match getLibraryDetailsResponseMap.responseStatus == 404
+
+    @QA
+    Examples:
+      | ORG_UCN |
+      |         |
+
   @Regression @ignore
   Scenario Outline: Validate regression using dynamic comparison || orgUcn=<ORG_UCN>
     * def BaseResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@GetLibraryDetailsBase')

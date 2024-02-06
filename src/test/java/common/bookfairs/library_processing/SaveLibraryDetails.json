@@ -1,17 +1,17 @@
 {
   "putLibraryDetails": {
-  "capitalization": "Capitalize first main entry letter only",
-  "medium": "Email",
-  "softwareSystem": "CARL",
-  "format": "USMARC MARC Communications Format-852 Holdings (File name: Marc.001)",
-  "readingLabel": "Yes",
-  "readingProgram": "Accelerated Reader (r)",
-  "readingLabelPlacement": 58,
-  "spineLabelPlacement": "1.25 inch",
-  "barcodeOrientation": "Vertical (Top to Bottom)",
-  "barcodePlacement": 12,
-  "barCodeSymbology": "Code 3 of 9 (code 39)",
-  "barcodePrefix": "null",
-  "libraryName": "Test Library"
-   }
+    "capitalization": "Capitalize first main entry letter only",
+    "medium": "Email",
+    "softwareSystem": "CARL",
+    "format": "USMARC MARC Communications Format-852 Holdings (File name: Marc.001)",
+    "readingLabel": "Yes",
+    "readingProgram": "Accelerated Reader (r)",
+    "readingLabelPlacement": 58,
+    "spineLabelPlacement": "1.25 inch",
+    "barcodeOrientation": "Vertical (Top to Bottom)",
+    "barcodePlacement": 12,
+    "barCodeSymbology": "Code 3 of 9 (code 39)",
+    "barcodePrefix": "null",
+    "libraryName": "Test Library"
+  }
 }
