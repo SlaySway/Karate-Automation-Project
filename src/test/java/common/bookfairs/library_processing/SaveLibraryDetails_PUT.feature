@@ -4,6 +4,7 @@ Feature: Save Library details API automation tests
   Background: Set config
     * def obj = Java.type('utils.StrictValidation')
     * string saveLibraryDetails = "/api/user/library/orgs/<orgUcn>"
+    * def sleep = function(millis){ java.lang.Thread.sleep(millis) }
 
   Scenario Outline: Validate 200 response code for a valid request
     * def REQUEST_BODY = read('SaveLibraryDetails.json')[requestBody]
@@ -29,6 +30,29 @@ Feature: Save Library details API automation tests
     Examples:
       | ORG_UCN | requestBody       |
       | 77789   | putLibraryDetails |
+
+  Scenario Outline: Validate 200 response code for a valid request and check if data is getting updated
+    Given def originalLibraryDetailsResponse = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@GetLibraryDetails'){ORG_UCN : '<ORG_UCN>'}
+    Then originalLibraryDetailsResponse.responseStatus == 200
+    * def REQUEST_BODY = read('SaveLibraryDetails.json')[updatedPayload]
+    Given def saveLibraryDetailsResponse = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@PutLibraryDetails'){ORG_UCN : '<ORG_UCN>'}
+    Then saveLibraryDetailsResponse.responseStatus == 200
+    * sleep(1000)
+    Given def modifiedLibraryDetails = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@GetLibraryDetails'){ORG_UCN : '<ORG_UCN>'}
+    Then modifiedLibraryDetails.responseStatus == 200
+    Then match originalLibraryDetailsResponse.response.readingLabel.selectedValue != modifiedLibraryDetails.response.readingLabel.selectedValue
+    * def REQUEST_BODY = read('SaveLibraryDetails.json')[requestBody]
+    Given def saveLibraryDetailsResponse = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@PutLibraryDetails'){ORG_UCN : '<ORG_UCN>'}
+    Then saveLibraryDetailsResponse.responseStatus == 200
+    * sleep(1000)
+    Given def modifiedLibraryDetails = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@GetLibraryDetails'){ORG_UCN : '<ORG_UCN>'}
+    Then match modifiedLibraryDetails.responseStatus == 200
+    Then match originalLibraryDetailsResponse.response.readingLabel.selectedValue == modifiedLibraryDetails.response.readingLabel.selectedValue
+
+    @QA
+    Examples:
+      | ORG_UCN | requestBody       | updatedPayload        |
+      | 77789   | putLibraryDetails | updatedLibraryDetails |
 
   Scenario Outline: Validate 400 response code when no request payload is passed
     * def REQUEST_BODY =
