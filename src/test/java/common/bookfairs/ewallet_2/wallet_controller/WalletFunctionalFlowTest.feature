@@ -254,7 +254,7 @@ Feature: Wallet Flow Api tests
     Then match getReconciliationReportResponse.responseStatus == 200
     Given def getWalletResponse = call read('RunnerHelper.feature@GetWalletByWalletID') {WALLETID:'#(walletId)'}
     Then match getWalletResponse.responseStatus == 200
-    Then def createdTransaction = karate.jsonPath(getWalletResponse.response.transactions, "$[?(@.reference==" + reconciliationReference + ")]" )[0]
+    Then def createdTransaction = karate.jsonPath(getWalletResponse.response.transactions, "$[?(@.reference=='" + reconciliationReference + "')]" )[0]
     And match createdTransaction.amount == REQUEST_BODY[0].amount
     * set walletTracker.amount = walletTracker.amount - REQUEST_BODY[0].amount
     * set walletTracker.saleAmount = walletTracker.saleAmount + REQUEST_BODY[0].amount
@@ -265,4 +265,4 @@ Feature: Wallet Flow Api tests
     @QA
     Examples:
       | USER_ID  | FAIR_ID | FAIR_TO_TRANSFER_TO |
-      | 98483103 | 5694296 | 5697025             |
+      | 98483103 | 5694301 | 5694302             |
