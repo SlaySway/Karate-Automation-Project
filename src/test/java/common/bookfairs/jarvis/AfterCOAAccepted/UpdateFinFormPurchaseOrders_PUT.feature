@@ -165,7 +165,7 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | requestBodyJson |
       | azhou1@scholastic.com | password1 | 5694296           | invalidAmount   |
 
-  @Happy
+  @Happy @Mongo
   Scenario Outline: Validate mongo is updated in appropriate fields for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     * def convertNumberDecimal =
     """

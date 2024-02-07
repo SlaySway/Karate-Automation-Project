@@ -1,5 +1,6 @@
 Feature: Test the endpoints necessary for scheduled job to change satus of fair
 
+  @Mongo
   Scenario Outline: User has a REOPENED fair that is then set to PROCESSED then back to REOPENED
     Given def mongoJson = call read('classpath:common/bookfairs/ewallet_2/MongoDBRunner.feature@FindDocumentByFieldThenUpdateField') {collection:"fair", field:"_id", value:"#(FAIRID_OR_CURRENT)", updateField:'status', updateValue:'OPEN'}
     Given def mongoJson = call read('classpath:common/bookfairs/ewallet_2/MongoDBRunner.feature@FindDocumentByField') {collection:"fair", field:"_id", value:"#(FAIRID_OR_CURRENT)"}

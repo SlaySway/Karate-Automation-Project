@@ -138,7 +138,7 @@ Feature: UpdateFinFormSales PUT Api tests
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | current           |
 
-  @Happy
+  @Happy @Mongo
   Scenario Outline: Validate mongo is updated in appropriate fields for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     * def convertNumberDecimal =
     """
