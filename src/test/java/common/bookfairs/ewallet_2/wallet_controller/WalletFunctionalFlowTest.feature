@@ -265,4 +265,4 @@ Feature: Wallet Flow Api tests
     @QA
     Examples:
       | USER_ID  | FAIR_ID | FAIR_TO_TRANSFER_TO |
-      | 98483103 | 5694301 | 5694302             |
+      | 98483103 | 5694296 | 5694302             |
