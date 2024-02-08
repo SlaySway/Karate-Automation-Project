@@ -28,7 +28,11 @@ function fn() {
 		BOOKFAIRS_SERVICE_URL: 'https://bookfairs-service.qa.apps.scholastic.tech',
 
 		BOOKFAIRS_PAYPORTAL_URL: 'https://payportal-service.qa.apps.scholastic.tech',
-		BOOKFAIRS_EWALLET_2_URL: 'https://ewallet-2.qa.apps.scholastic.tech'
+		BOOKFAIRS_EWALLET_2_URL: 'https://ewallet-2.qa.apps.scholastic.tech',
+
+		LIBRARY_PROCESSING_URL: 'https://library-processing.qa.apps.scholastic.tech',
+		LIBRARY_PROCESSING_BASE: 'https://library-processing.stage.apps.scholastic.tech'
+
 	}
 
 	if (env == 'dev') {
