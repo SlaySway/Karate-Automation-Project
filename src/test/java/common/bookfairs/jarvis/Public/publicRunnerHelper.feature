@@ -7,6 +7,8 @@ Feature: Helper for running SCHL login api
     * string  fairSettingsURLStage = "/bookfairs-jarvis/api/user/fairs/current/settings"
     * string  fairFinderByFairIdURLStage = "/bookfairs-jarvis/api/fairs"
 
+    * string getOFEByOrgUCNSUri = "/bookfairs-jarvis/api/public/ofe/school/<schoolUCNs>"
+
   # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
   # Output: response.SBF_JARVIS
   @getCOAWithJWTBase
@@ -45,4 +47,13 @@ Feature: Helper for running SCHL login api
   Scenario: Run GetFairDetails api from bookfairs service swagger
     Given url BOOKFAIRS_SERVICE_URL + '/bookfairs-service'
     And path FAIRID_OR_CURRENT
+    And method get
+
+  # Input: SCHOOL_UCNS
+  # Output: response
+  @GetOFEByOrgUCNS
+  Scenario: Run GetOFEByOrgUCNS api in base environment
+    * replace getOFEByOrgUCNSUri.schoolUCNs = SCHOOL_UCNS
+    * print SCHOOL_UCNS
+    Given url BOOKFAIRS_JARVIS_URL + getOFEByOrgUCNSUri
     And method get
