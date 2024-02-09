@@ -20,74 +20,45 @@ Feature:GetOFEByOrgUCNS API Automation Tests
       | abc         | 400                     |
       | ''          | 400                     |
 
-  Scenario Outline: Validate happy response is valid against CMDM based for UCNS: <SCHOOL_UCNS>
-    * def dateParser =
-    """
-    function(dateString){
-        let parts = dateString.split("-");
-        return new Date(parts[0], parts[1]-1, parts[2]);
-    }
-    """
-    * def addDays =
-    """
-    function(dateObject, daysToAdd){
-        dateObject.setDate(dateObject.getDate() + daysToAdd);
-        return dateObject;
-    }
-    """
+  Scenario Outline: Validate happy response is valid against calling CMDM and building expected response for UCNS: <SCHOOL_UCNS>
     * def buildResponse =
     """
-    function(cmdmResponse){
-      let response = []
-      let currentDate = new Date();
-      console.log("Current date: ", currentDate);
-      cmdmResponse.fairs.forEach((fair) =>  {
-          let newFair = {}
-          newFair.name = fair.name;
-          newFair.id = fair.bookfairAccountId;
-          newFair.ucn = fair.schoolUcn;
-          newFair.address1 = fair.address;
-          newFair.address2 = "";
-          newFair.city = fair.city;
-          newFair.state = fair.state;
-          newFair.postalCode = fair.zipcode;
-          newFair.active = (currentDate >= dateParser(fair.fairStartDate) && currentDate <= dateParser(fair.fairEndDate));
-          newFair.percentProfit = newFair.active ? "25" : "2";
-          newFair.fairId = parseInt(fair.fairId);
-          newFair.ofeStartDate = fair.fairStartDate;
-          newFair.ofeEndDate = (fair.productId && ["OC", "VF", "OS", "OT"].includes(fair.productId)) ? fair.fairEndDate : addDays(dateParser(fair.fairEndDate),13).toISOString().split('T')[0];
-          response.push(newFair);
-      })
-      return response;
-  }
-    """
-    Given def cmdmGetFairByOrgUcnResponse = call read("classpath:common/cmdm/fairs/CMDMRUnnerHelper.feature@GetFairsByOrgUcn")
-    Then cmdmGetFairByOrgUcnResponse.responseStatus = 200
-    * def expectedResponse = buildResponse(cmdmGetFairByOrgUcnResponse.response)
+      function(schoolUcnsAsString){
+        let schoolUcns = schoolUcnsAsString.split(",");
+        let expectedResponse = []
+        schoolUcns.forEach((schoolUcn) => {
+          console.log("Calling cmdm for ", schoolUcn);
+          let cmdmResponse = karate.call("classpath:common/cmdm/fairs/CMDMRUnnerHelper.feature@GetFairsByOrgUcn", {SCHOOL_UCN: schoolUcn});
+          let DateUtils = Java.type('utils.DateUtils');
+          cmdmResponse.response.fairs.forEach((fair) =>  {
+              let newFair = {}
+              newFair.name = fair.name;
+              newFair.id = fair.bookfairAccountId;
+              newFair.ucn = fair.schoolUcn;
+              newFair.address1 = fair.address;
+              newFair.address2 = "";
+              newFair.city = fair.city;
+              newFair.state = fair.state;
+              newFair.postalCode = fair.zipcode;
+              newFair.fairId = parseInt(fair.fairId);
+              newFair.ofeStartDate = fair.fairStartDate;
+              newFair.ofeEndDate = (fair.productId && ["OC", "VF", "OS", "OT"].includes(fair.productId)) ? fair.fairEndDate : DateUtils.addDays(fair.fairStartDate,13);
+              newFair.active = DateUtils.isCurrentDateBetweenTwoDates(newFair.ofeStartDate, newFair.ofeEndDate);
+              newFair.percentProfit = newFair.active ? 25 : 2;
+              expectedResponse.push(newFair);
+          })
+        })
+        return expectedResponse;
+      }
+      """
+    Given def expectedResponse = buildResponse(SCHOOL_UCNS);
+    Given def getOFEByOrgUCNSResponse = call read("publicRunnerHelper.feature@GetOFEByOrgUCNS")
+    Then getOFEByOrgUCNSResponse.responseStatus = 200
     * print expectedResponse
-
-#    Given def getOFEByOrgUCNSResponse = call read("classpath:common/cmdm/fairs/CMDMRUnnerHelper.feature@GetFairsByOrgUcn")
-#    Then getOFEByOrgUCNSResponse.responseStatus = 200
+    * print getOFEByOrgUCNSResponse.response
+    And match expectedResponse contains only getOFEByOrgUCNSResponse.response
 
     @QA
     Examples:
-      | SCHOOL_UCN | EXPECTED_RESPONSE_CODE! |
-      |     600009249        | 404                     |
-
-    Scenario: testing
-      * def dateParser =
-    """
-    function(dateString){
-        let parts = dateString.split("-");
-        return new Date(parts[0], parts[1]-1, parts[2]);
-    }
-    """
-      * def a =
-      """
-      function(dateString){
-        console.log("Over here", dateParser(dateString));
-        return dateParser(dateString);
-      }
-      """
-      * def b = a("2024-03-02")
-      * print b
+      | SCHOOL_UCNS |
+      | 600009249   |

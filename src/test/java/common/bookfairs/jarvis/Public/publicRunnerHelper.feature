@@ -54,6 +54,5 @@ Feature: Helper for running SCHL login api
   @GetOFEByOrgUCNS
   Scenario: Run GetOFEByOrgUCNS api in base environment
     * replace getOFEByOrgUCNSUri.schoolUCNs = SCHOOL_UCNS
-    * print SCHOOL_UCNS
     Given url BOOKFAIRS_JARVIS_URL + getOFEByOrgUCNSUri
     And method get
