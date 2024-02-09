@@ -30,24 +30,28 @@ Feature:GetOFEByOrgUCNS API Automation Tests
           console.log("Calling cmdm for ", schoolUcn);
           let cmdmResponse = karate.call("classpath:common/cmdm/fairs/CMDMRUnnerHelper.feature@GetFairsByOrgUcn", {SCHOOL_UCN: schoolUcn});
           let DateUtils = Java.type('utils.DateUtils');
-          cmdmResponse.response.fairs.forEach((fair) =>  {
-              let newFair = {}
-              newFair.name = fair.name;
-              newFair.id = fair.bookfairAccountId;
-              newFair.ucn = fair.schoolUcn;
-              newFair.address1 = fair.address;
-              newFair.address2 = "";
-              newFair.city = fair.city;
-              newFair.state = fair.state;
-              newFair.postalCode = fair.zipcode;
-              newFair.fairId = parseInt(fair.fairId);
-              newFair.ofeStartDate = fair.fairStartDate;
-              newFair.ofeEndDate = (fair.productId && ["OC", "VF", "OS", "OT"].includes(fair.productId)) ? fair.fairEndDate : DateUtils.addDays(fair.fairStartDate,13);
-              newFair.active = DateUtils.isCurrentDateBetweenTwoDates(newFair.ofeStartDate, newFair.ofeEndDate);
-              newFair.percentProfit = newFair.active ? 25 : 2;
-              expectedResponse.push(newFair);
-          })
+          if(cmdmResponse.response.fairs){
+            cmdmResponse.response.fairs.forEach((fair) =>  {
+                let newFair = {}
+                newFair.name = fair.name;
+                newFair.id = fair.bookfairAccountId;
+                newFair.ucn = fair.schoolUcn;
+                newFair.address1 = fair.address;
+                newFair.address2 = "";
+                newFair.city = fair.city;
+                newFair.state = fair.state;
+                newFair.postalCode = fair.zipcode;
+                newFair.fairId = parseInt(fair.fairId);
+                newFair.ofeStartDate = fair.fairStartDate;
+                newFair.ofeEndDate = (fair.productId && ["OC", "VF", "OS", "OT"].includes(fair.productId)) ? fair.fairEndDate : DateUtils.addDays(fair.fairStartDate,13);
+                newFair.active = DateUtils.isCurrentDateBetweenTwoDates(newFair.ofeStartDate, newFair.ofeEndDate);
+                newFair.percentProfit = newFair.active ? 25 : 2;
+                expectedResponse.push(newFair);
+            })
+          }
         })
+        if(expectedResponse.length == 0)
+          return ""
         return expectedResponse;
       }
       """
@@ -60,5 +64,7 @@ Feature:GetOFEByOrgUCNS API Automation Tests
 
     @QA
     Examples:
-      | SCHOOL_UCNS |
-      | 600009249   |
+      | SCHOOL_UCNS                             |
+      | 600009249                               |
+      | 600116335,600130575,600119711,600080044 |
+      | 600073255,600009249                     |
