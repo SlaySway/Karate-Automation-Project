@@ -4,7 +4,8 @@ Feature: Helper for accessing ewallet Mongo
   Background: Set config
     * def uri = "mongodb+srv://egift-dev:nlFlUfFWAQ677Y71@virtual-payment-gateway-qa-nc1xz.mongodb.net/admin?retryWrites=true&replicaSet=virtual-payment-gateway-qa-shard-0&readPreference=primary&srvServiceName=mongodb&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-1"
     * def dbName = "ewallet"
-
+#    * def uri = "mongodb+srv://egift-dev:nlFlUfFWAQ677Y71@virtual-payment-gateway-qa-nc1xz.mongodb.net/admin?retryWrites=true&replicaSet=virtual-payment-gateway-qa-shard-0&readPreference=primary&srvServiceName=mongodb&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-1"
+#    * def uri = "mongodb+srv://egift-dev:nlFlUfFWAQ677Y71@virtual-payment-gateway-dev-nc1xz.mongodb.net/ewallet?retryWrites=true&w=majority"
     # Input: collection, field, value
     # Output: document (returns document as JSON)
   @FindDocumentByField
