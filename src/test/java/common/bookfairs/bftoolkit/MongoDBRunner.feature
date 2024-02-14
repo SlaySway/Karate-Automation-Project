@@ -10,7 +10,41 @@ Feature: Helper for accessing bftoolkit Mongo
   @FindDocumentByField
   Scenario: Find and return document by field
     * def DbUtils = Java.type('utils.MongoDBUtils')
-    * def db = new DbUtils(uri, dbName, collection)
-    * json document = db.findByField(collection, field, value)
+    * def db = new DbUtils(uri, dbName, "bookFairDataLoad")
+    * json document = db.findByField("bookFairDataLoad", "taxDetailTaxRate", "08200")
     * print document
     * db.disconnect()
+
+  # Input: MONGO_COMMAND
+  @RunCommand
+  Scenario: Run a mongo command
+    * def DbUtils = Java.type('utils.MongoDBUtils')
+    * def db = new DbUtils(uri, dbName, "not used")
+    * json document = db.runCommand(karate.toString(MONGO_COMMAND))
+    # * print document.cursor.firstBatch[0]
+    * db.disconnect()
+
+
+  # Will be kept here as reference
+  Scenario Outline: Test Mongo Queries
+    * def DbUtils = Java.type('utils.MongoDBUtils')
+    * def db = new DbUtils(uri, dbName, "not used")
+    * def mongoQueryAsJson =
+    """
+    {
+      find: "bookFairDataLoad",
+      "filter": {
+        "_id.fairId": "#(FAIRID_OR_CONTENT)"
+      }
+    }
+    """
+    * print mongoQueryAsJson
+    * print FAIRID_OR_CURRENT
+    * json document = db.runCommand(karate.toString(mongoQueryAsJson))
+#    * print document.cursor.firstBatch[0]
+    * db.disconnect()
+
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5694296           |
+

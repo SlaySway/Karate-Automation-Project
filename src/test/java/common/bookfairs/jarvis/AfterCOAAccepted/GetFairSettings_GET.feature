@@ -128,6 +128,26 @@ Feature: GetFairSettings GET Api tests
   Scenario Outline: Validate successful response for valid request for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     Given def getFairSettingsResponse = call read('RunnerHelper.feature@GetFairSettings')
     Then match getFairSettingsResponse.responseStatus == 200
+    And def getCMDMFairSettingsResponse = call read('classpath:common/cmdm/fairs/CMDMRunnerHelper.feature@GetFairRunner'){FAIR_ID:<FAIRID_OR_CURRENT>}
+    Then match getCMDMFairSettingsResponse.responseStatus == 200
+    And match getFairSettingsResponse.response.fairInfo.taxStatus == getCMDMFairSettingsResponse.response.organization.taxStatus
+    * def MONGO_COMMAND =
+    """
+    {
+      find: "bookFairDataLoad",
+      "filter": {
+        "_id.fairId": "#(FAIRID_OR_CURRENT)"
+      }
+    }
+    """
+    And def mongoTaxRate = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@RunCommand')
+    * print mongoTaxRate.document.cursor.firstBatch[0].taxDetailTaxRate
+    * def taxRate = mongoTaxRate.document.cursor.firstBatch[0].taxDetailTaxRate
+    * def taxRate = taxRate.slice(0,2) + "." + taxRate.slice(2)
+    * def taxRate = (taxRate*1).toString()*1
+    * print taxRate
+    And match getFairSettingsResponse.response.fairInfo.taxRate == taxRate
+
 
     @QA
     Examples:
