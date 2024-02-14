@@ -33,8 +33,8 @@ function fn() {
 		LIBRARY_PROCESSING_URL: 'https://library-processing.qa.apps.scholastic.tech',
 		LIBRARY_PROCESSING_BASE: 'https://library-processing.stage.apps.scholastic.tech',
 
-		CANADA_TOOLKIT_URL: "https://canada-toolkit.qa.apps.scholastic.tech/",
-		CANADA_TOOLKIT_BASE: "https://canada-toolkit.stage.apps.scholastic.tech/"
+		CANADA_TOOLKIT_URL: "https://canada-toolkit.qa.apps.scholastic.tech",
+		CANADA_TOOLKIT_BASE: "https://canada-toolkit.stage.apps.scholastic.tech"
 
 	}
 

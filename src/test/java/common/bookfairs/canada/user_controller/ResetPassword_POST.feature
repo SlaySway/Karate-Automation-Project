@@ -5,14 +5,51 @@ Feature: Canada Toolkit ResetPassword API Tests
     * def obj = Java.type('utils.StrictValidation')
     * string resetPasswordUri = "/api/user/resetpwd"
 
-  @Happy
-  Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
-    * def REQUEST_BODY = {}
-    Given def deleteHomepageEventsResponse = call read('RunnerHelper.feature@DeleteHomepageEvents')
-    Then match deleteHomepageEventsResponse.responseStatus == 204
-    And match deleteHomepageEventsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
+  @Unhappy
+  Scenario Outline: Validate when user inputs incorrect credentials for response body, email:<EMAIL> and account id:<ACCOUNT_ID>
+    * def REQUEST_BODY =
+    """
+      {
+        "email": "#(EMAIL)",
+        "accountNumber": "#(ACCOUNT_ID)"
+      }
+    """
+    Given def resetPasswordResponse = call read('RunnerHelper.feature@ResetPassword')
+    Then match resetPasswordResponse.responseStatus == 404
+    Then match resetPasswordResponse.response.message == "Account/Email is incorrect"
 
     @QA
     Examples:
-      | USER_NAME           | PASSWORD  | FAIRID_OR_CURRENT |
-      | nofairs@testing.com | password1 | 5694296           |
+      | EMAIL                                       | ACCOUNT_ID |
+      | nchandrachandola-consultant@scholastic.com  | 76787851   |
+      | nchandrachandola-consultant@scholastic.coms | 7678785    |
+
+  @Unhappy @QA
+  Scenario: Validate when user inputs incorrect media type of response body, email:<EMAIL> and account id:<ACCOUNT_ID>
+    * def REQUEST_BODY = ""
+    Given def resetPasswordResponse = call read('RunnerHelper.feature@ResetPassword')
+    Then match resetPasswordResponse.responseStatus == 415
+
+  @Unhappy @QA
+  Scenario: Validate when user inputs incorrect response body, email:<EMAIL> and account id:<ACCOUNT_ID>
+    * def REQUEST_BODY = null
+    Given def resetPasswordResponse = call read('RunnerHelper.feature@ResetPassword')
+    Then match resetPasswordResponse.responseStatus == 400
+
+  @Happy
+  Scenario Outline: Validate when user inputs correct value for response body, email:<EMAIL> and account id:<ACCOUNT_ID>
+    * def REQUEST_BODY =
+    """
+      {
+        "email": "#(EMAIL)",
+        "accountNumber": "#(ACCOUNT_ID)"
+      }
+    """
+    Given def resetPasswordResponse = call read('RunnerHelper.feature@ResetPassword')
+    Then match resetPasswordResponse.responseStatus == 200
+    Then match resetPasswordResponse.response.message == "Password generation successful"
+
+    @QA
+    Examples:
+      | EMAIL                                      | ACCOUNT_ID |
+      | nchandrachandola-consultant@scholastic.com | 7678785    |
