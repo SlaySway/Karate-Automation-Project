@@ -39,7 +39,7 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694300           |
+      | azhou1@scholastic.com | password1 | 5694309           |
 
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
@@ -119,7 +119,7 @@ Feature: UpdateFinFormPurchaseOrders PATCH Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR | SBF_JARVIS_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296           | 5694296       | 5694300         |
+      | azhou1@scholastic.com | password1 | 5694296           | 5694296       | 5694309         |
       | azhou1@scholastic.com | password1 | current           | 5694296       | 5694296         |
 
   @Unhappy
