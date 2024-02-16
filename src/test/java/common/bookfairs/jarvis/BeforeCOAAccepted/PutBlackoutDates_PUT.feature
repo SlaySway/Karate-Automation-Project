@@ -19,9 +19,9 @@ Feature: PutBlackoutDates API automation tests
       """
     * def putBlackoutDatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@PutBlackoutDates')
     Then match putBlackoutDatesResponse.responseStatus == 200
-    # TODO: In order to test functionality:
+    # TODO for Swayamsree: In order to test functionality:
       # set blackout dates empty
-      # check that blackout dates is no empty
+      # check that blackout dates is not empty
       # select one random blackout date within range of deliveryWindow and pickupWindow
         # ^ random date must be on a weekday
       # set blackout dates to the randomly chosen days

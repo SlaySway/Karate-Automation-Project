@@ -78,7 +78,7 @@ Feature: UpdateHomepageEvents PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694309           |
+      | azhou1@scholastic.com | password1 | 5694300           |
 
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>

@@ -33,6 +33,7 @@ Feature: GetCOAWithJWT API automation tests
       | azhou1@scholastic.com | password1 | 5694296           |
 
   #Delete this scenraio after the DEC release
+  @Regression
   Scenario Outline: Validate regression with current prod version | <USER_NAME> | <FAIRID_OR_CURRENT> |
     * def TargetGetFairDetailsResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetJWTForCOA')
     Then print TargetGetFairDetailsResponse.response
@@ -62,7 +63,7 @@ Feature: GetCOAWithJWT API automation tests
       | azhou1@scholastic.com | password1 | 5694296           |
 
   #Enable this after the DEC release
-  @ignore
+  @ignore @Regression
   Scenario Outline: Validate regression  | <USER_NAME> | <FAIRID_OR_CURRENT> |
     * def TargetGetFairDetailsResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetJWTForCOA')
     Then print TargetGetFairDetailsResponse.response

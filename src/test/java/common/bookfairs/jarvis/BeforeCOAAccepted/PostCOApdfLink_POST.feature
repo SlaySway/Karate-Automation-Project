@@ -17,11 +17,13 @@ Feature: PostCOApdfLink API automation tests
     Then match postCOApdfLinkResponse.responseStatus == 200
     Then match postCOApdfLinkResponse.response == 'Successful'
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
       | azhou1@scholastic.com | password1 | 5694296           | azhou1@scholastic.com | test    |
       | azhou1@scholastic.com | password1 | current           | azhou1@scholastic.com | TEST3   |
 
+  @Regression
   Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIR_ID>
     * def requestBody =
       """
@@ -42,6 +44,7 @@ Feature: PostCOApdfLink API automation tests
     Then print 'Differences any...', compResult
     And match base == target
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
       | azhou1@scholastic.com | password1 | 5694296           | azhou1@scholastic.com | test    |
@@ -58,6 +61,7 @@ Feature: PostCOApdfLink API automation tests
     Then match postCOApdfLinkResponse.responseStatus == 200
     * print postCOApdfLinkResponse.response
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
       | azhou1@scholastic.com | password1 | 5694296           | azhou1@scholastic.com | test    |
@@ -75,6 +79,7 @@ Feature: PostCOApdfLink API automation tests
     Then match postCOApdfLinkResponse.responseStatus == 200
     * print postCOApdfLinkResponse.response
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
       | azhou1@scholastic.com | password1 | current           | azhou1@scholastic.com | test    |
@@ -96,6 +101,7 @@ Feature: PostCOApdfLink API automation tests
     Then match responseStatus == 403
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
       | azhou1@scholastic.com | password1 | 6598              | azhou1@scholastic.com | test    |
@@ -115,6 +121,7 @@ Feature: PostCOApdfLink API automation tests
     And method POST
     Then match responseStatus == 401
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
       | azhou1@scholastic.com | password1 | 5775209           | azhou1@scholastic.com | test    |
@@ -135,6 +142,7 @@ Feature: PostCOApdfLink API automation tests
     And method POST
     Then match responseStatus == 404
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
       | azhou1@scholastic.com | password1 | testing           | azhou1@scholastic.com | test    |
@@ -155,6 +163,7 @@ Feature: PostCOApdfLink API automation tests
     And method POST
     Then match responseStatus == 404
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
       | azhou1@scholastic.com | password1 | 5775209           | azhou1@scholastic.com | test    |
@@ -164,6 +173,7 @@ Feature: PostCOApdfLink API automation tests
     * def postCOApdfLinkResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@PostCOApdfLink')
     Then match postCOApdfLinkResponse.responseStatus == 415
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
       | azhou1@scholastic.com | password1 | 5775209           | azhou1@scholastic.com | test    |
@@ -184,6 +194,7 @@ Feature: PostCOApdfLink API automation tests
 
   @Unhappy
   Scenario Outline: Validate when user uses an invalid fair ID for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
+    * def requestBody = {}
     Given def postCOApdfLinkResponse = call read('RunnerHelper.feature@PostCOApdfLink')
     Then match postCOApdfLinkResponse.responseStatus == 404
     And match postCOApdfLinkResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"

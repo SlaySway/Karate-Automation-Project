@@ -37,7 +37,7 @@ Feature: GetFinancialSummary GET Api tests
     @QA
     Examples:
       | USER_NAME              | PASSWORD | FAIRID_OR_CURRENT |
-      | mtodaro@scholastic.com | passw0rd | 5694320           |
+      | mtodaro@scholastic.com | passw0rd | 5694300           |
 
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
