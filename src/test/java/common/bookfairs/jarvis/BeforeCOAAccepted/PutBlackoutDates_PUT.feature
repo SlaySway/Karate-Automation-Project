@@ -27,6 +27,7 @@ Feature: PutBlackoutDates API automation tests
       # set blackout dates to the randomly chosen days
       # check that backout dates is now updated
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5694296           |
@@ -59,6 +60,7 @@ Feature: PutBlackoutDates API automation tests
     Then print 'Differences any...', compResult
     And match base == target
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5694296           |
@@ -85,6 +87,7 @@ Feature: PutBlackoutDates API automation tests
     And method PUT
     Then match responseStatus == 401
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5694296           |
@@ -111,6 +114,7 @@ Feature: PutBlackoutDates API automation tests
     And method PUT
     Then match responseStatus == 403
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 57752YU           |
@@ -137,6 +141,7 @@ Feature: PutBlackoutDates API automation tests
     And method PUT
     Then match responseStatus == 400
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | current           |
@@ -146,6 +151,7 @@ Feature: PutBlackoutDates API automation tests
     * def putBlackoutDatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@PutBlackoutDates')
     Then match putBlackoutDatesResponse.responseStatus == 415
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5775209           |

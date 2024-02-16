@@ -10,6 +10,7 @@ Feature: PutCOAConfirm API automation tests
     Then match putConfirmCOAResponse.responseStatus == 200
     * print putConfirmCOAResponse.response
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5633533           |
@@ -22,6 +23,7 @@ Feature: PutCOAConfirm API automation tests
     And method PUT
     Then match responseStatus == 401
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5633533           |
@@ -34,6 +36,7 @@ Feature: PutCOAConfirm API automation tests
     And method PUT
     Then match responseStatus == 400
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | current           |
@@ -47,7 +50,7 @@ Feature: PutCOAConfirm API automation tests
     Then match responseStatus == 403
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
 
-
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 56335             |

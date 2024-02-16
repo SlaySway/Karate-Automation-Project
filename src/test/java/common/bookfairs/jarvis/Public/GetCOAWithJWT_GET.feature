@@ -5,11 +5,13 @@ Feature: GetCOAWithJWT API automation tests
     * string getCOAWithJWTURL = "/bookfairs-jarvis/api/public/coa/pdf-links"
     * def obj = Java.type('utils.StrictValidation')
 
+  @QA @PROD
   Scenario: Validate request when jwt is not passed
     Then url BOOKFAIRS_JARVIS_URL + getCOAWithJWTURL
     And method get
     Then match responseStatus == 404
 
+  @QA @PROD
   Scenario: Validate request when jwt is invalid
     Then url BOOKFAIRS_JARVIS_URL + getCOAWithJWTURL
     Then path 'eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ'

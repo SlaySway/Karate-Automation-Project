@@ -10,6 +10,7 @@ Feature: GetCOAdates API automation tests
     Then match getCOAdatesResponse.responseStatus == 200
     * print getCOAdatesResponse.response
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5694296           |
@@ -39,6 +40,7 @@ Feature: GetCOAdates API automation tests
     Then match getCOAdatesResponse.responseStatus == 200
     * print getCOAdatesResponse.response
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5694296           |
@@ -48,6 +50,7 @@ Feature: GetCOAdates API automation tests
     Then match getCOAdatesResponse.responseStatus == 200
     * print getCOAdatesResponse.response
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | current           |
@@ -61,6 +64,7 @@ Feature: GetCOAdates API automation tests
     Then match responseStatus == 403
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5565              |
@@ -74,6 +78,7 @@ Feature: GetCOAdates API automation tests
     Then match responseStatus == 404
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | abc1              |
@@ -85,6 +90,8 @@ Feature: GetCOAdates API automation tests
     And method GET
     Then match responseStatus == 204
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
+
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5694296           |

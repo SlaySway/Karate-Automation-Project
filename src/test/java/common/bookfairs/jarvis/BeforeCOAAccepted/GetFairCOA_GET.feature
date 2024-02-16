@@ -11,6 +11,7 @@ Feature: GetFairCOA API automation tests
     Then match getCOAResponse.responseStatus == 200
     * print getCOAResponse.response
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5694296           |
@@ -31,6 +32,7 @@ Feature: GetFairCOA API automation tests
     Then print 'Differences any...', compResult
     And match base == target
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5694296           |
@@ -42,6 +44,7 @@ Feature: GetFairCOA API automation tests
     And method GET
     Then match responseStatus == 401
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5694296           |
@@ -55,6 +58,7 @@ Feature: GetFairCOA API automation tests
     Then match responseStatus == 403
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 51345             |
@@ -67,6 +71,7 @@ Feature: GetFairCOA API automation tests
     And method GET
     Then match responseStatus == 200
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | current           |
@@ -77,6 +82,7 @@ Feature: GetFairCOA API automation tests
     And method GET
     Then match responseStatus == 404
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 |                   |

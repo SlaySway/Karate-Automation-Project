@@ -19,6 +19,7 @@ Feature: PostRequestChange API automation tests
     * def postCOAChangeRequestResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@PostChangeRequest')
     Then match postCOAChangeRequestResponse.responseStatus == 201
 
+    @QA
     Examples:
       | USER_NAME                           | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
       | azhou1@scholastic.com               | password1 | 5694296           | Test1             | Email      |
@@ -50,6 +51,7 @@ Feature: PostRequestChange API automation tests
     Then print 'Differences any...', compResult
     And match base == target
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
       | azhou1@scholastic.com | password1 | 5694296           | Test1             | Email      |
@@ -73,6 +75,7 @@ Feature: PostRequestChange API automation tests
     And method POST
     Then match responseStatus == 401
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
       | azhou1@scholastic.com | password1 | 5775209           | Test1             | Email      |
@@ -97,6 +100,7 @@ Feature: PostRequestChange API automation tests
     And method POST
     Then match responseStatus == 403
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
       | azhou1@scholastic.com | password1 | 57752ui           | Test1             | Email      |
@@ -121,6 +125,7 @@ Feature: PostRequestChange API automation tests
     And method POST
     Then match responseStatus == 400
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
       | azhou1@scholastic.com | password1 | current           | Test1             | Email      |
@@ -130,6 +135,7 @@ Feature: PostRequestChange API automation tests
     * def postCOApdfLinkResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@PostChangeRequest')
     Then match postCOApdfLinkResponse.responseStatus == 415
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5775209           |

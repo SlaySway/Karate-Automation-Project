@@ -52,7 +52,7 @@ Feature: DeleteHomepageEvents DELETE Api tests
     Then match responseStatus == 204
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
 
-    @QA
+    @QA @PROD
     Examples:
       | EXPIRED_SCHL                                                                                                                                                                                                                                                      |
       | eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJpc3MiOiJNeVNjaGwiLCJhdWQiOiJTY2hvbGFzdGljIiwibmJmIjoxNjk5MzkwNzUyLCJzdWIiOiI5ODYzNTUyMyIsImlhdCI6MTY5OTM5MDc1NywiZXhwIjoxNjk5MzkyNTU3fQ.s3Czg7lmT6kETAcyupYDus8sxtFQMz7YOMKWz1_S-i8 |

@@ -6,48 +6,56 @@ Feature: FairFinder API automation tests
     * string fairFinderURLStage = "/bookfairs-jarvis/api/public/fairs/find"
     * def obj = Java.type('utils.StrictValidation')
 
+  @QA @PROD
   Scenario: Validate request when manadtory input 'searchQuery' is not passed
     Given url BOOKFAIRS_JARVIS_URL + fairFinderURL
     And params {offset : '0', size:'100'}
     And method get
     Then match responseStatus == 400
 
+  @QA @PROD
   Scenario: Validate request when manadtory input 'offset' is not passed
     Given url BOOKFAIRS_JARVIS_URL + fairFinderURL
     And params {searchQuery : 'fair', size:'100'}
     And method get
     Then match responseStatus == 400
 
+  @QA @PROD
   Scenario: Validate request when manadtory input 'size' is not passed
     Given url BOOKFAIRS_JARVIS_URL + fairFinderURL
     And params {searchQuery : 'fair', offset : '0'}
     And method get
     Then match responseStatus == 400
 
+  @QA @PROD
   Scenario: Validate request when size is 0
     Given url BOOKFAIRS_JARVIS_URL + fairFinderURL
     And params {searchQuery : 'fair', offset : '0', size:'0'}
     And method get
     Then match responseStatus == 400
 
+  @QA @PROD
   Scenario: Validate request when size is 101
     Given url BOOKFAIRS_JARVIS_URL + fairFinderURL
     And params {searchQuery : 'fair', offset : '0', size:'101'}
     And method get
     Then match responseStatus == 400
 
+  @QA @PROD
   Scenario: Validate request when size is string
     Given url BOOKFAIRS_JARVIS_URL + fairFinderURL
     And params {searchQuery : 'fair', offset : '0', size:'text'}
     And method get
     Then match responseStatus == 400
 
+  @QA @PROD
   Scenario: Validate request when offset is string
     Given url BOOKFAIRS_JARVIS_URL + fairFinderURL
     And params {searchQuery : 'fair', offset : 'text', size:'10'}
     And method get
     Then match responseStatus == 400
 
+  @QA @PROD
   Scenario: Validate a 200 status code for a valid request
     Given url BOOKFAIRS_JARVIS_URL + fairFinderURL
     And params {searchQuery : 'fair', offset : '0', size:'100'}
@@ -55,6 +63,7 @@ Feature: FairFinder API automation tests
     Then match responseStatus == 200
 
   #Delete this scenario after DEC release
+  @QA @Regression
   Scenario: Validate regression with current prod version
     Given url BOOKFAIRS_JARVIS_URL + fairFinderURL
     And params {searchQuery : 'fair', offset : '0', size:'100'}
@@ -74,7 +83,7 @@ Feature: FairFinder API automation tests
     And match BaseResponse == TargetResponse
 
   #Enable this after DEC release
-  @ignore
+  @ignore @QA @Regression
   Scenario: Validate regression with current prod version
     Given url BOOKFAIRS_JARVIS_URL + fairFinderURL
     And params {searchQuery : 'fair', offset : '0',, size:'100'}

@@ -62,7 +62,7 @@ Feature: GetPublicHomepage API automation tests
       | azhou1@scholastic.com | password1 | 5694296           | iAmAnAutomationUrl |
 
   #Enable this scenario after DEC release
-  @ignore
+  @ignore @Regression
   Scenario Outline: Validate regression with current prod version | <USER_NAME> | <FAIRID_OR_CURRENT> |
     Given url BOOKFAIRS_JARVIS_URL + getPublicHomepageUrl
     And path WEB_URL

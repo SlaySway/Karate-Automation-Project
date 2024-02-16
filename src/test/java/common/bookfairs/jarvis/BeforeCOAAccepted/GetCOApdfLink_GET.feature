@@ -10,6 +10,7 @@ Feature: GetCOApdfLink API automation tests
     Then match getCOApdfLinkResponse.responseStatus == 200
     * print getCOApdfLinkResponse.response
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5694296           |
@@ -24,6 +25,7 @@ Feature: GetCOApdfLink API automation tests
     Then match responseStatus == 204
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5694296           |
@@ -36,6 +38,7 @@ Feature: GetCOApdfLink API automation tests
     And method GET
     Then match responseStatus == 403
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 56335             |
@@ -48,6 +51,7 @@ Feature: GetCOApdfLink API automation tests
     And method GET
     Then match responseStatus == 200
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | current           |

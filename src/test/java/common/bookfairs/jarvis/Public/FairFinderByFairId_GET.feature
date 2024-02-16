@@ -7,24 +7,28 @@ Feature: FairFinderByFairId API automation tests
     * string  fairSettingsURLStage = "/bookfairs-jarvis/api/user/fairs/current/settings"
     * def obj = Java.type('utils.StrictValidation')
 
+  @QA @PROD
   Scenario: Validate request when manadtory path parameter 'fairId' is not passed
     * replace fairFinderByFairIdURL.fairId = ''
     Given url BOOKFAIRS_JARVIS_URL + fairFinderByFairIdURL
     And method get
     Then match responseStatus == 400
 
+  @QA @PROD
   Scenario: Validate request when manadtory path parameter 'fairId' is not valid
     * replace fairFinderByFairIdURL.fairId = '5001234'
     Given url BOOKFAIRS_JARVIS_URL + fairFinderByFairIdURL
     And method get
     Then match responseStatus == 404
 
+  @QA @PROD
   Scenario: Validate request when manadtory path parameter 'fairId' is string
     * replace fairFinderByFairIdURL.fairId = 'abcdtex'
     Given url BOOKFAIRS_JARVIS_URL + fairFinderByFairIdURL
     And method get
     Then match responseStatus == 500
 
+  @QA @PROD
   Scenario: Validate request when manadtory path parameter 'fairId' does not exist
     * replace fairFinderByFairIdURL.fairId = '1112223'
     Given url BOOKFAIRS_JARVIS_URL + fairFinderByFairIdURL
@@ -43,6 +47,7 @@ Feature: FairFinderByFairId API automation tests
       | azhou1@scholastic.com | password1 | 5694296           |
 
   #Delete this scenario after DEC release
+  @Regression
   Scenario Outline: Validate regression with current prod version | <USER_NAME> | <FAIRID_OR_CURRENT> |
     * replace fairFinderByFairIdURL.fairId = FAIRID_OR_CURRENT
     Given url BOOKFAIRS_JARVIS_URL + fairFinderByFairIdURL
@@ -65,7 +70,7 @@ Feature: FairFinderByFairId API automation tests
       | azhou1@scholastic.com | password1 | 5694296           |
 
   #Enable this scenario after DEC release
-  @ignore
+  @ignore @Regression
   Scenario Outline: Validate regression with current prod version | <USER_NAME> | <FAIRID_OR_CURRENT> |
     * replace fairFinderByFairIdURL.fairId = FAIRID_OR_CURRENT
     Given url BOOKFAIRS_JARVIS_URL + fairFinderByFairIdURL
