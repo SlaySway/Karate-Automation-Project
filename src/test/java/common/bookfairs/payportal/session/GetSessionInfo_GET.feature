@@ -15,7 +15,7 @@ Feature: GetSessionInfo GET api tests
       | FAIRID  | USER_NAME             | PASSWORD  |
       | 5694329 | mtodaro@scholastic.com | passw0rd |
 
-  @Regression @GETSessionInfo
+  @Unhappy @GETSessionInfo
   Scenario Outline: Verify SessionInfo returns 401 status code when user is not logged in myscholastic
     Given url BOOKFAIRS_PAYPORTAL_URL + getSessionInfoUri
     * url BOOKFAIRS_PAYPORTAL_URL + getSessionInfoUri
@@ -45,3 +45,14 @@ Feature: GetSessionInfo GET api tests
     Examples:
       | FAIRID | USER_NAME              | PASSWORD |
       | 563353 | mtodaro@scholastic.com | passw0rd |
+
+  @Happy
+  Scenario Outline: Verify GetSessionInfo returns proper sales amounts for user: <USER_NAME> and fair: <FAIRID>
+    Given def getSessionInfoResponse = call read('RunnerHelper.feature@GetSessionInfo')
+    Then match getSessionInfoResponse.responseStatus == 200
+
+
+    @QA
+    Examples:
+      | FAIRID | USER_NAME              | PASSWORD |
+      | 5694329 | mtodaro@scholastic.com | passw0rd |
