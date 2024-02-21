@@ -12,7 +12,7 @@ Feature: GetSessionInfo GET api tests
 
     @QA
     Examples:
-      | FAIRID  | USER_NAME             | PASSWORD  |
+      | FAIRID  | USER_NAME              | PASSWORD |
       | 5694329 | mtodaro@scholastic.com | passw0rd |
 
   @Unhappy @GETSessionInfo
@@ -50,9 +50,28 @@ Feature: GetSessionInfo GET api tests
   Scenario Outline: Verify GetSessionInfo returns proper sales amounts for user: <USER_NAME> and fair: <FAIRID>
     Given def getSessionInfoResponse = call read('RunnerHelper.feature@GetSessionInfo')
     Then match getSessionInfoResponse.responseStatus == 200
+    And def AGGREGATE_PIPELINE =
+    """
+    [
+        {
+            $match:{
+                "export.FairID":"#(FAIRID)",
+                "_class":"stf"
+            }
+        },
+        {
+            $group:{
+                "_id": null,
+                "stfTotalSaleAmount": { $sum: "$amount" }
+            }
+        }
+      ]
+    """
+    And def mongoResults = call read('classpath:common/bookfairs/payportal/MongoDBRunner.feature@RunAggregate'){collectionName: "transaction"}
+    Then match getSessionInfoResponse.response.sales.stf == mongoResults.document[0].stfTotalSaleAmount
 
 
     @QA
     Examples:
-      | FAIRID | USER_NAME              | PASSWORD |
+      | FAIRID  | USER_NAME              | PASSWORD |
       | 5694329 | mtodaro@scholastic.com | passw0rd |

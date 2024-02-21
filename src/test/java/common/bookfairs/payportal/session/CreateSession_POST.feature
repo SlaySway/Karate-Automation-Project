@@ -63,3 +63,34 @@ Feature: CreateSession GET api tests
       | FAIRID | USER_NAME                           | PASSWORD |
       | 569432 | mtodaro@scholastic.com              | passw0rd |
       | 569438 | sdevineni-consultant@scholastic.com | passw0rd |
+
+
+  @Happy
+  Scenario Outline: Verify GetSessionInfo returns proper sales amounts for user: <USER_NAME> and fair: <FAIRID>
+    Given def createSessionResponse = call read('RunnerHelper.feature@CreateSession')
+    Then match createSessionResponse.responseStatus == 200
+    And def AGGREGATE_PIPELINE =
+    """
+    [
+        {
+            $match:{
+                "export.FairID":"#(FAIRID)",
+                "_class":"stf"
+            }
+        },
+        {
+            $group:{
+                "_id": null,
+                "stfTotalSaleAmount": { $sum: "$amount" }
+            }
+        }
+      ]
+    """
+    And def mongoResults = call read('classpath:common/bookfairs/payportal/MongoDBRunner.feature@RunAggregate'){collectionName: "transaction"}
+    Then match createSessionResponse.response.sales.stf == mongoResults.document[0].stfTotalSaleAmount
+
+
+    @QA
+    Examples:
+      | FAIRID  | USER_NAME              | PASSWORD |
+      | 5694329 | mtodaro@scholastic.com | passw0rd |

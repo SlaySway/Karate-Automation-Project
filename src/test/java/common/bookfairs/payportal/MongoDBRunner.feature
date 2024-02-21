@@ -14,9 +14,18 @@ Feature: Helper for accessing Payportal Mongo
     # * print document.cursor.firstBatch[0]
     * db.disconnect()
 
+  # Input: AGGREGATE_PIPELINE, collectionName
+  @RunAggregate
+  Scenario: Run a mongo command
+    * def DbUtils = Java.type('utils.MongoDBUtils')
+    * def db = new DbUtils(uri, dbName, "not used")
+    * json document = db.runAggregate(karate.toString(AGGREGATE_PIPELINE), collectionName)
+#    * print document
+    * db.disconnect()
+
 
   # Will be kept here as reference
-  Scenario Outline: Test Mongo Queries
+  Scenario Outline: Test Mongo Query RunCommand
     * def DbUtils = Java.type('utils.MongoDBUtils')
     * def db = new DbUtils(uri, dbName, "not used")
     * def mongoQueryAsJson =
@@ -29,7 +38,7 @@ Feature: Helper for accessing Payportal Mongo
     }
     """
     * print mongoQueryAsJson
-    * print FAIRID_OR_CURRENT
+    * print karate.toString(mongoQueryAsJson)
     * json document = db.runCommand(karate.toString(mongoQueryAsJson))
     * print document
     * db.disconnect()
@@ -38,3 +47,33 @@ Feature: Helper for accessing Payportal Mongo
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5694329           |
 
+  # Will be kept here as reference
+  Scenario Outline: Test Mongo Query Aggregate
+    * def DbUtils = Java.type('utils.MongoDBUtils')
+    * def db = new DbUtils(uri, dbName, "not used")
+    * def mongoQueryAsJson =
+    """
+    [
+        {
+            $match:{
+                "export.FairID":"5694329",
+                "_class":"stf"
+            }
+        },
+        {
+            $group:{
+                "_id": null,
+                "stfTotalSaleAmount": { $sum: "$amount" }
+            }
+        }
+      ]
+    """
+    * print mongoQueryAsJson
+    * print karate.toString(mongoQueryAsJson)
+    * json document = db.runAggregate(karate.toString(mongoQueryAsJson), "transaction")
+    * print document
+    * db.disconnect()
+
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5694329           |
