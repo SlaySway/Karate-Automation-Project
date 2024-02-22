@@ -136,7 +136,7 @@ Feature: GetFairSettings GET Api tests
     {
       find: "bookFairDataLoad",
       "filter": {
-        "_id.fairId": "#(FAIRID_OR_CURRENT)"
+        "_id": "#(FAIRID_OR_CURRENT)"
       }
     }
     """
