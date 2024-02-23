@@ -34,7 +34,7 @@ Feature: Helper for accessing bftoolkit Mongo
     {
       find: "bookFairDataLoad",
       "filter": {
-        "_id.fairId": "#(FAIRID_OR_CONTENT)"
+        "_id.fairId": "#(FAIRID_OR_CURRENT)"
       }
     }
     """
