@@ -67,8 +67,8 @@ Feature: CreateSession GET api tests
 
   @Happy
   Scenario Outline: Verify GetSessionInfo returns proper sales amounts for user: <USER_NAME> and fair: <FAIRID>
-#    Given def createSessionResponse = call read('RunnerHelper.feature@CreateSession')
-#    Then match createSessionResponse.responseStatus == 200
+    Given def createSessionResponse = call read('RunnerHelper.feature@CreateSession')
+    Then match createSessionResponse.responseStatus == 200
     And def AGGREGATE_PIPELINE =
     """
     [
@@ -131,10 +131,7 @@ Feature: CreateSession GET api tests
       ]
     """
     And def mongoResults = call read('classpath:common/bookfairs/payportal/MongoDBRunner.feature@RunAggregate'){collectionName: "transaction"}
-    * print mongoResults.document[0]
-#    Then match createSessionResponse.response.sales == mongoResults.document[0]
-
-
+    Then match createSessionResponse.response.sales == mongoResults.document[0]
 
     @QA
     Examples:
