@@ -130,3 +130,52 @@ Feature: GetFinancialForm GET Api tests
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5694296           |
+
+  @Happy
+  Scenario Outline: Validate invoice flow for user <USER_NAME>, fair:<FAIRID_OR_CURRENT>
+    Given def mongoQueryResponse = call read("classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentThenDeleteField"){collection:"financials",findField:"_id",findValue:"#(FAIRID_OR_CURRENT)",deleteField:"confirmation"}
+    Then def getFinancialFormResponse = call read('RunnerHelper.feature@GetFinancialForm')
+    And match getFinancialFormResponse.response.status.value == "ready"
+    And match getFinancialFormResponse.response.invoice == "#null"
+    Then def submitFinFormResponse = call read('RunnerHelper.feature@SubmitFinForm')
+    And match submitFinFormResponse.responseStatus == 200
+    Then def getFinancialFormResponse = call read('RunnerHelper.feature@GetFinancialForm')
+    And match getFinancialFormResponse.response.status.value == "confirmed"
+    And match getFinancialFormResponse.response.invoice != "#null"
+    * def mongoQueryResponse = call read("classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField"){collection:"financials",field:"_id",value:"#(FAIRID_OR_CURRENT)"}
+    * def createExpectedResponse =
+    """
+    function(mongoDoc) {
+      let expectedResponse = {}
+      expectedResponse.totalCollected = mongoDoc.sales.grossSales.total
+      expectedResponse.digitalPaymentsCollected = mongoDoc.sales.tenderTotals.creditCards
+      expectedResponse.purchaseOrders = mongoDoc.sales.tenderTotals.purchaseOrders
+      expectedResponse.cashProfit = mongoDoc.fairEarning.cashProfitSelected + mongoDoc.sales.tenderTotals.cashAndChecks
+      expectedResponse.amountDue = expectedResponse.totalCollected - (expectedResponse.digitalPaymentsCollected + expectedResponse.purchaseOrders + expectedResponse.cashProfit)
+      return expectedResponse
+    }
+    """
+    * def convertNumberDecimal =
+    """
+    function(json){
+      if(typeof json !== 'object' || json == null) {
+          return json;
+      }
+      for(let field in json){
+          let isFieldObject = (typeof json[field] === 'object');
+          if(!Array.isArray(json[field]) && isFieldObject && json[field].containsKey('$numberDecimal')){
+              json[field] = Number(json[field]['$numberDecimal']);
+          }
+          else if (isFieldObject){
+              convertNumberDecimal(json[field]);
+          }
+        }
+    }
+    """
+    * convertNumberDecimal(mongoQueryResponse.document)
+    * def expectedResponse = createExpectedResponse(mongoQueryResponse.document);
+    * match getFinancialFormResponse.response.invoice.amountDetails == expectedResponse
+
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | mtodaro@scholastic.com | passw0rd | 5694324           |

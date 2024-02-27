@@ -11,7 +11,7 @@ Feature: Helper for accessing bftoolkit Mongo
   Scenario: Find and return document by field
     * def DbUtils = Java.type('utils.MongoDBUtils')
     * def db = new DbUtils(uri, dbName, "bookFairDataLoad")
-    * json document = db.findByField("bookFairDataLoad", "taxDetailTaxRate", "08200")
+    * json document = db.findByField(collection, field, value)
     * print document
     * db.disconnect()
 
@@ -24,8 +24,26 @@ Feature: Helper for accessing bftoolkit Mongo
     # * print document.cursor.firstBatch[0]
     * db.disconnect()
 
+  # Input: AGGREGATE_PIPELINE, collectionName
+  @RunAggregate
+  Scenario: Run a mongo command
+    * def DbUtils = Java.type('utils.MongoDBUtils')
+    * def db = new DbUtils(uri, dbName, "not used")
+    * json document = db.runAggregate(karate.toString(AGGREGATE_PIPELINE), collectionName)
+#    * print document
+    * db.disconnect()
+
+  # Input: collection, findField, findValue, deleteField
+  @FindDocumentThenDeleteField
+  Scenario: Find a document and delete a field in it
+    * def DbUtils = Java.type('utils.MongoDBUtils')
+    * def db = new DbUtils(uri, dbName, collection)
+    * json document = db.findByFieldThenDeleteField(collection, findField, findValue, deleteField)
+    * print document
+    * db.disconnect()
 
   # Will be kept here as reference
+  @ignore
   Scenario Outline: Test Mongo Queries
     * def DbUtils = Java.type('utils.MongoDBUtils')
     * def db = new DbUtils(uri, dbName, "not used")
@@ -47,4 +65,18 @@ Feature: Helper for accessing bftoolkit Mongo
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5694296           |
+
+
+  # Will be kept here as reference
+  @ignore
+  Scenario Outline: Test Mongo Query Aggregate
+    * def DbUtils = Java.type('utils.MongoDBUtils')
+    * def db = new DbUtils(uri, dbName, "not used")
+    * json document = db.findByFieldThenDeleteField("financials","_id","5694324","confirmation")
+    * print document
+    * db.disconnect()
+
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5694329           |
 

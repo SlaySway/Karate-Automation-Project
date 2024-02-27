@@ -21,6 +21,8 @@ Feature: Helper for running After COA Accepted endpoints
     * string getFinancialFormUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/form"
     * string getFinancialSummaryUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/summary"
 
+    * string submitFinancialFormUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/form/submit"
+
   # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
   # Output: response
   @GetFairWallets
@@ -234,3 +236,13 @@ Feature: Helper for running After COA Accepted endpoints
      * url BOOKFAIRS_JARVIS_BASE + getFinancialSummaryUri
      *  cookies { SCHL : '#(schlResponse.SCHL)'}
      Then method get
+
+   # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
+   # Output: response
+  @SubmitFinForm
+  Scenario: Run get financial summary for user: <USER_NAME> and fair: <FAIRID_OR_CURRENT>
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    * replace submitFinancialFormUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    * url BOOKFAIRS_JARVIS_URL + submitFinancialFormUri
+    *  cookies { SCHL : '#(schlResponse.SCHL)'}
+    Then method put

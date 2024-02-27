@@ -25,6 +25,7 @@ Feature: Helper for accessing Payportal Mongo
 
 
   # Will be kept here as reference
+  @ignore
   Scenario Outline: Test Mongo Query RunCommand
     * def DbUtils = Java.type('utils.MongoDBUtils')
     * def db = new DbUtils(uri, dbName, "not used")
@@ -48,6 +49,7 @@ Feature: Helper for accessing Payportal Mongo
       | azhou1@scholastic.com | password1 | 5694329           |
 
   # Will be kept here as reference
+  @ignore
   Scenario Outline: Test Mongo Query Aggregate
     * def DbUtils = Java.type('utils.MongoDBUtils')
     * def db = new DbUtils(uri, dbName, "not used")
