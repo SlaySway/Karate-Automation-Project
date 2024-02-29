@@ -1,53 +1,54 @@
-@GetLibraryDetailsTest
+@GetLibraryDetailsTest @QA
 Feature: Library details API automation tests
 
   Background: Set config
     * def obj = Java.type('utils.StrictValidation')
-    * string getLibraryDetails = "/api/user/library/orgs/<orgUcn>"
+    * string getLibraryDetails = "/api/user/library/orgs/<accountId>"
 
   Scenario Outline: Validate 200 response code for a valid request
-    * def getLibraryDetailsResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@GetLibraryDetails'){ORG_UCN : '<ORG_UCN>'}
+    * def getLibraryDetailsResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@GetLibraryDetails'){ACCOUNT_ID : '<ACCOUNT_ID>'}
     Then match getLibraryDetailsResponseMap.responseStatus == 200
+    * def readingPlacementValue = getLibraryDetailsResponseMap.response.readingLabelPlacement.value
     * def readingPlacementValFunction =
     """
-    function(){
-    if(getLibraryDetailsResponseMap.response.readingLabelPlacement.selectedValue >= 57 && getLibraryDetailsResponseMap.response.readingLabelPlacement.selectedValue <= 59)
+     function(){
+    if(getLibraryDetailsResponseMap.response.readingLabelPlacement.value >= 57 && getLibraryDetailsResponseMap.response.readingLabelPlacement.value <= 59)
     return true
       }
     """
     * def barCodePlacementValFunction =
     """
     function(){
-    if(getLibraryDetailsResponseMap.response.barcodePlacement.selectedValue >= 1 && getLibraryDetailsResponseMap.response.barcodePlacement.selectedValue <= 18)
+    if(getLibraryDetailsResponseMap.response.barcodePlacement.value >= 1 && getLibraryDetailsResponseMap.response.barcodePlacement.value <= 18)
     return true
       }
     """
 
     @QA
     Examples:
-      | ORG_UCN |
-      | 12345   |
+      | ACCOUNT_ID |
+      | 12345      |
 
-  Scenario Outline: Validate 200 response code for an orgUcn not existing in database
-    * def getLibraryDetailsResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@GetLibraryDetails'){ORG_UCN : '<ORG_UCN>'}
+  Scenario Outline: Validate 200 response code for an accountId not existing in database
+    * def getLibraryDetailsResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@GetLibraryDetails'){ACCOUNT_ID : '<ACCOUNT_ID>'}
     Then match getLibraryDetailsResponseMap.responseStatus == 200
 
     @QA
     Examples:
-      | ORG_UCN  |
-      | abcd1234 |
+      | ACCOUNT_ID |
+      | abcd1234   |
 
-  Scenario Outline: Validate 404 response code for passing no orgUcn
-    * def getLibraryDetailsResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@GetLibraryDetails'){ORG_UCN : '<ORG_UCN>'}
+  Scenario Outline: Validate 404 response code for passing no accountId
+    * def getLibraryDetailsResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@GetLibraryDetails'){ACCOUNT_ID : '<ACCOUNT_ID>'}
     Then match getLibraryDetailsResponseMap.responseStatus == 404
 
     @QA
     Examples:
-      | ORG_UCN |
-      |         |
+      | ACCOUNT_ID |
+      |            |
 
   @Regression @ignore
-  Scenario Outline: Validate regression using dynamic comparison || orgUcn=<ORG_UCN>
+  Scenario Outline: Validate regression using dynamic comparison || accountId=<ACCOUNT_ID>
     * def BaseResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@GetLibraryDetailsBase')
     * def TargetResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@GetLibraryDetails')
     Then match BaseResponseMap.responseStatus == TargetResponseMap.responseStatus
@@ -63,5 +64,5 @@ Feature: Library details API automation tests
 
     @QA
     Examples:
-      | ORG_UCN |
-      | 12345   |
+      | ACCOUNT_ID |
+      | 12345      |

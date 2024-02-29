@@ -3,14 +3,14 @@ Feature: Save Library details API automation tests
 
   Background: Set config
     * def obj = Java.type('utils.StrictValidation')
-    * string saveLibraryDetails = "/api/user/library/orgs/<orgUcn>"
+    * string saveLibraryDetails = "/api/user/library/orgs/<accountId>"
     * def sleep = function(millis){ java.lang.Thread.sleep(millis) }
 
   Scenario Outline: Validate 200 response code for a valid request
     * def REQUEST_BODY = read('SaveLibraryDetails.json')[requestBody]
-    * def saveLibraryDetailsResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@PutLibraryDetails'){ORG_UCN : '<ORG_UCN>'}
+    * def saveLibraryDetailsResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@PutLibraryDetails'){ACCOUNT_ID : '<ACCOUNT_ID>'}
     Then match saveLibraryDetailsResponseMap.responseStatus == 200
-    * def getLibraryDetailsResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@GetLibraryDetails'){ORG_UCN : '<ORG_UCN>'}
+    * def getLibraryDetailsResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@GetLibraryDetails'){ACCOUNT_ID : '<ACCOUNT_ID>'}
     Then match getLibraryDetailsResponseMap.responseStatus == 200
     Then match saveLibraryDetailsResponseMap.response.capitalization == getLibraryDetailsResponseMap.response.capitalization.selectedValue
     Then match saveLibraryDetailsResponseMap.response.medium == getLibraryDetailsResponseMap.response.medium.selectedValue
@@ -28,57 +28,57 @@ Feature: Save Library details API automation tests
 
     @QA
     Examples:
-      | ORG_UCN | requestBody       |
-      | 77789   | putLibraryDetails |
+      | ACCOUNT_ID | requestBody       |
+      | 77789      | putLibraryDetails |
 
   Scenario Outline: Validate 200 response code for a valid request and check if data is getting updated
-    Given def originalLibraryDetailsResponse = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@GetLibraryDetails'){ORG_UCN : '<ORG_UCN>'}
+    Given def originalLibraryDetailsResponse = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@GetLibraryDetails'){ACCOUNT_ID : '<ACCOUNT_ID>'}
     Then originalLibraryDetailsResponse.responseStatus == 200
     * def REQUEST_BODY = read('SaveLibraryDetails.json')[updatedPayload]
-    Given def saveLibraryDetailsResponse = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@PutLibraryDetails'){ORG_UCN : '<ORG_UCN>'}
+    Given def saveLibraryDetailsResponse = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@PutLibraryDetails'){ACCOUNT_ID : '<ACCOUNT_ID>'}
     Then saveLibraryDetailsResponse.responseStatus == 200
     * sleep(1000)
-    Given def modifiedLibraryDetails = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@GetLibraryDetails'){ORG_UCN : '<ORG_UCN>'}
+    Given def modifiedLibraryDetails = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@GetLibraryDetails'){ACCOUNT_ID : '<ACCOUNT_ID>'}
     Then modifiedLibraryDetails.responseStatus == 200
     Then match originalLibraryDetailsResponse.response.readingLabel.selectedValue != modifiedLibraryDetails.response.readingLabel.selectedValue
     * def REQUEST_BODY = read('SaveLibraryDetails.json')[requestBody]
-    Given def saveLibraryDetailsResponse = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@PutLibraryDetails'){ORG_UCN : '<ORG_UCN>'}
+    Given def saveLibraryDetailsResponse = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@PutLibraryDetails'){ACCOUNT_ID : '<ACCOUNT_ID>'}
     Then saveLibraryDetailsResponse.responseStatus == 200
     * sleep(1000)
-    Given def modifiedLibraryDetails = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@GetLibraryDetails'){ORG_UCN : '<ORG_UCN>'}
+    Given def modifiedLibraryDetails = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@GetLibraryDetails'){ACCOUNT_ID : '<ACCOUNT_ID>'}
     Then match modifiedLibraryDetails.responseStatus == 200
     Then match originalLibraryDetailsResponse.response.readingLabel.selectedValue == modifiedLibraryDetails.response.readingLabel.selectedValue
 
     @QA
     Examples:
-      | ORG_UCN | requestBody       | updatedPayload        |
-      | 77789   | putLibraryDetails | updatedLibraryDetails |
+      | ACCOUNT_ID | requestBody       | updatedPayload        |
+      | 77789      | putLibraryDetails | updatedLibraryDetails |
 
   Scenario Outline: Validate 400 response code when no request payload is passed
     * def REQUEST_BODY =
     """
 
     """
-    * def saveLibraryDetailsResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@PutLibraryDetails'){ORG_UCN : '<ORG_UCN>'}
+    * def saveLibraryDetailsResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@PutLibraryDetails'){ACCOUNT_ID : '<ACCOUNT_ID>'}
     Then match saveLibraryDetailsResponseMap.responseStatus == 400
 
     @QA
       Examples:
-    |ORG_UCN  |
-    |77789    |
+        | ACCOUNT_ID |
+        | 77789      |
 
-  Scenario Outline: Validate 404 response code when no orgUcn is passed
+  Scenario Outline: Validate 404 response code when no accountId is passed
     * def REQUEST_BODY = read('SaveLibraryDetails.json')[requestBody]
-    * def saveLibraryDetailsResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@PutLibraryDetails'){ORG_UCN : '<ORG_UCN>'}
+    * def saveLibraryDetailsResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@PutLibraryDetails'){ACCOUNT_ID : '<ACCOUNT_ID>'}
     Then match saveLibraryDetailsResponseMap.responseStatus == 404
 
     @QA
     Examples:
-      | ORG_UCN | requestBody       |
-      |         | putLibraryDetails |
+      | ACCOUNT_ID | requestBody       |
+      |            | putLibraryDetails |
 
   @Regression @ignore
-  Scenario Outline: Validate regression using dynamic comparison || orgUcn=<ORG_UCN>
+  Scenario Outline: Validate regression using dynamic comparison || accountId=<ACCOUNT_ID>
     * def BaseResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@PutLibraryDetailsBase')
     * def TargetResponseMap = call read('classpath:common/bookfairs/library_processing/RunnerHelper.feature@PutLibraryDetails')
     Then match BaseResponseMap.responseStatus == TargetResponseMap.responseStatus
@@ -94,5 +94,5 @@ Feature: Save Library details API automation tests
 
     @QA
     Examples:
-      | ORG_UCN |
-      | 12345   |
+      | ACCOUNT_ID |
+      | 12345      |
