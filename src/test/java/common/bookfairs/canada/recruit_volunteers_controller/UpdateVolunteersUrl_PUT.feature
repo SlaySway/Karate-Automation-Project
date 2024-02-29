@@ -5,8 +5,21 @@ Feature: Canada Toolkit Update Volunteer URL API Tests
   Scenario: Mock api
     * def REQUEST_BODY =
     """
-        i am the url
+    {
+      "url": "iamtheurl"
+    }
     """
-    Given def response = call read('RunnerHelper.feature@UpdateFairInfo'){FAIR_ID:"random", USER_NAME:"random"}
+    Given def response = call read('RunnerHelper.feature@UpdateVolunteersUrl'){FAIR_ID:"random", USER_NAME:"random"}
+    * print response.response
+    Then match response.responseStatus == 200
+
+  Scenario: Invalid request body
+    * def REQUEST_BODY =
+    """
+    {
+      "url": "iamtheurl"
+    }
+    """
+    Given def response = call read('RunnerHelper.feature@UpdateVolunteersUrl'){FAIR_ID:"random", USER_NAME:"random"}
     * print response.response
     Then match response.responseStatus == 200
