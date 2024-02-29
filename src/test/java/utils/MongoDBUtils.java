@@ -248,4 +248,29 @@ public class MongoDBUtils {
         return pipeline;
     }
 
+    public UpdateResult findByFieldThenDeleteField(String collection, String findField, String findValue, String deleteField){
+        try {
+            MongoCollection<Document> mongoCollection = mongoClient.getDatabase(dbName).getCollection(collection);
+            FindIterable<Document> docs = mongoClient.getDatabase(dbName).getCollection(collection).find(eq(findField, findValue));
+            Document foundDocument = null;
+            if (docs == null){
+                return null;
+            }else{
+                for(Document doc: docs){
+                    if(doc.get(findField).equals(findValue)){
+                        foundDocument = doc;
+                    }
+                }
+            }
+            Bson updates = Updates.unset(deleteField);
+
+            UpdateResult result = mongoCollection.updateOne(foundDocument, updates);
+            return result;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
