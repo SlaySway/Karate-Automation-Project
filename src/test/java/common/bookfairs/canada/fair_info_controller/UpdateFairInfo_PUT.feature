@@ -1,5 +1,5 @@
 @UpdateFairInfo
-Feature: Canada Toolkit ResetPassword API Tests
+Feature: Canada Toolkit Update fair info API Tests
 
   # TODO: when dev complete
   Scenario: Mock api

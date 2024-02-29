@@ -2,8 +2,8 @@
 Feature: Helper for running event_controller endpoints
 
   Background: Set config
-    * string getFairInfoUri = "/api/homepage/<fairId>/fairInfo"
-    * string updateFairInfoUri = "/api/homepage/<fairId>/fairInfo"
+    * string getFairInfoUri = "/api/user/fairs/<fairId>/homepage/fair-info"
+    * string updateFairInfoUri = "/api/user/fairs/<fairId>/homepage/fair-info"
 
   # TODO: dev incomplete
   # Input: USER_NAME, PASSWORD, FAIR_ID
