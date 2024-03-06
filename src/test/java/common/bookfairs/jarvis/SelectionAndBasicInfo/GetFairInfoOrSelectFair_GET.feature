@@ -14,7 +14,7 @@ Feature: GetFairInfoOrSelectFair GET Api tests
     * cookies { SCHL : #(schlResponse.SCHL)}
     Given method get
     Then match responseStatus == 204
-    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_RESOURCES"
 
     @QA
     Examples:
@@ -75,7 +75,7 @@ Feature: GetFairInfoOrSelectFair GET Api tests
     * param fairSelectionMode = "SELECT"
     Given method get
     Then match responseStatus == 403
-    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "RESOURCE_ID_NOT_VALID"
 
     @QA
     Examples:
@@ -91,7 +91,7 @@ Feature: GetFairInfoOrSelectFair GET Api tests
     * param fairSelectionMode = "SELECT"
     Given method get
     Then match responseStatus == 404
-    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_RESOURCE_ID"
 
     @QA
     Examples:
@@ -157,7 +157,7 @@ Feature: GetFairInfoOrSelectFair GET Api tests
     * param fairSelectionMode = "DO_NOT_SELECT"
     Given method get
     Then match responseStatus == 204
-    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_RESOURCES"
 
     @QA
     Examples:
@@ -204,7 +204,7 @@ Feature: GetFairInfoOrSelectFair GET Api tests
     * param fairSelectionMode = "DO_NOT_SELECT"
     Given method get
     Then match responseStatus == 403
-    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "RESOURCE_ID_NOT_VALID"
 
     @QA
     Examples:
@@ -220,7 +220,7 @@ Feature: GetFairInfoOrSelectFair GET Api tests
     * param fairSelectionMode = "DO_NOT_SELECT"
     Given method get
     Then match responseStatus == 404
-    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_RESOURCE_ID"
 
     @QA
     Examples:

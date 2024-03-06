@@ -87,7 +87,7 @@ Feature: SetFairCoChairs PUT Api tests
     * def REQUEST_BODY = defaultRequestBody
     Given def setFairCochairsResponse = call read('RunnerHelper.feature@SetFairCoChairs')
     Then match setFairCochairsResponse.responseStatus == 204
-    And match setFairCochairsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
+    And match setFairCochairsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_RESOURCES"
 
     @QA
     Examples:
@@ -139,7 +139,7 @@ Feature: SetFairCoChairs PUT Api tests
     * def REQUEST_BODY = defaultRequestBody
     Given def setFairCochairsResponse = call read('RunnerHelper.feature@SetFairCoChairs')
     Then match setFairCochairsResponse.responseStatus == 403
-    And match setFairCochairsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
+    And match setFairCochairsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "RESOURCE_ID_NOT_VALID"
 
     @QA
     Examples:
@@ -151,7 +151,7 @@ Feature: SetFairCoChairs PUT Api tests
     * def REQUEST_BODY = defaultRequestBody
     Given def setFairCochairsResponse = call read('RunnerHelper.feature@SetFairCoChairs')
     Then match setFairCochairsResponse.responseStatus == 404
-    And match setFairCochairsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
+    And match setFairCochairsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_RESOURCE_ID"
 
     @QA
     Examples:

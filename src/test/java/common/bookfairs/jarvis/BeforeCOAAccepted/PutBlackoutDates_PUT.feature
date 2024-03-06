@@ -160,7 +160,7 @@ Feature: PutBlackoutDates API automation tests
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     Given def getCoaDatesResponse = call read('RunnerHelper.feature@GetCOAdates')
     Then match getCoaDatesResponse.responseStatus == 204
-    And match getCoaDatesResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
+    And match getCoaDatesResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_RESOURCES"
 
     @QA
     Examples:
@@ -184,7 +184,7 @@ Feature: PutBlackoutDates API automation tests
   Scenario Outline: Validate when user uses an invalid fair ID for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     Given def getCoaDatesResponse = call read('RunnerHelper.feature@PutBlackoutDates')
     Then match getCoaDatesResponse.responseStatus == 404
-    And match getCoaDatesResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
+    And match getCoaDatesResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_RESOURCE_ID"
 
     @QA
     Examples:

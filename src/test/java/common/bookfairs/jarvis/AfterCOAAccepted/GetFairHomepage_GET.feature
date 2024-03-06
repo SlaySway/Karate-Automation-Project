@@ -9,7 +9,7 @@ Feature: GetFairHomepage GET Api tests
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     Given def getHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
     Then match getHomepageResponse.responseStatus == 204
-    And match getHomepageResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
+    And match getHomepageResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_RESOURCES"
 
     @QA
     Examples:
@@ -59,7 +59,7 @@ Feature: GetFairHomepage GET Api tests
   Scenario Outline: Validate when user doesn't have access to specific fair for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     Given def getHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
     Then match getHomepageResponse.responseStatus == 403
-    And match getHomepageResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
+    And match getHomepageResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "RESOURCE_ID_NOT_VALID"
 
     @QA
     Examples:
@@ -70,7 +70,7 @@ Feature: GetFairHomepage GET Api tests
   Scenario Outline: Validate when user uses an invalid fair ID for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     Given def getHomepageResponse = call read('RunnerHelper.feature@GetFairHomepage')
     Then match getHomepageResponse.responseStatus == 404
-    And match getHomepageResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
+    And match getHomepageResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_RESOURCE_ID"
 
     @QA
     Examples:

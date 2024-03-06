@@ -36,7 +36,7 @@ Feature: GetUserSchools API automation tests
     And cookies { SCHL : '#(schlResponse.SCHL)'}
     And method get
     Then status 204
-    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_RESOURCES"
 
     @QA
     Examples:

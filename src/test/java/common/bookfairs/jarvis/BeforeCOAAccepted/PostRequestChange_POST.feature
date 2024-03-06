@@ -157,7 +157,7 @@ Feature: PostRequestChange API automation tests
   Scenario Outline: Validate when user uses an invalid fair ID for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     Given def getCoaDatesResponse = call read('RunnerHelper.feature@PostChangeRequest')
     Then match getCoaDatesResponse.responseStatus == 404
-    And match getCoaDatesResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
+    And match getCoaDatesResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_RESOURCE_ID"
 
     @QA
     Examples:

@@ -10,7 +10,7 @@ Feature: DeleteHomepageEvents DELETE Api tests
     * def REQUEST_BODY = {}
     Given def deleteHomepageEventsResponse = call read('RunnerHelper.feature@DeleteHomepageEvents')
     Then match deleteHomepageEventsResponse.responseStatus == 204
-    And match deleteHomepageEventsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
+    And match deleteHomepageEventsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_RESOURCES"
 
     @QA
     Examples:
@@ -78,7 +78,7 @@ Feature: DeleteHomepageEvents DELETE Api tests
     * def REQUEST_BODY = {}
     Given def deleteHomepageEventsResponse = call read('RunnerHelper.feature@DeleteHomepageEvents')
     Then match deleteHomepageEventsResponse.responseStatus == 403
-    And match deleteHomepageEventsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
+    And match deleteHomepageEventsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "RESOURCE_ID_NOT_VALID"
 
     @QA
     Examples:
@@ -90,7 +90,7 @@ Feature: DeleteHomepageEvents DELETE Api tests
     * def REQUEST_BODY = {}
     Given def deleteHomepageEventsResponse = call read('RunnerHelper.feature@DeleteHomepageEvents')
     Then match deleteHomepageEventsResponse.responseStatus == 404
-    And match deleteHomepageEventsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
+    And match deleteHomepageEventsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_RESOURCE_ID"
 
     @QA
     Examples:

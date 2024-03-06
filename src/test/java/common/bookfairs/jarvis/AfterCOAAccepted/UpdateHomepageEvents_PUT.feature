@@ -61,7 +61,7 @@ Feature: UpdateHomepageEvents PUT Api tests
     * def REQUEST_BODY = {}
     Given def updateHomepageEventsResponse = call read('RunnerHelper.feature@UpdateHomepageEvents')
     Then match updateHomepageEventsResponse.responseStatus == 204
-    And match updateHomepageEventsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
+    And match updateHomepageEventsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_RESOURCES"
 
     @QA
     Examples:
@@ -113,7 +113,7 @@ Feature: UpdateHomepageEvents PUT Api tests
     * def REQUEST_BODY = {}
     Given def updateHomepageEventResponse = call read('RunnerHelper.feature@UpdateHomepageEvents')
     Then match updateHomepageEventResponse.responseStatus == 403
-    And match updateHomepageEventResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
+    And match updateHomepageEventResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "RESOURCE_ID_NOT_VALID"
 
     @QA
     Examples:
@@ -125,7 +125,7 @@ Feature: UpdateHomepageEvents PUT Api tests
     * def REQUEST_BODY = {}
     Given def updateHomepageEventResponse = call read('RunnerHelper.feature@UpdateHomepageEvents')
     Then match updateHomepageEventResponse.responseStatus == 404
-    And match updateHomepageEventResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
+    And match updateHomepageEventResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_RESOURCE_ID"
 
     @QA
     Examples:
