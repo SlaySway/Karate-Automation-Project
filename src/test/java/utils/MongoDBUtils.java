@@ -1,19 +1,19 @@
 package utils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.client.*;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoIterable;
 import com.mongodb.client.model.Projections;
 import org.bson.json.JsonWriterSettings;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.mongodb.client.model.Filters.*;
 
@@ -204,6 +204,65 @@ public class MongoDBUtils {
                 }
             }
             Bson updates = Updates.set(updateField, updateValue);
+
+            UpdateResult result = mongoCollection.updateOne(foundDocument, updates);
+            return result;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public AggregateIterable<Document> runAggregate(String cmnd, String collectionName) {
+
+        try {
+
+            List<Document> cmndBson = parsePipeline(cmnd);
+            MongoDatabase database = mongoClient.getDatabase(dbName);
+            MongoCollection<Document> collection = database.getCollection(collectionName);
+            AggregateIterable<Document> results = collection.aggregate(cmndBson);
+            return results;
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static List<Document> parsePipeline(String aggregationJson){
+
+        List<Document> pipeline = new ArrayList<>();
+        try{
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Object> objects = objectMapper.readValue(aggregationJson, List.class);
+
+            for( Object object: objects) {
+                Document document = Document.parse(objectMapper.writeValueAsString(object));
+                pipeline.add(document);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return pipeline;
+    }
+
+    public UpdateResult findByFieldThenDeleteField(String collection, String findField, String findValue, String deleteField){
+        try {
+            MongoCollection<Document> mongoCollection = mongoClient.getDatabase(dbName).getCollection(collection);
+            FindIterable<Document> docs = mongoClient.getDatabase(dbName).getCollection(collection).find(eq(findField, findValue));
+            Document foundDocument = null;
+            if (docs == null){
+                return null;
+            }else{
+                for(Document doc: docs){
+                    if(doc.get(findField).equals(findValue)){
+                        foundDocument = doc;
+                    }
+                }
+            }
+            Bson updates = Updates.unset(deleteField);
 
             UpdateResult result = mongoCollection.updateOne(foundDocument, updates);
             return result;

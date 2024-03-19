@@ -159,6 +159,7 @@ Feature: UpdateFinFormSales PUT Api tests
     """
     Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(RESOURCE_ID)"}
     * convertNumberDecimal(mongoJson.document)
+    * print mongoJson.document
     And def originalDocument = mongoJson.document
     * def REQUEST_BODY = {cash:{selected:1},scholasticDollars:{selected:2}}
     * def expectedDocument = originalDocument

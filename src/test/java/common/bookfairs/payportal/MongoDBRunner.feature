@@ -1,19 +1,9 @@
 @ignore @report=true
-Feature: Helper for accessing bftoolkit Mongo
+Feature: Helper for accessing Payportal Mongo
 
   Background: Set config
-    * def uri = "mongodb+srv://bftoolkitUser:a6AJEefUWIF7HY7y@uber-index-qa.ipjav.mongodb.net/admin?retryWrites=true&replicaSet=UBER-INDEX-QA-shard-0&readPreference=primary&srvServiceName=mongodb&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-1"
-    * def dbName = "bf-toolkit"
-
-    # Input: collection, field, value
-    # Output: document (returns document as JSON)
-  @FindDocumentByField
-  Scenario: Find and return document by field
-    * def DbUtils = Java.type('utils.MongoDBUtils')
-    * def db = new DbUtils(uri, dbName, "bookFairDataLoad")
-    * json document = db.findByField(collection, field, value)
-    * print document
-    * db.disconnect()
+    * def uri = "mongodb+srv://payportalReadWrite:PkYiSAIcz7ThhfYt@virtual-payment-gateway-qa.nc1xz.mongodb.net/admin?retryWrites=true&loadBalanced=false&replicaSet=virtual-payment-gateway-qa-shard-0&readPreference=primary&srvServiceName=mongodb&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-1"
+    * def dbName = "payportal"
 
   # Input: MONGO_COMMAND
   @RunCommand
@@ -33,46 +23,24 @@ Feature: Helper for accessing bftoolkit Mongo
 #    * print document
     * db.disconnect()
 
-  # Input: collection, findField, findValue, deleteField
-  @FindDocumentThenDeleteField
-  Scenario: Find a document and delete a field in it
-    * def DbUtils = Java.type('utils.MongoDBUtils')
-    * def db = new DbUtils(uri, dbName, collection)
-    * json document = db.findByFieldThenDeleteField(collection, findField, findValue, deleteField)
-    * print document
-    * db.disconnect()
 
   # Will be kept here as reference
   @ignore
-  Scenario Outline: Test Mongo Queries
+  Scenario Outline: Test Mongo Query RunCommand
     * def DbUtils = Java.type('utils.MongoDBUtils')
     * def db = new DbUtils(uri, dbName, "not used")
     * def mongoQueryAsJson =
     """
     {
-      find: "bookFairDataLoad",
+      find: "transaction",
       "filter": {
-        "_id.fairId": "#(FAIRID_OR_CURRENT)"
+        "export.FairID": "#(FAIRID_OR_CURRENT)"
       }
     }
     """
     * print mongoQueryAsJson
-    * print FAIRID_OR_CURRENT
+    * print karate.toString(mongoQueryAsJson)
     * json document = db.runCommand(karate.toString(mongoQueryAsJson))
-#    * print document.cursor.firstBatch[0]
-    * db.disconnect()
-
-    Examples:
-      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
-
-
-  # Will be kept here as reference
-  @ignore
-  Scenario Outline: Test Mongo Query Aggregate
-    * def DbUtils = Java.type('utils.MongoDBUtils')
-    * def db = new DbUtils(uri, dbName, "not used")
-    * json document = db.findByFieldThenDeleteField("financials","_id","5694324","confirmation")
     * print document
     * db.disconnect()
 
@@ -80,3 +48,34 @@ Feature: Helper for accessing bftoolkit Mongo
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5694329           |
 
+  # Will be kept here as reference
+  @ignore
+  Scenario Outline: Test Mongo Query Aggregate
+    * def DbUtils = Java.type('utils.MongoDBUtils')
+    * def db = new DbUtils(uri, dbName, "not used")
+    * def mongoQueryAsJson =
+    """
+    [
+        {
+            $match:{
+                "export.FairID":"5694329",
+                "_class":"stf"
+            }
+        },
+        {
+            $group:{
+                "_id": null,
+                "stfTotalSaleAmount": { $sum: "$amount" }
+            }
+        }
+      ]
+    """
+    * print mongoQueryAsJson
+    * print karate.toString(mongoQueryAsJson)
+    * json document = db.runAggregate(karate.toString(mongoQueryAsJson), "transaction")
+    * print document
+    * db.disconnect()
+
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5694329           |

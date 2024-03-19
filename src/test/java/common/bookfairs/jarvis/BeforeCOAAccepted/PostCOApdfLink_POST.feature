@@ -99,7 +99,7 @@ Feature: PostCOApdfLink API automation tests
     And request requestBody
     And method POST
     Then match responseStatus == 403
-    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
+    And match responseHeaders['Sbf-Jarvis-Reason'][0] == "RESOURCE_ID_NOT_VALID"
 
     @QA
     Examples:
@@ -197,7 +197,7 @@ Feature: PostCOApdfLink API automation tests
     * def requestBody = {}
     Given def postCOApdfLinkResponse = call read('RunnerHelper.feature@PostCOApdfLink')
     Then match postCOApdfLinkResponse.responseStatus == 404
-    And match postCOApdfLinkResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
+    And match postCOApdfLinkResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_RESOURCE_ID"
 
     @QA
     Examples:

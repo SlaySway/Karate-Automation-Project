@@ -88,7 +88,7 @@ Feature: Wallet Flow Api tests
     """
     function() {
       var DateTimeFormatter = Java.type('java.time.format.DateTimeFormatter');
-      var dtf = DateTimeFormatter.ofPattern('ddHHmmss');
+      var dtf = DateTimeFormatter.ofPattern('HHmmssSS');
       var ldt = java.time.LocalDateTime.now();
       return ldt.format(dtf);
     }

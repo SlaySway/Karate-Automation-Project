@@ -53,7 +53,7 @@ Feature: ToggleFairOnlineFairStatus PUT Api tests
     * def REQUEST_BODY = {}
     Given def toggleFairOnlineFairStatusResponse = call read('RunnerHelper.feature@ToggleFairOnlineFairStatus')
     Then match toggleFairOnlineFairStatusResponse.responseStatus == 204
-    And match toggleFairOnlineFairStatusResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
+    And match toggleFairOnlineFairStatusResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_RESOURCES"
 
     @QA
     Examples:
@@ -105,7 +105,7 @@ Feature: ToggleFairOnlineFairStatus PUT Api tests
     * def REQUEST_BODY = {}
     Given def toggleFairOnlineFairStatusResponse = call read('RunnerHelper.feature@ToggleFairOnlineFairStatus')
     Then match toggleFairOnlineFairStatusResponse.responseStatus == 403
-    And match toggleFairOnlineFairStatusResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
+    And match toggleFairOnlineFairStatusResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "RESOURCE_ID_NOT_VALID"
 
     @QA
     Examples:
@@ -117,7 +117,7 @@ Feature: ToggleFairOnlineFairStatus PUT Api tests
     * def REQUEST_BODY = {}
     Given def toggleFairOnlineFairStatusResponse = call read('RunnerHelper.feature@ToggleFairOnlineFairStatus')
     Then match toggleFairOnlineFairStatusResponse.responseStatus == 404
-    And match toggleFairOnlineFairStatusResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
+    And match toggleFairOnlineFairStatusResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_RESOURCE_ID"
 
     @QA
     Examples:

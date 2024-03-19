@@ -61,7 +61,7 @@ Feature: GetCOApdfLink API automation tests
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     Given def getCOAPDFLinkResponse = call read('RunnerHelper.feature@GetCOApdfLink')
     Then match getCOAPDFLinkResponse.responseStatus == 204
-    And match getCOAPDFLinkResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
+    And match getCOAPDFLinkResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_RESOURCES"
 
     @QA
     Examples:
@@ -86,7 +86,7 @@ Feature: GetCOApdfLink API automation tests
   Scenario Outline: Validate when user uses an invalid fair ID for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
     Given def getCOAPDFLinkResponse = call read('RunnerHelper.feature@GetCOApdfLink')
     Then match getCOAPDFLinkResponse.responseStatus == 404
-    And match getCOAPDFLinkResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
+    And match getCOAPDFLinkResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_RESOURCE_ID"
 
     @QA
     Examples:

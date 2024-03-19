@@ -1,0 +1,364 @@
+{
+  "5694296": {
+    "emptyBlackoutDates": {
+      "blackoutDates": {
+        "deliveryBlackoutDates": [
+        ],
+        "pickupBlackoutDates": [
+        ]
+      }
+    },
+    "emptyBlackoutDatesResponse":{
+      "fairStartDate": "2024-01-05",
+      "fairEndDate": "2024-12-02",
+      "deliveryStartDate": "2023-12-29",
+      "deliveryEndDate": "2024-01-04",
+      "pickupStartDate": "2024-12-03",
+      "pickupEndDate": "2024-12-09",
+      "deliveryWindow": "12/29/23, 1/1/24 - 1/4/24",
+      "pickupWindow": "12/3/24 - 12/6/24, 12/9/24",
+      "deliveryDate": "2024-01-08",
+      "pickupDate": null,
+      "remoteRoutingWindowFlag": false,
+      "deliveryBlackoutDates": null,
+      "pickupBlackoutDates": null,
+      "bookfairHolidays": [
+        "2024-06-19",
+        "2024-07-04",
+        "2024-12-24",
+        "2024-12-23",
+        "2024-12-26",
+        "2024-12-27",
+        "2024-09-02",
+        "2024-11-28",
+        "2024-11-29",
+        "2024-12-25",
+        "2024-05-27"
+      ]
+    },
+    "emptyDeliveryDatesPopulatedElevenPickupDates" : {
+      "blackoutDates": {
+        "deliveryBlackoutDates": [
+        ],
+        "pickupBlackoutDates": [
+          "2024-12-04",
+          "2024-12-05",
+          "2024-12-06",
+          "2024-12-07",
+          "2024-12-08",
+          "2024-12-09",
+          "2024-12-10",
+          "2024-12-11",
+          "2024-12-12",
+          "2024-12-13",
+          "2024-12-14"
+        ]
+      }
+    },
+    "emptyDeliveryDatesPopulatedElevenPickupDatesResponse" : {
+      "fairStartDate": "2024-01-05",
+      "fairEndDate": "2024-12-02",
+      "deliveryStartDate": "2023-12-29",
+      "deliveryEndDate": "2024-01-04",
+      "pickupStartDate": "2024-12-03",
+      "pickupEndDate": "2024-12-19",
+      "deliveryWindow": "12/29/23, 1/1/24 - 1/4/24",
+      "pickupWindow": "12/3/24, 12/16/24 - 12/19/24",
+      "deliveryDate": "2024-01-08",
+      "pickupDate": null,
+      "remoteRoutingWindowFlag": false,
+      "deliveryBlackoutDates": [],
+      "pickupBlackoutDates": [
+        "2024-12-04",
+        "2024-12-05",
+        "2024-12-06",
+        "2024-12-07",
+        "2024-12-08",
+        "2024-12-09",
+        "2024-12-10",
+        "2024-12-11",
+        "2024-12-12",
+        "2024-12-13",
+        "2024-12-14"
+      ],
+      "bookfairHolidays": [
+        "2024-06-19",
+        "2024-07-04",
+        "2024-12-24",
+        "2024-12-23",
+        "2024-12-26",
+        "2024-12-27",
+        "2024-09-02",
+        "2024-11-28",
+        "2024-11-29",
+        "2024-12-25",
+        "2024-05-27"
+      ]
+    },
+    "populatedElevenDeliveryDatesEmptyPickupDates" : {
+      "blackoutDates": {
+        "deliveryBlackoutDates": [
+          "2023-12-18",
+          "2023-12-19",
+          "2023-12-29",
+          "2023-12-28",
+          "2023-12-27",
+          "2023-12-26",
+          "2023-12-25",
+          "2023-12-24",
+          "2023-12-23",
+          "2023-12-22",
+          "2023-12-21"
+        ],
+        "pickupBlackoutDates": [
+        ]
+      }
+    },
+    "populatedElevenDeliveryDatesEmptyPickupDatesResponse": {
+      "fairStartDate": "2024-01-05",
+      "fairEndDate": "2024-12-02",
+      "deliveryStartDate": "2023-12-20",
+      "deliveryEndDate": "2024-01-04",
+      "pickupStartDate": "2024-12-03",
+      "pickupEndDate": "2024-12-09",
+      "deliveryWindow": "12/20/23, 1/1/24 - 1/4/24",
+      "pickupWindow": "12/3/24 - 12/6/24, 12/9/24",
+      "deliveryDate": "2024-01-08",
+      "pickupDate": null,
+      "remoteRoutingWindowFlag": false,
+      "deliveryBlackoutDates": [
+        "2023-12-18",
+        "2023-12-19",
+        "2023-12-21",
+        "2023-12-22",
+        "2023-12-23",
+        "2023-12-24",
+        "2023-12-25",
+        "2023-12-26",
+        "2023-12-27",
+        "2023-12-28",
+        "2023-12-29"
+      ],
+      "pickupBlackoutDates": [],
+      "bookfairHolidays": [
+        "2024-06-19",
+        "2024-07-04",
+        "2024-12-24",
+        "2024-12-23",
+        "2024-12-26",
+        "2024-12-27",
+        "2024-09-02",
+        "2024-11-28",
+        "2024-11-29",
+        "2024-12-25",
+        "2024-05-27"
+      ]
+    },
+    "populatedElevenBlackoutDates" : {
+      "blackoutDates": {
+        "deliveryBlackoutDates": [
+          "2023-12-19",
+          "2023-12-29",
+          "2023-12-28",
+          "2023-12-27",
+          "2023-12-26",
+          "2023-12-25",
+          "2023-12-24",
+          "2023-12-23",
+          "2023-12-22",
+          "2023-12-21"
+        ],
+        "pickupBlackoutDates": [
+          "2024-12-04",
+          "2024-12-05",
+          "2024-12-06",
+          "2024-12-07",
+          "2024-12-08",
+          "2024-12-09",
+          "2024-12-10",
+          "2024-12-11",
+          "2024-12-12",
+          "2024-12-13",
+          "2024-12-14"
+        ]
+      }
+    },
+    "populatedElevenBlackoutDatesResponse" : {
+      "fairStartDate": "2024-01-05",
+      "fairEndDate": "2024-12-02",
+      "deliveryStartDate": "2023-12-20",
+      "deliveryEndDate": "2024-01-04",
+      "pickupStartDate": "2024-12-03",
+      "pickupEndDate": "2024-12-19",
+      "deliveryWindow": "12/20/23, 1/1/24 - 1/4/24",
+      "pickupWindow": "12/3/24, 12/16/24 - 12/19/24",
+      "deliveryDate": "2024-01-08",
+      "pickupDate": null,
+      "remoteRoutingWindowFlag": false,
+      "deliveryBlackoutDates": [
+        "2023-12-19",
+        "2023-12-21",
+        "2023-12-22",
+        "2023-12-23",
+        "2023-12-24",
+        "2023-12-25",
+        "2023-12-26",
+        "2023-12-27",
+        "2023-12-28",
+        "2023-12-29"
+      ],
+      "pickupBlackoutDates": [
+        "2024-12-04",
+        "2024-12-05",
+        "2024-12-06",
+        "2024-12-07",
+        "2024-12-08",
+        "2024-12-09",
+        "2024-12-10",
+        "2024-12-11",
+        "2024-12-12",
+        "2024-12-13",
+        "2024-12-14"
+      ],
+      "bookfairHolidays": [
+        "2024-06-19",
+        "2024-07-04",
+        "2024-12-24",
+        "2024-12-23",
+        "2024-12-26",
+        "2024-12-27",
+        "2024-09-02",
+        "2024-11-28",
+        "2024-11-29",
+        "2024-12-25",
+        "2024-05-27"
+      ]
+    },
+    "blackoutDayBeforeFairAndAfterFair" : {
+      "blackoutDates": {
+        "deliveryBlackoutDates": [
+          "2024-01-04"
+        ],
+        "pickupBlackoutDates": [
+          "2024-12-03"
+        ]
+      }
+    },
+    "blackoutDayBeforeFairAndAfterFairResponse": {
+      "fairStartDate": "2024-01-05",
+      "fairEndDate": "2024-12-02",
+      "deliveryStartDate": "2023-12-28",
+      "deliveryEndDate": "2024-01-03",
+      "pickupStartDate": "2024-12-04",
+      "pickupEndDate": "2024-12-10",
+      "deliveryWindow": "12/28/23 - 12/29/23, 1/1/24 - 1/3/24",
+      "pickupWindow": "12/4/24 - 12/6/24, 12/9/24 - 12/10/24",
+      "deliveryDate": "2024-01-08",
+      "pickupDate": null,
+      "remoteRoutingWindowFlag": false,
+      "deliveryBlackoutDates": [
+        "2024-01-04"
+      ],
+      "pickupBlackoutDates": [
+        "2024-12-03"
+      ],
+      "bookfairHolidays": [
+        "2024-06-19",
+        "2024-07-04",
+        "2024-12-24",
+        "2024-12-23",
+        "2024-12-26",
+        "2024-12-27",
+        "2024-09-02",
+        "2024-11-28",
+        "2024-11-29",
+        "2024-12-25",
+        "2024-05-27"
+      ]
+    },
+    "swapDates" : {
+      "blackoutDates": {
+        "deliveryBlackoutDates": [
+          "2024-12-03"
+        ],
+        "pickupBlackoutDates": [
+          "2024-01-04"
+        ]
+      }
+    },
+    "swapDatesResponse" : {
+      "fairStartDate": "2024-01-05",
+      "fairEndDate": "2024-12-02",
+      "deliveryStartDate": "2023-12-29",
+      "deliveryEndDate": "2024-01-04",
+      "pickupStartDate": "2024-12-03",
+      "pickupEndDate": "2024-12-09",
+      "deliveryWindow": "12/29/23, 1/1/24 - 1/4/24",
+      "pickupWindow": "12/3/24 - 12/6/24, 12/9/24",
+      "deliveryDate": "2024-01-08",
+      "pickupDate": null,
+      "remoteRoutingWindowFlag": false,
+      "deliveryBlackoutDates": [
+        "2024-12-03"
+      ],
+      "pickupBlackoutDates": [
+        "2024-01-04"
+      ],
+      "bookfairHolidays": [
+        "2024-06-19",
+        "2024-07-04",
+        "2024-12-24",
+        "2024-12-23",
+        "2024-12-26",
+        "2024-12-27",
+        "2024-09-02",
+        "2024-11-28",
+        "2024-11-29",
+        "2024-12-25",
+        "2024-05-27"
+      ]
+    },
+    "arbitraryDates" : {
+      "blackoutDates": {
+        "deliveryBlackoutDates": [
+          "2023-03-10"
+        ],
+        "pickupBlackoutDates": [
+          "2025-01-20"
+        ]
+      }
+    },
+    "arbitraryDatesResponse" : {
+      "fairStartDate": "2024-01-05",
+      "fairEndDate": "2024-12-02",
+      "deliveryStartDate": "2023-12-29",
+      "deliveryEndDate": "2024-01-04",
+      "pickupStartDate": "2024-12-03",
+      "pickupEndDate": "2024-12-09",
+      "deliveryWindow": "12/29/23, 1/1/24 - 1/4/24",
+      "pickupWindow": "12/3/24 - 12/6/24, 12/9/24",
+      "deliveryDate": "2024-01-08",
+      "pickupDate": null,
+      "remoteRoutingWindowFlag": false,
+      "deliveryBlackoutDates": [
+        "2023-03-10"
+      ],
+      "pickupBlackoutDates": [
+        "2025-01-20"
+      ],
+      "bookfairHolidays": [
+        "2024-06-19",
+        "2024-07-04",
+        "2024-12-24",
+        "2024-12-23",
+        "2024-12-26",
+        "2024-12-27",
+        "2024-09-02",
+        "2024-11-28",
+        "2024-11-29",
+        "2024-12-25",
+        "2024-05-27"
+      ]
+    }
+  }
+}

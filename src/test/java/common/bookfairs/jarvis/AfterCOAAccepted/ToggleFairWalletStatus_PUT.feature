@@ -53,7 +53,7 @@ Feature: ToggleFairWalletStatus PUT Api tests
     * def REQUEST_BODY = {}
     Given def toggleFairWalletStatusResponse = call read('RunnerHelper.feature@ToggleFairWalletStatus')
     Then match toggleFairWalletStatusResponse.responseStatus == 204
-    And match toggleFairWalletStatusResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_FAIRS"
+    And match toggleFairWalletStatusResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_RESOURCES"
 
     @QA
     Examples:
@@ -105,7 +105,7 @@ Feature: ToggleFairWalletStatus PUT Api tests
     * def REQUEST_BODY = {}
     Given def toggleFairWalletStatusResponse = call read('RunnerHelper.feature@ToggleFairWalletStatus')
     Then match toggleFairWalletStatusResponse.responseStatus == 403
-    And match toggleFairWalletStatusResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "FAIR_ID_NOT_VALID"
+    And match toggleFairWalletStatusResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "RESOURCE_ID_NOT_VALID"
 
     @QA
     Examples:
@@ -117,7 +117,7 @@ Feature: ToggleFairWalletStatus PUT Api tests
     * def REQUEST_BODY = {}
     Given def toggleFairWalletStatusResponse = call read('RunnerHelper.feature@ToggleFairWalletStatus')
     Then match toggleFairWalletStatusResponse.responseStatus == 404
-    And match toggleFairWalletStatusResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_FAIR_ID"
+    And match toggleFairWalletStatusResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_RESOURCE_ID"
 
     @QA
     Examples:
