@@ -14,12 +14,12 @@ Feature: Helper for running After COA Accepted endpoints
     * string toggleFairWalletStatusUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/settings/ewallets"
     * string toggleFairOnlineFairStatusUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/settings/online-fair"
 
-    * string updateFinFormPurchaseOrdersUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/form/purchase-orders"
-    * string updateFinFormSalesUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/form/sales"
-    * string updateFinFormEarningsUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/form/earnings"
+    * string updateFinFormPurchaseOrdersUri = "/bookfairs-jarvis/api/user/fairs/<resourceId>/financials/form/purchase-orders"
+    * string updateFinFormSalesUri = "/bookfairs-jarvis/api/user/fairs/<resourceId>/financials/form/sales"
+    * string updateFinFormEarningsUri = "/bookfairs-jarvis/api/user/fairs/<resourceId>/financials/form/earnings"
 
-    * string getFinancialFormUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/form"
-    * string getFinancialSummaryUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/summary"
+    * string getFinancialFormUri = "/bookfairs-jarvis/api/user/fairs/<resourceId>/financials/form"
+    * string getFinancialSummaryUri = "/bookfairs-jarvis/api/user/fairs/<resourceId>/financials/summary"
 
   # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
   # Output: response
@@ -166,70 +166,70 @@ Feature: Helper for running After COA Accepted endpoints
     * request REQUEST_BODY
     Then method put
 
-  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT, REQUEST_BODY
+  # Input: USER_NAME, PASSWORD, RESOURCE_ID, REQUEST_BODY
   # Output: response
   @UpdateFinFormPurchaseOrders
-  Scenario: Run toggle fair online fair status for user: <USER_NAME>, fair: <FAIRID_OR_CURRENT>, and request body: <REQUEST_BODY>
+  Scenario: Run toggle fair online fair status for user: <USER_NAME>, fair: <RESOURCE_ID>, and request body: <REQUEST_BODY>
     Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
-    * replace updateFinFormPurchaseOrdersUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    * replace updateFinFormPurchaseOrdersUri.resourceId = RESOURCE_ID
     * url BOOKFAIRS_JARVIS_URL + updateFinFormPurchaseOrdersUri
     * cookies { SCHL : '#(schlResponse.SCHL)'}
     * request REQUEST_BODY
     Then method put
 
-  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT, REQUEST_BODY
+  # Input: USER_NAME, PASSWORD, RESOURCE_ID, REQUEST_BODY
   @UpdateFinFormSales
-  Scenario: Run update fair financial form sales for user: <USER_NAME>, fair: <FAIRID_OR_CURRENT>, and request body: <REQUEST_BODY>
+  Scenario: Run update fair financial form sales for user: <USER_NAME>, fair: <RESOURCE_ID>, and request body: <REQUEST_BODY>
     Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
-    * replace updateFinFormSalesUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    * replace updateFinFormSalesUri.resourceId = RESOURCE_ID
     * url BOOKFAIRS_JARVIS_URL + updateFinFormSalesUri
     * cookies { SCHL : '#(schlResponse.SCHL)'}
     * request REQUEST_BODY
     Then method put
 
-  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT, REQUEST_BODY
+  # Input: USER_NAME, PASSWORD, RESOURCE_ID, REQUEST_BODY
   @UpdateFinFormEarnings
-  Scenario: Run update fair financial form earnings for user: <USER_NAME>, fair: <FAIRID_OR_CURRENT>, and request body: <REQUEST_BODY>
+  Scenario: Run update fair financial form earnings for user: <USER_NAME>, fair: <RESOURCE_ID>, and request body: <REQUEST_BODY>
     Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
-    * replace updateFinFormEarningsUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    * replace updateFinFormEarningsUri.resourceId = RESOURCE_ID
     * url BOOKFAIRS_JARVIS_URL + updateFinFormEarningsUri
     * cookies { SCHL : '#(schlResponse.SCHL)'}
     * request REQUEST_BODY
     Then method put
 
-  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
+  # Input: USER_NAME, PASSWORD, RESOURCE_ID
   # Output: response
 
   @GetFinancialForm
-  Scenario: Run get financial form for user: <USER_NAME> and fair: <FAIRID_OR_CURRENT>
+  Scenario: Run get financial form for user: <USER_NAME> and fair: <RESOURCE_ID>
     Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
-    * replace getFinancialFormUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    * replace getFinancialFormUri.resourceId = RESOURCE_ID
     * url BOOKFAIRS_JARVIS_URL + getFinancialFormUri
     *  cookies { SCHL : '#(schlResponse.SCHL)'}
     Then method get
 
-    # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
+    # Input: USER_NAME, PASSWORD, RESOURCE_ID
    # Output: response
   @GetFinancialFormBase
-  Scenario: Run get financial form for user: <USER_NAME> and fair: <FAIRID_OR_CURRENT>
+  Scenario: Run get financial form for user: <USER_NAME> and fair: <RESOURCE_ID>
     Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
     * url BOOKFAIRS_JARVIS_BASE + getFinancialFormUri
     *  cookies { SCHL : '#(schlResponse.SCHL)'}
     Then method get
 
-  # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
+  # Input: USER_NAME, PASSWORD, RESOURCE_ID
   @GetFinancialSummary
-  Scenario: Run get financial form for user: <USER_NAME> and fair: <FAIRID_OR_CURRENT>
+  Scenario: Run get financial form for user: <USER_NAME> and fair: <RESOURCE_ID>
     Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
-    * replace getFinancialSummaryUri.fairIdOrCurrent = FAIRID_OR_CURRENT
+    * replace getFinancialSummaryUri.resourceId = RESOURCE_ID
     * url BOOKFAIRS_JARVIS_URL + getFinancialSummaryUri
     *  cookies { SCHL : '#(schlResponse.SCHL)'}
     Then method get
 
-    # Input: USER_NAME, PASSWORD, FAIRID_OR_CURRENT
+    # Input: USER_NAME, PASSWORD, RESOURCE_ID
    # Output: response
    @GetFinancialSummaryBase
-   Scenario: Run get financial summary for user: <USER_NAME> and fair: <FAIRID_OR_CURRENT>
+   Scenario: Run get financial summary for user: <USER_NAME> and fair: <RESOURCE_ID>
      Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
      * url BOOKFAIRS_JARVIS_BASE + getFinancialSummaryUri
      *  cookies { SCHL : '#(schlResponse.SCHL)'}
