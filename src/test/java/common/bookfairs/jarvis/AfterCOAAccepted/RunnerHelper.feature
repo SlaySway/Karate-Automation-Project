@@ -20,6 +20,8 @@ Feature: Helper for running After COA Accepted endpoints
 
     * string getFinancialFormUri = "/bookfairs-jarvis/api/user/fairs/<resourceId>/financials/form"
     * string getFinancialSummaryUri = "/bookfairs-jarvis/api/user/fairs/<resourceId>/financials/summary"
+    * string getFinancialFormEarningsUri = "/bookfairs-jarvis/api/user/fairs/<resourceId>/financials/form/earnings"
+    * string getFinancialFormPurchaseOrdersUri = "/bookfairs-jarvis/api/user/fairs/<resourceId>/financials/form/purchase-orders"
 
     * string submitFinancialFormUri = "/bookfairs-jarvis/api/user/fairs/<fairIdOrCurrent>/financials/form/submit"
 
@@ -246,3 +248,39 @@ Feature: Helper for running After COA Accepted endpoints
     * url BOOKFAIRS_JARVIS_URL + submitFinancialFormUri
     *  cookies { SCHL : '#(schlResponse.SCHL)'}
     Then method put
+
+    # Input: USER_NAME, PASSWORD, RESOURCE_ID
+  @GetFinancialFormEarnings
+  Scenario: Run get financial form earnings for user: <USER_NAME> and fair: <RESOURCE_ID>
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    * replace getFinancialFormEarningsUri.resourceId = RESOURCE_ID
+    * url BOOKFAIRS_JARVIS_URL + getFinancialFormEarningsUri
+    *  cookies { SCHL : '#(schlResponse.SCHL)'}
+    Then method get
+
+    # Input: USER_NAME, PASSWORD, RESOURCE_ID
+  @GetFinancialFormEarningsBase
+  Scenario: Run get financial form earnings for user: <USER_NAME> and fair: <RESOURCE_ID>
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    * replace getFinancialFormEarningsUri.resourceId = RESOURCE_ID
+    * url BOOKFAIRS_JARVIS_BASE + getFinancialFormEarningsUri
+    *  cookies { SCHL : '#(schlResponse.SCHL)'}
+    Then method get
+
+        # Input: USER_NAME, PASSWORD, RESOURCE_ID
+  @GetFinancialFormPurchaseOrders
+  Scenario: Run get financial form purchase orders for user: <USER_NAME> and fair: <RESOURCE_ID>
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    * replace getFinancialFormPurchaseOrdersUri.resourceId = RESOURCE_ID
+    * url BOOKFAIRS_JARVIS_URL + getFinancialFormPurchaseOrdersUri
+    *  cookies { SCHL : '#(schlResponse.SCHL)'}
+    Then method get
+
+         # Input: USER_NAME, PASSWORD, RESOURCE_ID
+  @GetFinancialFormPurchaseOrdersBase
+  Scenario: Run get financial form purchase orders for user: <USER_NAME> and fair: <RESOURCE_ID>
+    Given def schlResponse = call read('classpath:common/iam/IAMRunnerHelper.feature@SCHLCookieRunner')
+    * replace getFinancialFormPurchaseOrdersUri.resourceId = RESOURCE_ID
+    * url BOOKFAIRS_JARVIS_BASE + getFinancialFormPurchaseOrdersUri
+    *  cookies { SCHL : '#(schlResponse.SCHL)'}
+    Then method get

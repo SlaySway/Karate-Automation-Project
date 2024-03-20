@@ -12,5 +12,153 @@
         "zipcode": 7
       }
     ]
+  },
+  "validPayload": {
+  "list": [
+    {
+      "number": "testfl4t333h626i",
+      "amount": 58,
+      "contactName": "Tauss",
+      "agencyName": "XYZ DOE",
+      "address": "55 way",
+      "city": "GG hh",
+      "state": "bb",
+      "zipcode": "10092"
+    }
+  ]
+ },
+  "ThirteenPurchaseOrders": {
+    "list": [
+      {
+        "number": "test0001",
+        "amount": 50,
+        "contactName": "Tester A",
+        "agencyName": "XYZ DOE",
+        "address": "55 way",
+        "city": "GG hh",
+        "state": "bb",
+        "zipcode": "10092"
+      },
+      {
+        "number": "test0002",
+        "amount": 52,
+        "contactName": "Tester B",
+        "agencyName": "XYZ DOE",
+        "address": "55 road",
+        "city": "Gj hh",
+        "state": "ob",
+        "zipcode": "10093"
+      },
+      {
+        "number": "test0003",
+        "amount": 54,
+        "contactName": "Tester C",
+        "agencyName": "XYZ DOE",
+        "address": "56 road",
+        "city": "GG hh",
+        "state": "bb",
+        "zipcode": "10094"
+      },
+      {
+        "number": "test0004",
+        "amount": 56,
+        "contactName": "Tester D",
+        "agencyName": "XYZ DOE",
+        "address": "57 road",
+        "city": "Gg mh",
+        "state": "cb",
+        "zipcode": "10095"
+      },
+      {
+        "number": "test0005",
+        "amount": 58,
+        "contactName": "Tester E",
+        "agencyName": "XYZ DOE",
+        "address": "58 way",
+        "city": "GG hh",
+        "state": "bb",
+        "zipcode": "10096"
+      },
+      {
+        "number": "test0006",
+        "amount": 60,
+        "contactName": "Tester F",
+        "agencyName": "XYZ DOE",
+        "address": "59 way",
+        "city": "GG hh",
+        "state": "bb",
+        "zipcode": "10097"
+      },
+      {
+        "number": "test0007",
+        "amount": 62,
+        "contactName": "Tester G",
+        "agencyName": "XYZ DOE",
+        "address": "60 way",
+        "city": "GG hh",
+        "state": "bb",
+        "zipcode": "10098"
+      },
+      {
+        "number": "test0008",
+        "amount": 64,
+        "contactName": "Tester H",
+        "agencyName": "XYZ DOE",
+        "address": "61 way",
+        "city": "GG hh",
+        "state": "bb",
+        "zipcode": "10099"
+      },
+      {
+        "number": "test0009",
+        "amount": 66,
+        "contactName": "Tester I",
+        "agencyName": "XYZ DOE",
+        "address": "62 way",
+        "city": "GG hh",
+        "state": "bb",
+        "zipcode": "10081"
+      },
+      {
+        "number": "test0010",
+        "amount": 68,
+        "contactName": "Tester J",
+        "agencyName": "XYZ DOE",
+        "address": "55 way",
+        "city": "GG hh",
+        "state": "bb",
+        "zipcode": "10082"
+      },
+      {
+        "number": "test0011",
+        "amount": 70,
+        "contactName": "Tester K",
+        "agencyName": "XYZ DOE",
+        "address": "55 way",
+        "city": "GG hh",
+        "state": "bb",
+        "zipcode": "10083"
+      },
+      {
+        "number": "test0012",
+        "amount": 72,
+        "contactName": "Tester L",
+        "agencyName": "XYZ DOE",
+        "address": "55 way",
+        "city": "GG hh",
+        "state": "bb",
+        "zipcode": "10084"
+      },
+      {
+        "number": "test0013",
+        "amount": 74,
+        "contactName": "Tester M",
+        "agencyName": "XYZ DOE",
+        "address": "55 way",
+        "city": "GG hh",
+        "state": "bb",
+        "zipcode": "10085"
+      }
+    ]
   }
 }
