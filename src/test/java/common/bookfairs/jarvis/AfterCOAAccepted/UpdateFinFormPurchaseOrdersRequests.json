@@ -14,150 +14,150 @@
     ]
   },
   "validPayload": {
-  "list": [
-    {
-      "number": "testfl4t333h626i",
-      "amount": 58,
-      "contactName": "Tauss",
-      "agencyName": "XYZ DOE",
-      "address": "55 way",
-      "city": "GG hh",
-      "state": "bb",
-      "zipcode": "10092"
-    }
-  ]
- },
-  "ThirteenPurchaseOrders": {
     "list": [
       {
-        "number": "test0001",
-        "amount": 50,
-        "contactName": "Tester A",
+        "number": "testfl4t333h626i",
+        "amount": 58,
+        "contactName": "Tauss",
         "agencyName": "XYZ DOE",
         "address": "55 way",
         "city": "GG hh",
         "state": "bb",
         "zipcode": "10092"
+      }
+    ]
+  },
+  "ElevenPurchaseOrders": {
+    "list": [
+      {
+        "number": "test001",
+        "amount": 50.00,
+        "contactName": "Tester A",
+        "agencyName": "NYC DOE",
+        "address": "557 way",
+        "city": "New York",
+        "state": "NY",
+        "zipcode": "10012"
       },
       {
-        "number": "test0002",
-        "amount": 52,
+        "number": "test002",
+        "amount": 55.50,
         "contactName": "Tester B",
-        "agencyName": "XYZ DOE",
-        "address": "55 road",
-        "city": "Gj hh",
-        "state": "ob",
-        "zipcode": "10093"
+        "agencyName": "NYC DOE",
+        "address": "558 way",
+        "city": "New York",
+        "state": "NY",
+        "zipcode": "10013"
       },
       {
-        "number": "test0003",
-        "amount": 54,
+        "number": "test003",
+        "amount": 60.00,
         "contactName": "Tester C",
-        "agencyName": "XYZ DOE",
-        "address": "56 road",
-        "city": "GG hh",
-        "state": "bb",
-        "zipcode": "10094"
+        "agencyName": "NYC DOE",
+        "address": "559 way",
+        "city": "New York",
+        "state": "NY",
+        "zipcode": "10014"
       },
       {
-        "number": "test0004",
-        "amount": 56,
+        "number": "test004",
+        "amount": 66.50,
         "contactName": "Tester D",
-        "agencyName": "XYZ DOE",
-        "address": "57 road",
-        "city": "Gg mh",
-        "state": "cb",
-        "zipcode": "10095"
+        "agencyName": "NYC DOE",
+        "address": "560 way",
+        "city": "New York",
+        "state": "NY",
+        "zipcode": "10015"
       },
       {
-        "number": "test0005",
-        "amount": 58,
+        "number": "test005",
+        "amount": 70.00,
         "contactName": "Tester E",
-        "agencyName": "XYZ DOE",
-        "address": "58 way",
-        "city": "GG hh",
-        "state": "bb",
-        "zipcode": "10096"
+        "agencyName": "NYC DOE",
+        "address": "561 way",
+        "city": "New York",
+        "state": "NY",
+        "zipcode": "10016"
       },
       {
-        "number": "test0006",
-        "amount": 60,
+        "number": "test006",
+        "amount": 5.00,
         "contactName": "Tester F",
-        "agencyName": "XYZ DOE",
-        "address": "59 way",
-        "city": "GG hh",
-        "state": "bb",
-        "zipcode": "10097"
+        "agencyName": "NYC DOE",
+        "address": "562 way",
+        "city": "New York",
+        "state": "NY",
+        "zipcode": "10017"
       },
       {
-        "number": "test0007",
-        "amount": 62,
+        "number": "test007",
+        "amount": 6.00,
         "contactName": "Tester G",
-        "agencyName": "XYZ DOE",
-        "address": "60 way",
-        "city": "GG hh",
-        "state": "bb",
-        "zipcode": "10098"
+        "agencyName": "NYC DOE",
+        "address": "557 Broadway",
+        "city": "New York",
+        "state": "NY",
+        "zipcode": "10018"
       },
       {
-        "number": "test0008",
-        "amount": 64,
+        "number": "test008",
+        "amount": 7.00,
         "contactName": "Tester H",
-        "agencyName": "XYZ DOE",
-        "address": "61 way",
-        "city": "GG hh",
-        "state": "bb",
-        "zipcode": "10099"
+        "agencyName": "NYC DOE",
+        "address": "557 Broadway",
+        "city": "New York",
+        "state": "NY",
+        "zipcode": "10012"
       },
       {
-        "number": "test0009",
-        "amount": 66,
+        "number": "test009",
+        "amount": 8.6,
         "contactName": "Tester I",
-        "agencyName": "XYZ DOE",
-        "address": "62 way",
-        "city": "GG hh",
-        "state": "bb",
-        "zipcode": "10081"
+        "agencyName": "NYC DOE",
+        "address": "557 Broadway",
+        "city": "New York",
+        "state": "NY",
+        "zipcode": "10012"
       },
       {
-        "number": "test0010",
-        "amount": 68,
+        "number": "test010",
+        "amount": 10,
         "contactName": "Tester J",
-        "agencyName": "XYZ DOE",
-        "address": "55 way",
-        "city": "GG hh",
-        "state": "bb",
-        "zipcode": "10082"
+        "agencyName": "NYC DOE",
+        "address": "557 Broadway",
+        "city": "New York",
+        "state": "NY",
+        "zipcode": "10012"
       },
       {
-        "number": "test0011",
-        "amount": 70,
+        "number": "test011",
+        "amount": 0,
         "contactName": "Tester K",
-        "agencyName": "XYZ DOE",
-        "address": "55 way",
-        "city": "GG hh",
-        "state": "bb",
-        "zipcode": "10083"
+        "agencyName": "NYC DOE",
+        "address": "557 Broadway",
+        "city": "New York",
+        "state": "NY",
+        "zipcode": "10012"
       },
       {
-        "number": "test0012",
-        "amount": 72,
-        "contactName": "Tester L",
-        "agencyName": "XYZ DOE",
-        "address": "55 way",
-        "city": "GG hh",
-        "state": "bb",
-        "zipcode": "10084"
+        "number": "test012",
+        "amount": 0,
+        "contactName": "Tester K",
+        "agencyName": "NYC DOE",
+        "address": "557 Broadway",
+        "city": "New York",
+        "state": "NY",
+        "zipcode": "10012"
       },
       {
-        "number": "test0013",
-        "amount": 74,
-        "contactName": "Tester M",
-        "agencyName": "XYZ DOE",
-        "address": "55 way",
-        "city": "GG hh",
-        "state": "bb",
-        "zipcode": "10085"
+        "number": "test015",
+        "amount": 0,
+        "contactName": "Tester K",
+        "agencyName": "NYC DOE",
+        "address": "557 Broadway",
+        "city": "New York",
+        "state": "NY",
+        "zipcode": "10012"
       }
     ]
   }

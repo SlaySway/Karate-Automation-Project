@@ -166,15 +166,15 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
       | azhou1@scholastic.com | password1 | 5694296     | invalidAmount   |
 
   @Unhappy @ignore
-  Scenario Outline: Validate when user exceeds maximum purchase orders list inputs i.e., 13 fairs:<USER_NAME>, fair:<RESOURCE_ID>
+  Scenario Outline: Validate when user exceeds maximum(10) purchase orders list inputs i.e., 11 fairs:<USER_NAME>, fair:<RESOURCE_ID>
     * def REQUEST_BODY = read('UpdateFinFormPurchaseOrdersRequests.json')[requestBodyJson]
     Given def updateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
     Then match updateFinFormPurchaseOrdersResponse.responseStatus == 400
 
     @QA
     Examples:
-      | USER_NAME             | PASSWORD  | RESOURCE_ID |  | requestBodyJson        |
-      | azhou1@scholastic.com | password1 | 5694296     |  | ThirteenPurchaseOrders |
+      | USER_NAME              | PASSWORD | RESOURCE_ID |  | requestBodyJson      |
+      | mtodaro@scholastic.com | passw0rd | 5694314     |  | ElevenPurchaseOrders |
 
   @Happy @Mongo
   Scenario Outline: Validate mongo is updated in appropriate fields for user:<USER_NAME> and fair:<RESOURCE_ID>
