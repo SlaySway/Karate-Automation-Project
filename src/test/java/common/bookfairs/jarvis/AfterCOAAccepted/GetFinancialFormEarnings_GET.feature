@@ -1,14 +1,14 @@
-@GetFinancialForm @PerformanceEnhancement
-Feature: GetFinancialForm GET Api tests
+@GetFinancialFormEarnings @PerformanceEnhancement
+Feature: GetFinancialFormEarnings GET Api tests
 
   Background: Set config
     * def obj = Java.type('utils.StrictValidation')
-    * def getFinancialFormUri = "/bookfairs-jarvis/api/user/fairs/<resourceId>/financials/form"
+    * def getFinancialFormEarningsUri = "/bookfairs-jarvis/api/user/fairs/<resourceId>/financials/form/earnings"
 
   @Happy
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<RESOURCE_ID>
-    Given def getFinancialFormResponse = call read('RunnerHelper.feature@GetFinancialForm')
-    Then match getFinancialFormResponse.responseStatus == 200
+    Given def getFinancialFormEarningsResponse = call read('RunnerHelper.feature@GetFinancialFormEarnings')
+    Then match getFinancialFormEarningsResponse.responseStatus == 200
 
     @QA
     Examples:
@@ -17,11 +17,28 @@ Feature: GetFinancialForm GET Api tests
       | mtodaro@scholastic.com | passw0rd  | current     |
       | azhou1@scholastic.com  | password1 | 5694296     |
 
+    @Happy
+    Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<RESOURCE_ID>
+      * def REQUEST_BODY = { scholasticDollars:{selected:1}, cash:{selected:2} }
+      Given def updateFinFormEarningsResponse = call read('RunnerHelper.feature@UpdateFinFormEarnings')
+      Then match updateFinFormEarningsResponse.responseStatus == 200
+      Then def getFinancialFormEarningsResponse = call read('RunnerHelper.feature@GetFinancialFormEarnings')
+      And match getFinancialFormEarningsResponse.responseStatus == 200
+      * print getFinancialFormEarningsResponse.response.scholasticDollars.selected
+      And match getFinancialFormEarningsResponse.response.scholasticDollars.selected == REQUEST_BODY.scholasticDollars.selected
+      And match getFinancialFormEarningsResponse.response.cash.selected == REQUEST_BODY.cash.selected
+
+      @QA
+      Examples:
+        | USER_NAME              | PASSWORD  | RESOURCE_ID |
+        | mtodaro@scholastic.com | passw0rd  | 5694318     |
+        | azhou1@scholastic.com  | password1 | 5694296     |
+
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<RESOURCE_ID>
-    Given def getFinancialFormResponse = call read('RunnerHelper.feature@GetFinancialForm')
-    Then match getFinancialFormResponse.responseStatus == 204
-    And match getFinancialFormResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_RESOURCES"
+    Given def getFinancialFormEarningsResponse = call read('RunnerHelper.feature@GetFinancialFormEarnings')
+    Then match getFinancialFormEarningsResponse.responseStatus == 204
+    And match getFinancialFormEarningsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_ASSOCIATED_RESOURCES"
 
     @QA
     Examples:
@@ -30,9 +47,9 @@ Feature: GetFinancialForm GET Api tests
 
   @Unhappy
   Scenario Outline: Validate when user attempts to access a non-COA Accepted fair:<USER_NAME> and fair:<RESOURCE_ID>
-    Given def getFinancialFormResponse = call read('RunnerHelper.feature@GetFinancialForm')
-    Then match getFinancialFormResponse.responseStatus == 204
-    And match getFinancialFormResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NEEDS_COA_CONFIRMATION"
+    Given def getFinancialFormEarningsResponse = call read('RunnerHelper.feature@GetFinancialFormEarnings')
+    Then match getFinancialFormEarningsResponse.responseStatus == 204
+    And match getFinancialFormEarningsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "NEEDS_COA_CONFIRMATION"
 
     @QA
     Examples:
@@ -41,8 +58,8 @@ Feature: GetFinancialForm GET Api tests
 
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<RESOURCE_ID>
-    * replace getFinancialFormUri.resourceId =  RESOURCE_ID
-    * url BOOKFAIRS_JARVIS_URL + getFinancialFormUri
+    * replace getFinancialFormEarningsUri.resourceId =  RESOURCE_ID
+    * url BOOKFAIRS_JARVIS_URL + getFinancialFormEarningsUri
     Given method get
     Then match responseStatus == 204
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
@@ -55,8 +72,8 @@ Feature: GetFinancialForm GET Api tests
 
   @Unhappy
   Scenario: Validate when SCHL cookie is expired
-    * replace getFinancialFormUri.resourceId =  "current"
-    * url BOOKFAIRS_JARVIS_URL + getFinancialFormUri
+    * replace getFinancialFormEarningsUri.resourceId =  "current"
+    * url BOOKFAIRS_JARVIS_URL + getFinancialFormEarningsUri
     * cookies { SCHL : 'eyJraWQiOiJub25wcm9kLTIwMjEzMzExMzMyIiwidHlwIjoiSldUIiwiYWxnIj'}
     Given method get
     Then match responseStatus == 204
@@ -64,9 +81,9 @@ Feature: GetFinancialForm GET Api tests
 
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to specific fair for user:<USER_NAME> and fair:<RESOURCE_ID>
-    Given def getFinancialFormResponse = call read('RunnerHelper.feature@GetFinancialForm')
-    Then match getFinancialFormResponse.responseStatus == 403
-    And match getFinancialFormResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "RESOURCE_ID_NOT_VALID"
+    Given def getFinancialFormEarningsResponse = call read('RunnerHelper.feature@GetFinancialFormEarnings')
+    Then match getFinancialFormEarningsResponse.responseStatus == 403
+    And match getFinancialFormEarningsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "RESOURCE_ID_NOT_VALID"
 
     @QA
     Examples:
@@ -75,9 +92,9 @@ Feature: GetFinancialForm GET Api tests
 
   @Unhappy
   Scenario Outline: Validate when user uses an invalid fair ID for user:<USER_NAME> and fair:<RESOURCE_ID>
-    Given def getFinancialFormResponse = call read('RunnerHelper.feature@GetFinancialForm')
-    Then match getFinancialFormResponse.responseStatus == 404
-    And match getFinancialFormResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_RESOURCE_ID"
+    Given def getFinancialFormEarningsResponse = call read('RunnerHelper.feature@GetFinancialFormEarnings')
+    Then match getFinancialFormEarningsResponse.responseStatus == 404
+    And match getFinancialFormEarningsResponse.responseHeaders['Sbf-Jarvis-Reason'][0] == "MALFORMED_RESOURCE_ID"
 
     @QA
     Examples:
@@ -86,9 +103,9 @@ Feature: GetFinancialForm GET Api tests
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<RESOURCE_ID>, scenario:<SCENARIO>
-    Given def getFinancialFormResponse = call read('RunnerHelper.feature@GetFinancialForm')
-    Then match getFinancialFormResponse.responseHeaders['Sbf-Jarvis-Resource-Id'][0] == EXPECTED_FAIR
-    And if(RESOURCE_ID == 'current') karate.log(karate.match(getFinancialFormResponse.responseHeaders['Sbf-Jarvis-Resource-Selection'][0], 'AUTOMATICALLY_SELECTED_THIS_REQUEST'))
+    Given def getFinancialFormEarningsResponse = call read('RunnerHelper.feature@GetFinancialFormEarnings')
+    Then match getFinancialFormEarningsResponse.responseHeaders['Sbf-Jarvis-Resource-Id'][0] == EXPECTED_FAIR
+    And if(RESOURCE_ID == 'current') karate.log(karate.match(getFinancialFormEarningsResponse.responseHeaders['Sbf-Jarvis-Resource-Selection'][0], 'AUTOMATICALLY_SELECTED_THIS_REQUEST'))
 
     @QA
     Examples:
@@ -103,8 +120,8 @@ Feature: GetFinancialForm GET Api tests
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current WITH SBF_JARVIS for DO_NOT_SELECT mode with user:<USER_NAME>, fair:<RESOURCE_ID>, cookie fair:<SBF_JARVIS_FAIR>
     Given def selectFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){RESOURCE_ID: <SBF_JARVIS_FAIR>}
-    * replace getFinancialFormUri.resourceId = RESOURCE_ID
-    * url BOOKFAIRS_JARVIS_URL + getFinancialFormUri
+    * replace getFinancialFormEarningsUri.resourceId = RESOURCE_ID
+    * url BOOKFAIRS_JARVIS_URL + getFinancialFormEarningsUri
     * cookies { SCHL : '#(selectFairResponse.SCHL)', SBF_JARVIS: '#(selectFairResponse.SBF_JARVIS)'}
     Then method get
     Then match responseHeaders['Sbf-Jarvis-Resource-Id'][0] == EXPECTED_FAIR
@@ -118,8 +135,8 @@ Feature: GetFinancialForm GET Api tests
 
   @Regression @ignore
   Scenario Outline: Validate regression using dynamic comparison || fairId=<RESOURCE_ID>
-    * def BaseResponseMap = call read('RunnerHelper.feature@GetFinancialFormBase')
-    * def TargetResponseMap = call read('RunnerHelper.feature@GetFinancialForm')
+    * def BaseResponseMap = call read('RunnerHelper.feature@GetFinancialFormEarningsBase')
+    * def TargetResponseMap = call read('RunnerHelper.feature@GetFinancialFormEarnings')
     * string base = BaseResponseMap.response
     * string target = TargetResponseMap.response
     * def compResult = obj.strictCompare(base, target)
@@ -131,30 +148,8 @@ Feature: GetFinancialForm GET Api tests
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
       | azhou1@scholastic.com | password1 | 5694296     |
 
-  @Happy
+  @Happy @Mongo
   Scenario Outline: Validate invoice flow for user <USER_NAME>, fair:<RESOURCE_ID>
-    Given def mongoQueryResponse = call read("classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentThenDeleteField"){collection:"financials",findField:"_id",findValue:"#(RESOURCE_ID)",deleteField:"confirmation"}
-    Then def getFinancialFormResponse = call read('RunnerHelper.feature@GetFinancialForm')
-    And match getFinancialFormResponse.response.status.value == "ready"
-    And match getFinancialFormResponse.response.invoice == "#null"
-    Then def submitFinFormResponse = call read('RunnerHelper.feature@SubmitFinForm')
-    And match submitFinFormResponse.responseStatus == 200
-    Then def getFinancialFormResponse = call read('RunnerHelper.feature@GetFinancialForm')
-    And match getFinancialFormResponse.response.status.value == "confirmed"
-    And match getFinancialFormResponse.response.invoice != "#null"
-    * def mongoQueryResponse = call read("classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField"){collection:"financials",field:"_id",value:"#(RESOURCE_ID)"}
-    * def createExpectedResponse =
-    """
-    function(mongoDoc) {
-      let expectedResponse = {}
-      expectedResponse.totalCollected = mongoDoc.sales.grossSales.total
-      expectedResponse.digitalPaymentsCollected = mongoDoc.sales.tenderTotals.creditCards
-      expectedResponse.purchaseOrders = mongoDoc.sales.tenderTotals.purchaseOrders
-      expectedResponse.cashProfit = mongoDoc.fairEarning.cashProfitSelected + mongoDoc.sales.tenderTotals.cashAndChecks
-      expectedResponse.amountDue = expectedResponse.totalCollected - (expectedResponse.digitalPaymentsCollected + expectedResponse.purchaseOrders + expectedResponse.cashProfit)
-      return expectedResponse
-    }
-    """
     * def convertNumberDecimal =
     """
     function(json){
@@ -170,12 +165,18 @@ Feature: GetFinancialForm GET Api tests
               convertNumberDecimal(json[field]);
           }
         }
-    }  
+    }
     """
-    * convertNumberDecimal(mongoQueryResponse.document)
-    * def expectedResponse = createExpectedResponse(mongoQueryResponse.document);
-    * match getFinancialFormResponse.response.invoice.amountDetails == expectedResponse
+    Given def getFinancialFormEarningsResponse = call read('RunnerHelper.feature@GetFinancialFormEarnings')
+    Then match getFinancialFormEarningsResponse.responseStatus == 200
+    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(RESOURCE_ID)"}
+    * convertNumberDecimal(mongoJson.document)
+    * print mongoJson.document
+    And def currentDocument = mongoJson.document
+    And match currentDocument.fairEarning.scholasticDollars.selected == getFinancialFormEarningsResponse.response.scholasticDollars.selected
+    And match currentDocument.fairEarning.cash.selected == getFinancialFormEarningsResponse.response.cash.selected
 
+    @QA
     Examples:
-      | USER_NAME              | PASSWORD | RESOURCE_ID |
-      | mtodaro@scholastic.com | passw0rd | 5694324     |
+      | USER_NAME             | PASSWORD  | RESOURCE_ID |
+      | azhou1@scholastic.com | password1 | 5694296     |
