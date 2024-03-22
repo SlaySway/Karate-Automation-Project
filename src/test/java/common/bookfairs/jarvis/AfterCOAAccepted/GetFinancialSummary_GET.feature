@@ -98,7 +98,7 @@ Feature: GetFinancialSummary GET Api tests
       | hasAllFairs@testing.com                     | password1 | current     | 5694301       | Has all fairs                                |
       | hasUpcomingAndPastFairs@testing.com         | password1 | current     | 5694305       | Has upcoming and past fairs                  |
       | hasPastFairs@testing.com                    | password1 | current     | 5694307       | Has past fairs                               |
-      | hasRecentlyUpcomingAndPastFairs@testing.com | password1 | current     | 5694305       | Has recently ended, upcoming, and past fairs |
+      | hasRecentlyUpcomingAndPastFairs@testing.com | password1 | current     | 5694303       | Has recently ended, upcoming, and past fairs |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current WITH SBF_JARVIS for DO_NOT_SELECT mode with user:<USER_NAME>, fair:<RESOURCE_ID>, cookie fair:<SBF_JARVIS_FAIR>
