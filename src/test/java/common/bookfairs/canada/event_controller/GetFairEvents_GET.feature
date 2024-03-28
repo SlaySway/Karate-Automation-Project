@@ -24,7 +24,7 @@ Feature: Canada Toolkit GetFairEvents API Tests
           let newEvent = {};
           newEvent.id = event._id;
           newEvent.date = DateUtils.convertFormat(event.date, "EEE MMM dd HH:mm:ss zzz yyyy", "yyyy-MM-dd");
-          newEvent.createDate = event.createDate;
+          newEvent.createDate = DateUtils.convertFormat(event.createdDate, "EEE MMM dd HH:mm:ss zzz yyyy", "yyyy-MM-dd");
           newEvent.category = event.category
           newEvent.title = event.title
           newEvent.startTime = "need conversion"
@@ -49,10 +49,10 @@ Feature: Canada Toolkit GetFairEvents API Tests
     """
     And def mongoResults = call read('classpath:common/bookfairs/canada/MongoDBRunner.feature@RunAggregate'){collectionName: "fairs"}
     Then match response.responseStatus == 200
-    * syncResponseToMongo(response.response)
+#    * syncResponseToMongo(response.response)
     * print response.response
-    * print mongoResults.document[0].onlineHomepage.events
     * print buildResponseFromMongoEventsList(mongoResults.document[0].onlineHomepage.events)
+    * print mongoResults.document[0].onlineHomepage.events
 #    * match mongoResults.document[0].onlineHomepage.events == response.response.events
 #    * def getCMDMFairSettingsResponse = call read('classpath:common/cmdm/canada/RunnerHelper.feature@GetFairRunner'){FAIR_ID:<FAIRID_OR_CURRENT>}
 #    * match getCMDMFairSettingsResponse.response.fairInfo.startDate == response.response.fairInfo.start # <- Will work once salesforce and mongo has a way to sync up (kafka topic)
