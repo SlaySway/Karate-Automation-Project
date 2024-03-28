@@ -30,7 +30,7 @@ Feature: Helper for accessing canada Mongo
     * def DbUtils = Java.type('utils.MongoDBUtils')
     * def db = new DbUtils(uri, dbName, "not used")
     * json document = db.runAggregate(karate.toString(AGGREGATE_PIPELINE), collectionName)
-#    * print document
+    * print document
     * db.disconnect()
 
   # Input: collection, findField, findValue, deleteField
@@ -72,11 +72,22 @@ Feature: Helper for accessing canada Mongo
   Scenario Outline: Test Mongo Query Aggregate
     * def DbUtils = Java.type('utils.MongoDBUtils')
     * def db = new DbUtils(uri, dbName, "not used")
-    * json document = db.findByFieldThenDeleteField("financials","_id","5694324","confirmation")
+    * def AGGREGATE_PIPELINE =
+    """
+    [
+        {
+          $match:{
+              "fairId":"#(FAIRID_OR_CURRENT)"
+          }
+        }
+      ]
+    """
+    * def collectionName = "fairs"
+    * json document = db.runAggregate(karate.toString(AGGREGATE_PIPELINE), collectionName)
     * print document
     * db.disconnect()
 
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694329           |
+      | azhou1@scholastic.com | password1 | 5196693           |
 

@@ -34,7 +34,10 @@ function fn() {
 		LIBRARY_PROCESSING_BASE: 'https://library-processing.stage.apps.scholastic.tech',
 
 		CANADA_TOOLKIT_URL: "https://canada-toolkit.qa.apps.scholastic.tech",
-		CANADA_TOOLKIT_BASE: "https://canada-toolkit.stage.apps.scholastic.tech"
+		CANADA_TOOLKIT_BASE: "https://canada-toolkit.stage.apps.scholastic.tech",
+
+		CMDM_CA_URL: 'https://qa.api.scholastic.com',
+		CMDM_CA_BEARER_TOKEN: '1efwAniZLP7fkVmJOmTAep53u39FI1F7'
 
 	}
 

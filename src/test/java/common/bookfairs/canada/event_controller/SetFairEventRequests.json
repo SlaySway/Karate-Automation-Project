@@ -1,0 +1,42 @@
+{
+  "oneEvent": [
+      {
+        "_id" : "#present",
+        "createdDate" : "#present",
+        "date": "2021-03-12",
+        "category": "Family Event",
+        "title": "Breakfast and Books",
+        "startTime": "06:30:00",
+        "endTime": "07:30:00",
+        "detailMessage": {
+          "english":"Automation Testing one event",
+          "french": "French testing one event"
+        }
+      }
+    ],
+  "twoEvents":[
+    {
+      "date": "2021-03-12",
+      "category": "Family Event",
+      "title": "Breakfast and Books",
+      "startTime": "08:30:00",
+      "endTime": "09:30:00",
+      "detailMessage": {
+        "english":"Automation Testing two events, first event",
+        "french": "French testing two event"
+      }
+    },
+    {
+      "date": "2021-03-12",
+      "category": "Family Event",
+      "title": "Breakfast and Books",
+      "startTime": "10:30:00",
+      "endTime": "11:30:00",
+      "detailMessage": {
+        "english":"Automation Testing two events, second event",
+        "french": "French testing two event"
+      }
+    }
+  ],
+  "noEvents": []
+}

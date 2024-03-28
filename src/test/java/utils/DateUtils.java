@@ -38,4 +38,11 @@ public class DateUtils {
         return !LocalDate.now().isBefore(beginDate) && !LocalDate.now().isAfter(endDate);
     }
 
+    public static String convertFormat(String dateTime, String originalFormat, String newFormat){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(originalFormat);
+        LocalDate originalDate = LocalDate.parse(dateTime, formatter);
+        DateTimeFormatter newFormatter = DateTimeFormatter.ofPattern(newFormat);
+        return originalDate.format(newFormatter);
+    }
+
 }

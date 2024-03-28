@@ -1,33 +1,29 @@
 @UpdateFairEvents
-Feature: Canada Toolkit ResetPassword API Tests
+Feature: Canada Toolkit SetFairEvents API Tests
 
-  # TODO: when dev complete
-  Scenario: Mock api
-    * def REQUEST_BODY =
+  Scenario Outline: Validate set events sets the events in mongo for fair: <FAIRID_OR_CURRENT>
+    * def REQUEST_BODY = read('SetFairEventRequests.json')[requestBody]
+    Given def response = call read('RunnerHelper.feature@SetFairEvents'){FAIR_ID:<FAIRID_OR_CURRENT>}
+    And def AGGREGATE_PIPELINE =
     """
     [
       {
-          "eventDate": "2021-06-12",
-          "eventCategory": "Family Event",
-          "eventTitle": "Breakfast and Books",
-          "startTime": "06:30:00",
-          "endTime": "07:30:00",
-          "englishDetailMessage": "Test 102 Jul 18th",
-          "frenchDetailMessage": "Test 102 Jul 18th"
+        $match:{
+            "fairId":"#(FAIRID_OR_CURRENT)"
+        }
       }
     ]
     """
-    Given def response = call read('RunnerHelper.feature@UpdateFairEvents'){FAIR_ID:"random", USER_NAME:"random"}
-    * print response.response
+    And def mongoResults = call read('classpath:common/bookfairs/canada/MongoDBRunner.feature@RunAggregate'){collectionName: "fairs"}
     Then match response.responseStatus == 200
+    * match mongoResults.document[0].onlineHomepage.events contains REQUEST_BODY
 
-  Scenario: Functional test of user setting and getting events
-    # User sets zero event
-    # Check there is zero events
-    # User sets 1 event
-    # Check there is 1 event
-    # User sets 2 events
-    # Check there is 2 events
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | requestBody |
+      | azhou1@scholastic.com | password1 | 5196693           | oneEvent    |
+#      | azhou1@scholastic.com | password1 | 5196693           | twoEvents   |
+#      | azhou1@scholastic.com | password1 | 5196693           | zeroevents  |
+
 
   Scenario: User cannot set event for another fair
 
