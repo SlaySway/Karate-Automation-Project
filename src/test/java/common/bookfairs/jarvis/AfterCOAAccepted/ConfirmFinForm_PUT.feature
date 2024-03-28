@@ -139,7 +139,7 @@ Feature: ConfirmFinForm PUT Api tests
       | azhou1@scholastic.com | password1 | current     |
 
   @Happy @Mongo
-  Scenario Outline: Validate invoice flow for user <USER_NAME>, fair:<RESOURCE_ID>
+  Scenario Outline: Validate service when user tries to resubmit the finform for a fair || user <USER_NAME>, fair:<RESOURCE_ID>
     * def convertNumberDecimal =
     """
     function(json){

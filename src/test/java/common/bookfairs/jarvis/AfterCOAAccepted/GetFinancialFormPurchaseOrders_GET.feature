@@ -62,6 +62,21 @@ Feature: GetFinancialFormPurchaseOrders GET Api tests
     Then match responseStatus == 204
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
 
+  @Unhappy @ignore
+  Scenario Outline: Validate for Bad request
+    Given def selectFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){RESOURCE_ID: <SBF_JARVIS_FAIR>}
+    * replace getFinancialFormPurchaseOrdersUri.resourceId =  RESOURCE_ID
+    * url BOOKFAIRS_JARVIS_URL + getFinancialFormPurchaseOrdersUri
+    * cookies { SCHL : '#(selectFairResponse.SCHL)', SBF_JARVIS: '#(selectFairResponse.SBF_JARVIS)'}
+    Given method put
+    Then match responseStatus == 400
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | RESOURCE_ID | SBF_JARVIS_FAIR |
+      | azhou1@scholastic.com | password1 | 5694296     | 5694309         |
+
+
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to specific fair for user:<USER_NAME> and fair:<RESOURCE_ID>
     Given def getFinancialFormPurchaseOrdersResponse = call read('RunnerHelper.feature@GetFinancialFormPurchaseOrders')
@@ -83,6 +98,21 @@ Feature: GetFinancialFormPurchaseOrders GET Api tests
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
       | azhou1@scholastic.com | password1 | abc1234     |
+
+  @Unhappy @ignore
+  Scenario Outline: Validate when unsupported http method is called
+    Given def selectFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){RESOURCE_ID: <SBF_JARVIS_FAIR>}
+    * replace getFinancialFormPurchaseOrdersUri.resourceId =  RESOURCE_ID
+    * url BOOKFAIRS_JARVIS_URL + getFinancialFormPurchaseOrdersUri
+    * cookies { SCHL : '#(selectFairResponse.SCHL)', SBF_JARVIS: '#(selectFairResponse.SBF_JARVIS)'}
+    Given method patch
+    Then match responseStatus == 405
+    Then match response.error == "Method Not Allowed"
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | RESOURCE_ID | SBF_JARVIS_FAIR |
+      | azhou1@scholastic.com | password1 | 5694296     | 5694309         |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<RESOURCE_ID>, scenario:<SCENARIO>
@@ -152,18 +182,14 @@ Feature: GetFinancialFormPurchaseOrders GET Api tests
     """
     Given def getFinancialFormPurchaseOrdersResponse = call read('RunnerHelper.feature@GetFinancialFormPurchaseOrders')
     Then match getFinancialFormPurchaseOrdersResponse.responseStatus == 200
+    * string poResponse = getFinancialFormPurchaseOrdersResponse.response.list
     Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(RESOURCE_ID)"}
     * convertNumberDecimal(mongoJson.document)
-    * print mongoJson.document
-    And def currentDocument = mongoJson.document
-    And match currentDocument.purchaseOrders[0].number == getFinancialFormPurchaseOrdersResponse.response.list[0].number
-    And match currentDocument.purchaseOrders[0].amount == getFinancialFormPurchaseOrdersResponse.response.list[0].amount
-    And match currentDocument.purchaseOrders[0].contactName == getFinancialFormPurchaseOrdersResponse.response.list[0].contactName
-    And match currentDocument.purchaseOrders[0].agencyName == getFinancialFormPurchaseOrdersResponse.response.list[0].agencyName
-    And match currentDocument.purchaseOrders[0].address == getFinancialFormPurchaseOrdersResponse.response.list[0].address
-    And match currentDocument.purchaseOrders[0].city == getFinancialFormPurchaseOrdersResponse.response.list[0].city
-    And match currentDocument.purchaseOrders[0].state == getFinancialFormPurchaseOrdersResponse.response.list[0].state
-    And match currentDocument.purchaseOrders[0].zipcode == getFinancialFormPurchaseOrdersResponse.response.list[0].zipcode
+    And string currentDocument = mongoJson.document.purchaseOrders
+    * print poResponse
+    * print currentDocument
+    * def compResult = obj.strictCompare(currentDocument, poResponse)
+    Then print 'Differences any...', compResult
 
     @QA
     Examples:

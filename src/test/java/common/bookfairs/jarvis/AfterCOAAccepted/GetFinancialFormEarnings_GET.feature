@@ -4,6 +4,7 @@ Feature: GetFinancialFormEarnings GET Api tests
   Background: Set config
     * def obj = Java.type('utils.StrictValidation')
     * def getFinancialFormEarningsUri = "/bookfairs-jarvis/api/user/fairs/<resourceId>/financials/form/earnings"
+    * def invalidGetFinFormEarningsUri = "/bookfairs-jarvis/api/user/fairs/<resourceId>/financial/forms/earn"
 
   @Happy
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -80,6 +81,20 @@ Feature: GetFinancialFormEarnings GET Api tests
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
 
   @Unhappy
+  Scenario Outline: Validate for internal server error
+    Given def selectFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){RESOURCE_ID: <SBF_JARVIS_FAIR>}
+    * replace invalidGetFinFormEarningsUri.resourceId =  RESOURCE_ID
+    * url BOOKFAIRS_JARVIS_URL + invalidGetFinFormEarningsUri
+    * cookies { SCHL : '#(selectFairResponse.SCHL)', SBF_JARVIS: '#(selectFairResponse.SBF_JARVIS)'}
+    Given method get
+    Then match responseStatus == 500
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | RESOURCE_ID | SBF_JARVIS_FAIR |
+      | azhou1@scholastic.com | password1 | 5694296     | 5694309         |
+
+  @Unhappy
   Scenario Outline: Validate when user doesn't have access to specific fair for user:<USER_NAME> and fair:<RESOURCE_ID>
     Given def getFinancialFormEarningsResponse = call read('RunnerHelper.feature@GetFinancialFormEarnings')
     Then match getFinancialFormEarningsResponse.responseStatus == 403
@@ -100,6 +115,21 @@ Feature: GetFinancialFormEarnings GET Api tests
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
       | azhou1@scholastic.com | password1 | abc1234     |
+
+  @Unhappy
+  Scenario Outline: Validate when unsupported http method is called
+    Given def selectFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){RESOURCE_ID: <SBF_JARVIS_FAIR>}
+    * replace getFinancialFormEarningsUri.resourceId =  RESOURCE_ID
+    * url BOOKFAIRS_JARVIS_URL + getFinancialFormEarningsUri
+    * cookies { SCHL : '#(selectFairResponse.SCHL)', SBF_JARVIS: '#(selectFairResponse.SBF_JARVIS)'}
+    Given method patch
+    Then match responseStatus == 405
+    Then match response.error == "Method Not Allowed"
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | RESOURCE_ID | SBF_JARVIS_FAIR |
+      | azhou1@scholastic.com | password1 | 5694296     | 5694309         |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<RESOURCE_ID>, scenario:<SCENARIO>
@@ -171,10 +201,44 @@ Feature: GetFinancialFormEarnings GET Api tests
     Then match getFinancialFormEarningsResponse.responseStatus == 200
     Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(RESOURCE_ID)"}
     * convertNumberDecimal(mongoJson.document)
-    * print mongoJson.document
-    And def currentDocument = mongoJson.document
-    And match currentDocument.fairEarning.scholasticDollars.selected == getFinancialFormEarningsResponse.response.scholasticDollars.selected
-    And match currentDocument.fairEarning.cash.selected == getFinancialFormEarningsResponse.response.cash.selected
+    And def earningsDocument = mongoJson.document
+    * print earningsDocument
+    And match getFinancialFormEarningsResponse.response.sales == ((earningsDocument.sales.grossSales.taxExemptSales + earningsDocument.sales.grossSales.taxableSales) - (earningsDocument.sales.scholasticDollars.totalRedeemed - earningsDocument.sales.scholasticDollars.taxCollected)* 0.5)
+    * def checkDollarFairLevel =
+    """
+    function(response){
+    if (response.sales >= 3500){
+    if (response.dollarFairLevel != '50') {
+          karate.log('Expected "50" dollar fair level for sales >= 3500');
+          karate.fail('Dollar fair level does not match expected value');
+        }
+      }
+    else if (response.sales >= 1500 && response.sales <= 3500) {
+    if (response.dollarFairLevel != '40') {
+          karate.log('Expected "40" dollar fair level for sales between 1500 and 3500');
+          karate.fail('Dollar fair level does not match expected value');
+        }
+      }
+    else {
+        if (response.dollarFairLevel != '30') {
+          karate.log('Expected "30" dollar fair level');
+          karate.fail('Dollar fair level does not match expected value');
+        }
+      }
+    }
+    """
+    Given def getFinancialFormEarningsResponse = call read('RunnerHelper.feature@GetFinancialFormEarnings')
+    * eval checkDollarFairLevel(getFinancialFormEarningsResponse.response)
+    * print checkDollarFairLevel(getFinancialFormEarningsResponse.response)
+    Given def getFinancialFormResponse = call read('RunnerHelper.feature@GetFinancialForm')
+    Then match getFinancialFormResponse.responseStatus == 200
+    And match getFinancialFormEarningsResponse.response.scholasticDollars.earned == Math.ceil(((getFinancialFormResponse.response.earnings.sales) * getFinancialFormEarningsResponse.response.dollarFairLevel/100)*100)/100
+    And match getFinancialFormEarningsResponse.response.scholasticDollars.due == getFinancialFormResponse.response.spending.scholasticDollars.due
+    And match getFinancialFormEarningsResponse.response.scholasticDollars.balance == getFinancialFormResponse.response.earnings.scholasticDollars.earned - (Math.abs(getFinancialFormResponse.response.earnings.scholasticDollars.due))
+    And match getFinancialFormEarningsResponse.response.scholasticDollars.selected == earningsDocument.fairEarning.scholasticDollars.selected
+    And match getFinancialFormEarningsResponse.response.scholasticDollars.max == getFinancialFormResponse.response.earnings.scholasticDollars.balance
+    And match getFinancialFormEarningsResponse.response.cash.selected == earningsDocument.fairEarning.cash.selected
+    And match getFinancialFormEarningsResponse.response.cash.max == Math.floor(((getFinancialFormEarningsResponse.response.scholasticDollars.balance)* 0.5)*100)/100
 
     @QA
     Examples:

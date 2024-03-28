@@ -5,6 +5,7 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     * def obj = Java.type('utils.StrictValidation')
     * def updateFinFormPurchaseOrdersUri = "/bookfairs-jarvis/api/user/fairs/<resourceId>/financials/form/purchase-orders"
     * def sleep = function(millis){ java.lang.Thread.sleep(millis) }
+    * def invalidPurchaseOrderUri = "/bookfairs-jarvis/api/user/fairs/<resourceId>/financials/forms/purchase-order"
 
   @Unhappy
   Scenario Outline: Validate when invalid request body type for user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -92,6 +93,35 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
       | azhou1@scholastic.com | password1 | abc1234     |
+
+  @Unhappy
+  Scenario Outline: Validate when unsupported http method is called
+    Given def selectFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){RESOURCE_ID: <SBF_JARVIS_FAIR>}
+    * replace updateFinFormPurchaseOrdersUri.resourceId =  RESOURCE_ID
+    * url BOOKFAIRS_JARVIS_URL + updateFinFormPurchaseOrdersUri
+    * cookies { SCHL : '#(selectFairResponse.SCHL)', SBF_JARVIS: '#(selectFairResponse.SBF_JARVIS)'}
+    Given method patch
+    Then match responseStatus == 405
+    Then match response.error == "Method Not Allowed"
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | RESOURCE_ID | SBF_JARVIS_FAIR |
+      | azhou1@scholastic.com | password1 | 5694296     | 5694309         |
+
+  @Unhappy
+  Scenario Outline: Validate for internal server error
+    Given def selectFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){RESOURCE_ID: <SBF_JARVIS_FAIR>}
+    * replace invalidPurchaseOrderUri.resourceId =  RESOURCE_ID
+    * url BOOKFAIRS_JARVIS_URL + invalidPurchaseOrderUri
+    * cookies { SCHL : '#(selectFairResponse.SCHL)', SBF_JARVIS: '#(selectFairResponse.SBF_JARVIS)'}
+    Given method put
+    Then match responseStatus == 500
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | RESOURCE_ID | SBF_JARVIS_FAIR |
+      | azhou1@scholastic.com | password1 | 5694296     | 5694309         |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<RESOURCE_ID>

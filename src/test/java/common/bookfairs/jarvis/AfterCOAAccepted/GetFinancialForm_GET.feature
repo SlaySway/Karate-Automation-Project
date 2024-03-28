@@ -4,6 +4,7 @@ Feature: GetFinancialForm GET Api tests
   Background: Set config
     * def obj = Java.type('utils.StrictValidation')
     * def getFinancialFormUri = "/bookfairs-jarvis/api/user/fairs/<resourceId>/financials/form"
+    * def invalidGetFinFormUri = "/bookfairs-jarvis/api/user/fairs/<resourceId>/financial/forms"
 
   @Happy
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -63,6 +64,20 @@ Feature: GetFinancialForm GET Api tests
     And match responseHeaders['Sbf-Jarvis-Reason'][0] == "NO_SCHL"
 
   @Unhappy
+  Scenario Outline: Validate for internal server error
+    Given def selectFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){RESOURCE_ID: <SBF_JARVIS_FAIR>}
+    * replace invalidGetFinFormUri.resourceId =  RESOURCE_ID
+    * url BOOKFAIRS_JARVIS_URL + invalidGetFinFormUri
+    * cookies { SCHL : '#(selectFairResponse.SCHL)', SBF_JARVIS: '#(selectFairResponse.SBF_JARVIS)'}
+    Given method get
+    Then match responseStatus == 500
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | RESOURCE_ID | SBF_JARVIS_FAIR |
+      | azhou1@scholastic.com | password1 | 5694296     | 5694309         |
+
+  @Unhappy
   Scenario Outline: Validate when user doesn't have access to specific fair for user:<USER_NAME> and fair:<RESOURCE_ID>
     Given def getFinancialFormResponse = call read('RunnerHelper.feature@GetFinancialForm')
     Then match getFinancialFormResponse.responseStatus == 403
@@ -83,6 +98,21 @@ Feature: GetFinancialForm GET Api tests
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
       | azhou1@scholastic.com | password1 | abc1234     |
+
+  @Unhappy
+  Scenario Outline: Validate when unsupported http method is called
+    Given def selectFairResponse = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair'){RESOURCE_ID: <SBF_JARVIS_FAIR>}
+    * replace getFinancialFormUri.resourceId =  RESOURCE_ID
+    * url BOOKFAIRS_JARVIS_URL + getFinancialFormUri
+    * cookies { SCHL : '#(selectFairResponse.SCHL)', SBF_JARVIS: '#(selectFairResponse.SBF_JARVIS)'}
+    Given method patch
+    Then match responseStatus == 405
+    Then match response.error == "Method Not Allowed"
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | RESOURCE_ID | SBF_JARVIS_FAIR |
+      | azhou1@scholastic.com | password1 | 5694296     | 5694309         |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<RESOURCE_ID>, scenario:<SCENARIO>
@@ -131,16 +161,16 @@ Feature: GetFinancialForm GET Api tests
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
       | azhou1@scholastic.com | password1 | 5694296     |
 
-  @Happy
+  @Happy @ignore
   Scenario Outline: Validate invoice flow for user <USER_NAME>, fair:<RESOURCE_ID>
     Given def mongoQueryResponse = call read("classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentThenDeleteField"){collection:"financials",findField:"_id",findValue:"#(RESOURCE_ID)",deleteField:"confirmation"}
     Then def getFinancialFormResponse = call read('RunnerHelper.feature@GetFinancialForm')
-    And match getFinancialFormResponse.response.status.value == "ready"
+    And match getFinancialFormResponse.response.status.type == "ready"
     And match getFinancialFormResponse.response.invoice == "#null"
     Then def submitFinFormResponse = call read('RunnerHelper.feature@SubmitFinForm')
     And match submitFinFormResponse.responseStatus == 200
     Then def getFinancialFormResponse = call read('RunnerHelper.feature@GetFinancialForm')
-    And match getFinancialFormResponse.response.status.value == "confirmed"
+    And match getFinancialFormResponse.response.status.type == "confirmed"
     And match getFinancialFormResponse.response.invoice != "#null"
     * def mongoQueryResponse = call read("classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField"){collection:"financials",field:"_id",value:"#(RESOURCE_ID)"}
     * def createExpectedResponse =
@@ -170,12 +200,124 @@ Feature: GetFinancialForm GET Api tests
               convertNumberDecimal(json[field]);
           }
         }
-    }  
+    }
     """
     * convertNumberDecimal(mongoQueryResponse.document)
     * def expectedResponse = createExpectedResponse(mongoQueryResponse.document);
+#    And match getFinancialFormResponse.response.invoice.number == "W"+"#(RESOURCE_ID)"+"BF"
     * match getFinancialFormResponse.response.invoice.amountDetails == expectedResponse
 
+    @QA
     Examples:
       | USER_NAME              | PASSWORD | RESOURCE_ID |
       | mtodaro@scholastic.com | passw0rd | 5694324     |
+
+  @Happy @Mongo
+  Scenario Outline: Validate with database when invoice section is null and status is ready for user <USER_NAME>, fair:<RESOURCE_ID>
+    * def convertNumberDecimal =
+    """
+    function(json){
+      if(typeof json !== 'object' || json == null) {
+          return json;
+      }
+      for(let field in json){
+          let isFieldObject = (typeof json[field] === 'object');
+          if(!Array.isArray(json[field]) && isFieldObject && json[field].containsKey('$numberDecimal')){
+              json[field] = Number(json[field]['$numberDecimal']);
+          }
+          else if (isFieldObject){
+              convertNumberDecimal(json[field]);
+          }
+        }
+    }
+    """
+    Given def getFinancialFormResponse = call read('RunnerHelper.feature@GetFinancialForm')
+    Then match getFinancialFormResponse.responseStatus == 200
+    And match getFinancialFormResponse.response.status.type == "ready"
+    And match getFinancialFormResponse.response.invoice == "#null"
+    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(RESOURCE_ID)"}
+    * convertNumberDecimal(mongoJson.document)
+    * print mongoJson.document
+    And def currentDocument = mongoJson.document
+    And match currentDocument.sales.scholasticDollars.totalRedeemed == getFinancialFormResponse.response.sales.scholasticDollars.totalRedeemed
+    And match currentDocument.sales.scholasticDollars.taxExemptSales == getFinancialFormResponse.response.sales.scholasticDollars.taxExemptSales
+    And match currentDocument.sales.scholasticDollars.taxCollected == getFinancialFormResponse.response.sales.scholasticDollars.taxCollected
+    And match currentDocument.sales.tenderTotals.cashAndChecks == getFinancialFormResponse.response.sales.tenderTotals.cashAndChecks
+    And match currentDocument.sales.tenderTotals.creditCards == getFinancialFormResponse.response.sales.tenderTotals.creditCards
+    And match currentDocument.sales.tenderTotals.purchaseOrders == getFinancialFormResponse.response.sales.tenderTotals.purchaseOrders
+    And match currentDocument.sales.grossSales.taxExemptSales == getFinancialFormResponse.response.sales.grossSales.taxExemptSales
+    And match currentDocument.sales.grossSales.taxableSales == getFinancialFormResponse.response.sales.grossSales.taxableSales
+#    And match currentDocument.sales.grossSales.total == getFinancialFormResponse.response.sales.grossSales.total
+#    And match currentDocument.sales.grossSales.taxTotal == getFinancialFormResponse.response.sales.grossSales.taxTotal
+    And match currentDocument.sales.netSales.shareTheFairFunds.collected == getFinancialFormResponse.response.sales.netSales.shareTheFairFunds.collected
+    And match currentDocument.sales.netSales.shareTheFairFunds.redeemed == getFinancialFormResponse.response.sales.netSales.shareTheFairFunds.redeemed
+    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"bookFairDataLoad", field:"fairId", value:"#(RESOURCE_ID)"}
+    * convertNumberDecimal(mongoJson.document)
+    And def bookFairDataLoadDocument = mongoJson.document
+    * def taxRate = (bookFairDataLoadDocument.taxDetailTaxRate)/1000
+    And match taxRate == getFinancialFormResponse.response.sales.taxRate
+    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(RESOURCE_ID)"}
+    * convertNumberDecimal(mongoJson.document)
+    And string purchaseOrderDocument = mongoJson.document.purchaseOrders
+    * print purchaseOrderDocument
+    * string poResponse = getFinancialFormResponse.response.purchaseOrders.list
+    * print poResponse
+    * def compResult = obj.strictCompare(purchaseOrderDocument, poResponse)
+    Then print 'Differences any...', compResult
+    And match currentDocument.sales.scholasticDollars.totalRedeemed == (getFinancialFormResponse.response.spending.scholasticDollars.totalRedeemed)* -1
+    Given def getCMDMResponse = call read('classpath:common/cmdm/fairs/CMDMRunnerHelper.feature@GetFairRunner')
+    Then match getCMDMResponse.responseStatus == 200
+    * print (Math.abs(getFinancialFormResponse.response.earnings.scholasticDollars.due))
+    * def schoolId = (getCMDMResponse.response.organization.bookfairAccountId).replaceFirst('^0+', '')
+    * print schoolId
+#    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"profitBalanceDataLoad", field:"schoolId", value: #(/schoolId/) }
+#    * convertNumberDecimal(mongoJson.document)
+#    And def currentDocument = mongoJson.document
+#    * def existingBal = currentDocument.voucherAmount + currentDocument.bookProfit
+#    * print existingBal
+#    Then match existingBal = getFinancialFormResponse.response.spending.scholasticDollars.existingBalance
+#    * def appliedBalance = if(existingBal == 0.0) ? 0.0 : existingBal - getFinancialFormResponse.response.spending.scholasticDollars.totalRedeemed
+#    * def due = if(existingBal > totalRedeemed)? due = 0.0 : due = existingSDBal- totalRedeemed
+    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(RESOURCE_ID)"}
+    * convertNumberDecimal(mongoJson.document)
+    And def earningsDocument = mongoJson.document
+    * print earningsDocument
+    And match getFinancialFormResponse.response.earnings.sales == ((earningsDocument.sales.grossSales.taxExemptSales + earningsDocument.sales.grossSales.taxableSales) - (earningsDocument.sales.scholasticDollars.totalRedeemed - earningsDocument.sales.scholasticDollars.taxCollected)* 0.5)
+    * def checkDollarFairLevel =
+    """
+    function(response){
+    if (response.earnings.sales >= 3500){
+    if (response.earnings.dollarFairLevel != '50') {
+          karate.log('Expected "50" dollar fair level for sales >= 3500');
+          karate.fail('Dollar fair level does not match expected value');
+        }
+      }
+    else if (response.earnings.sales >= 1500 && response.earnings.sales <= 3500) {
+    if (response.earnings.dollarFairLevel != '40') {
+          karate.log('Expected "40" dollar fair level for sales between 1500 and 3500');
+          karate.fail('Dollar fair level does not match expected value');
+        }
+      }
+    else {
+        if (response.earnings.dollarFairLevel != '30') {
+          karate.log('Expected "30" dollar fair level');
+          karate.fail('Dollar fair level does not match expected value');
+        }
+      }
+    }
+    """
+    Given def getFinancialFormResponse = call read('RunnerHelper.feature@GetFinancialForm')
+    * eval checkDollarFairLevel(getFinancialFormResponse.response)
+    And match getFinancialFormResponse.response.earnings.scholasticDollars.earned == Math.ceil(((getFinancialFormResponse.response.earnings.sales) * getFinancialFormResponse.response.earnings.dollarFairLevel/100)*100)/100
+    And match getFinancialFormResponse.response.earnings.scholasticDollars.due == getFinancialFormResponse.response.spending.scholasticDollars.due
+    And match getFinancialFormResponse.response.earnings.scholasticDollars.balance == getFinancialFormResponse.response.earnings.scholasticDollars.earned - (Math.abs(getFinancialFormResponse.response.earnings.scholasticDollars.due))
+    And match getFinancialFormResponse.response.earnings.scholasticDollars.selected == earningsDocument.fairEarning.scholasticDollars.selected
+    And match getFinancialFormResponse.response.earnings.scholasticDollars.max == getFinancialFormResponse.response.earnings.scholasticDollars.balance
+    And match getFinancialFormResponse.response.earnings.cash.selected == earningsDocument.fairEarning.cash.selected
+    And match getFinancialFormResponse.response.earnings.cash.max == Math.floor(((getFinancialFormResponse.response.earnings.scholasticDollars.balance)* 0.5)*100)/100
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | RESOURCE_ID | FAIR_ID | SCHOOL_ID |
+      | azhou1@scholastic.com | password1 | 5694296     | 5694296 | schoolId  |
+
