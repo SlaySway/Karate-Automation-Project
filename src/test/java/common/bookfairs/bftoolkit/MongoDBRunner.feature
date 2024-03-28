@@ -15,6 +15,16 @@ Feature: Helper for accessing bftoolkit Mongo
     * print document
     * db.disconnect()
 
+      # Input: collection, field, value
+    # Output: document (returns document as JSON)
+  @FindDocumentByRunTimeValue
+  Scenario: Find and return document by field
+    * def DbUtils = Java.type('utils.MongoDBUtils')
+    * def db = new DbUtils(uri, dbName, "profitBalanceDataLoad")
+    * json document = db.findByField("profitBalanceDataLoad", "schoolId", "1033128")
+    * print document
+    * db.disconnect()
+
   # Input: MONGO_COMMAND
   @RunCommand
   Scenario: Run a mongo command

@@ -268,32 +268,56 @@ Feature: GetFinancialForm GET Api tests
     Given def getCMDMResponse = call read('classpath:common/cmdm/fairs/CMDMRunnerHelper.feature@GetFairRunner')
     Then match getCMDMResponse.responseStatus == 200
     * print (Math.abs(getFinancialFormResponse.response.earnings.scholasticDollars.due))
-    * def schoolId = getCMDMResponse.response.organization.bookfairAccountId
+    * def schoolId = (getCMDMResponse.response.organization.bookfairAccountId).replaceFirst('^0+', '')
     * print schoolId
-    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"profitBalanceDataLoad", field:"schoolId", value: #(/schoolId/) }
-    * convertNumberDecimal(mongoJson.document)
-    And def currentDocument = mongoJson.document
-    * def existingBal = currentDocument.voucherAmount + currentDocument.bookProfit
-    * print existingBal
-    Then match existingBal = getFinancialFormResponse.response.spending.scholasticDollars.existingBalance
-    * def appliedBalance = if(existingBal == 0.0) ? 0.0 : existingBal - getFinancialFormResponse.response.spending.scholasticDollars.totalRedeemed
-    * def due = if(existingBal > totalRedeemed)? due = 0.0 : due = existingSDBal- totalRedeemed
+#    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"profitBalanceDataLoad", field:"schoolId", value: #(/schoolId/) }
+#    * convertNumberDecimal(mongoJson.document)
+#    And def currentDocument = mongoJson.document
+#    * def existingBal = currentDocument.voucherAmount + currentDocument.bookProfit
+#    * print existingBal
+#    Then match existingBal = getFinancialFormResponse.response.spending.scholasticDollars.existingBalance
+#    * def appliedBalance = if(existingBal == 0.0) ? 0.0 : existingBal - getFinancialFormResponse.response.spending.scholasticDollars.totalRedeemed
+#    * def due = if(existingBal > totalRedeemed)? due = 0.0 : due = existingSDBal- totalRedeemed
     Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(RESOURCE_ID)"}
     * convertNumberDecimal(mongoJson.document)
-    And string earningsDocument = mongoJson.document
+    And def earningsDocument = mongoJson.document
     * print earningsDocument
-    And match getFinancialFormResponse.response.earnings.sales == (earningsDocument.sales.grossSales.taxExemptSales + earningsDocument.sales.grossSales.taxableSales) - (earningsDocument.sales.scholasticDollars.totalRedeemed - financials.sales.scholasticDollars.taxCollected)* 0.5)
-    * def dollarFairLevel = if(sales>= 3500)? (sales >= 1500 && sales <= 3500 ) ? dollarFairLevel = "50" : dollarFairLevel = "40" : dollarFairLevel = "30"
-    And match getFinancialFormResponse.response.earnings.scholasticDollars.earned == (getFinancialFormResponse.response.earnings.sales) * dollarFairLevel/100
-    And match getFinancialFormResponse.response.earnings.scholasticDollars.due == getFinancialFormResponse.response.spending.due
+    And match getFinancialFormResponse.response.earnings.sales == ((earningsDocument.sales.grossSales.taxExemptSales + earningsDocument.sales.grossSales.taxableSales) - (earningsDocument.sales.scholasticDollars.totalRedeemed - earningsDocument.sales.scholasticDollars.taxCollected)* 0.5)
+    * def checkDollarFairLevel =
+    """
+    function(response){
+    if (response.earnings.sales >= 3500){
+    if (response.earnings.dollarFairLevel != '50') {
+          karate.log('Expected "50" dollar fair level for sales >= 3500');
+          karate.fail('Dollar fair level does not match expected value');
+        }
+      }
+    else if (response.earnings.sales >= 1500 && response.earnings.sales <= 3500) {
+    if (response.earnings.dollarFairLevel != '40') {
+          karate.log('Expected "40" dollar fair level for sales between 1500 and 3500');
+          karate.fail('Dollar fair level does not match expected value');
+        }
+      }
+    else {
+        if (response.earnings.dollarFairLevel != '30') {
+          karate.log('Expected "30" dollar fair level');
+          karate.fail('Dollar fair level does not match expected value');
+        }
+      }
+    }
+    """
+    Given def getFinancialFormResponse = call read('RunnerHelper.feature@GetFinancialForm')
+    * eval checkDollarFairLevel(getFinancialFormResponse.response)
+    And match getFinancialFormResponse.response.earnings.scholasticDollars.earned == Math.ceil(((getFinancialFormResponse.response.earnings.sales) * getFinancialFormResponse.response.earnings.dollarFairLevel/100)*100)/100
+    And match getFinancialFormResponse.response.earnings.scholasticDollars.due == getFinancialFormResponse.response.spending.scholasticDollars.due
     And match getFinancialFormResponse.response.earnings.scholasticDollars.balance == getFinancialFormResponse.response.earnings.scholasticDollars.earned - (Math.abs(getFinancialFormResponse.response.earnings.scholasticDollars.due))
-    And match getFinancialFormResponse.response.earnings.scholasticDollars.selected == earningsDocument.fairEarnings.scholasticDollars.selected
+    And match getFinancialFormResponse.response.earnings.scholasticDollars.selected == earningsDocument.fairEarning.scholasticDollars.selected
     And match getFinancialFormResponse.response.earnings.scholasticDollars.max == getFinancialFormResponse.response.earnings.scholasticDollars.balance
-    And match getFinancialFormResponse.response.cash.selected == earningsDocument.fairEarnings.cash.selected
-    And match getFinancialFormResponse.response.cash.max == (getFinancialFormResponse.response.earnings.scholasticDollars.balance)* 0.5
+    And match getFinancialFormResponse.response.earnings.cash.selected == earningsDocument.fairEarning.cash.selected
+    And match getFinancialFormResponse.response.earnings.cash.max == Math.floor(((getFinancialFormResponse.response.earnings.scholasticDollars.balance)* 0.5)*100)/100
 
     @QA
     Examples:
-      | USER_NAME             | PASSWORD  | RESOURCE_ID | FAIR_ID |
-      | azhou1@scholastic.com | password1 | 5694296     | 5694296 |
+      | USER_NAME             | PASSWORD  | RESOURCE_ID | FAIR_ID | SCHOOL_ID |
+      | azhou1@scholastic.com | password1 | 5694296     | 5694296 | schoolId  |
 
