@@ -1,6 +1,9 @@
 package utils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class DateUtils {
@@ -40,9 +43,17 @@ public class DateUtils {
 
     public static String convertFormat(String dateTime, String originalFormat, String newFormat){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(originalFormat);
-        LocalDate originalDate = LocalDate.parse(dateTime, formatter);
+        ZonedDateTime originalDate = ZonedDateTime.parse(dateTime, formatter);
         DateTimeFormatter newFormatter = DateTimeFormatter.ofPattern(newFormat);
         return originalDate.format(newFormatter);
+    }
+
+    public static String convertFormat(String dateTime, String originalFormat, String newFormat, String newTimezone){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(originalFormat);
+        ZonedDateTime originalDate = ZonedDateTime.parse(dateTime, formatter);
+        ZonedDateTime convertedZone = originalDate.withZoneSameInstant(ZoneId.of(newTimezone));
+        DateTimeFormatter newFormatter = DateTimeFormatter.ofPattern(newFormat);
+        return convertedZone.format(newFormatter);
     }
 
 }
