@@ -50,17 +50,19 @@ Feature: Canada Toolkit GetFairEvents API Tests
     * match getCMDMFairSettingsResponse.response.fairInfo.endDate == response.response.fairInfo.end
     Then match responseHeaders['Sbf-Ca-Resource-Id'] == FAIRID_OR_CURRENT
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5196693           |
 
-  Scenario Outline: Validate unauthorized operation returned by get events for fair: <FAIRID_OR_CURRENT>
+  Scenario Outline: Validate no authorization cookie provided for get events for fair: <FAIRID_OR_CURRENT>
     * replace getFairEventsUri.resourceId = FAIRID_OR_CURRENT
     * url CANADA_TOOLKIT_URL + getFairEventsUri
     Then method GET
     Then match responseStatus == 204
     Then match responseHeaders['Sbf-Ca-Reason'] == "NO_USER_EMAIL"
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
       | azhou1@scholastic.com | password1 | 5196693           |
@@ -70,6 +72,7 @@ Feature: Canada Toolkit GetFairEvents API Tests
     Then match response.responseStatus == 200
     Then match responseHeaders['Sbf-Ca-Resource-Id'] == EXPECTED_FAIR
 
+    @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR |
       | azhou1@scholastic.com | password1 | current           | 5196693       |

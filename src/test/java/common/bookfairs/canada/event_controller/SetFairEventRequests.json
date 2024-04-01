@@ -1,8 +1,6 @@
 {
   "oneEvent": [
       {
-        "_id" : "#present",
-        "createDate" : "#present",
         "date": "2021-03-12",
         "category": "Family Event",
         "title": "Breakfast and Books",
