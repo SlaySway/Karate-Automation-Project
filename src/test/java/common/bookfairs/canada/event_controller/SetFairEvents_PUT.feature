@@ -17,6 +17,30 @@ Feature: Canada Toolkit SetFairEvents API Tests
     And def mongoResults = call read('classpath:common/bookfairs/canada/MongoDBRunner.feature@RunAggregate'){collectionName: "fairs"}
     Then match response.responseStatus == 200
     * match mongoResults.document[0].onlineHomepage.events contains REQUEST_BODY
+    * def buildExpectedMongoEntry =
+    """
+      function(events){
+        if(events.length==0){
+          return [];
+        }
+        let DateUtils = Java.type('utils.DateUtils');
+        let expectedResponse = [];
+        events.forEach((event) => {
+          let newEvent = {};
+          newEvent.id = event._id;
+          newEvent.date = DateUtils.convertFormat(event.date, "EEE MMM dd HH:mm:ss zzz yyyy",  "yyyy-MM-dd", "UTC");
+          newEvent.createDate = "#notnull"
+          DateUtils.convertFormat(event.createdDate, "EEE MMM dd HH:mm:ss zzz yyyy", "yyyy-MM-dd'T'HH:mm:ss.SS");
+          newEvent.category = event.category
+          newEvent.title = event.title
+          newEvent.startTime = DateUtils.convertFormat(event.startTime, "EEE MMM dd HH:mm:ss zzz yyyy", "HH:mm:ss", "UTC");
+          newEvent.endTime = DateUtils.convertFormat(event.endTime, "EEE MMM dd HH:mm:ss zzz yyyy", "HH:mm:ss", "UTC");
+          newEvent.detailMessage = event.detailMessage
+          expectedResponse.push(newEvent)
+        })
+        return expectedResponse;
+      }
+      """
 
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | requestBody |
