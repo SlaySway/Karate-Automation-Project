@@ -1,6 +1,5 @@
-#Author: Ravindra Pallerla
 @ignore
-Feature: Runner helper for Jarvis application apis
+Feature: Runner helper for CMDM apis
 
   Background: Set config
     * string fairsUri = "/cmdm/fair-service/v1/fairs/"
@@ -21,6 +20,14 @@ Feature: Runner helper for Jarvis application apis
     * header Authorization = CMDM_BEARER_TOKEN
     * request COA_STATUS
     Given method put
+
+  # Input: SCHOOL_UCN
+  @GetFairsByOrgUcn
+  Scenario: Run GetFairsByOrgUcn api for school:<SCHOOL_UCN>
+    * replace getFairByOrgUcnUri.schoolUcn = SCHOOL_UCN
+    * url CMDM_URL + getFairByOrgUcnUri
+    * header Authorization = CMDM_BEARER_TOKEN
+    Given method get
 
   # Input: SCHOOL_UCN
   @GetFairsByOrgUcn
