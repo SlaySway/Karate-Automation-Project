@@ -19,7 +19,7 @@ Feature: Helper for running event_controller endpoints
   # Input: USER_NAME, PASSWORD, FAIR_ID, REQUEST_BODY
   # Output: response
   @SetFairEvents
-  Scenario: Run create fair event for user: <USER_NAME> and password: <REQUEST_BODY.password>
+  Scenario: Run create fair event for user: <USER_NAME> and fair: <FAIR_ID>
     * replace setFairEventsUri.resourceId = FAIR_ID
     * url CANADA_TOOLKIT_URL + setFairEventsUri
     * request REQUEST_BODY

@@ -1,0 +1,28 @@
+{
+  "sumOfFliersZero": {
+    "sixthAndAbove": 0,
+    "fifthAndBelow": 0
+  },
+  "sixthAt1000": {
+    "sixthAndAbove": 1000,
+    "fifthAndBelow": 999
+  },
+  "fifthAt1000": {
+    "sixthAndAbove": 999,
+    "fifthAndBelow": 1000
+  },
+  "sixthNegative": {
+    "sixthAndAbove": -1,
+    "fifthAndBelow": 500
+  },
+  "fifthNegative": {
+    "sixthAndAbove": 500,
+    "fifthAndBelow": -1
+  },
+  "sixthMissing": {
+    "fifthAndBelow": 500
+  },
+  "fifthMissing": {
+    "sixthAndAbove": 500
+  }
+}
