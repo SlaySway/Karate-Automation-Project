@@ -1,6 +1,9 @@
 @SetFliers
 Feature: Canada Toolkit set fliers API tests
 
+  Background: Set config
+    * string setFliersUri = "/api/user/fairs/<resourceId>/fliers"
+
   Scenario Outline: Validate when changing values of fliers to values different from original for fair: <FAIRID_OR_CURRENT>
     * def REQUEST_BODY =
     """
@@ -66,6 +69,27 @@ Feature: Canada Toolkit set fliers API tests
     Given def response = call read('RunnerHelper.feature@SetFliers'){FAIR_ID:<FAIRID_OR_CURRENT>}
     * print response.response
     Then match response.responseStatus == 415
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
+      | azhou1@scholastic.com | password1 | 5196693           |
+
+  @Security
+  Scenario Outline: Validate no authorization cookie provided for get events for fair: <FAIRID_OR_CURRENT>
+    * replace setFliersUri.resourceId = FAIRID_OR_CURRENT
+    * url CANADA_TOOLKIT_URL + setFliersUri
+    * def REQUEST_BODY =
+    """
+    {
+      "sixthAndAbove": 999,
+      "fifthAndBelow": 999
+    }
+    """
+    * request REQUEST_BODY
+    Then method PUT
+    Then match responseStatus == 204
+    Then match responseHeaders['Sbf-Ca-Reason'] == "NO_USER_EMAIL"
 
     @QA
     Examples:
