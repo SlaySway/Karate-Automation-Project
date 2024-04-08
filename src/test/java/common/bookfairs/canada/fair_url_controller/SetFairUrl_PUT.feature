@@ -69,7 +69,7 @@ Feature: Canada Toolkit SetFairUrl API Tests
     * url CANADA_TOOLKIT_URL + setFairUrlUri
     Then method PUT
     Then match responseStatus == 204
-    Then match responseHeaders['Sbf-Ca-Reason'] == "NO_USER_EMAIL"
+    Then match responseHeaders['Sbf-Ca-Reason'] == ["NO_USER_EMAIL"]
 
     @QA
     Examples:
@@ -96,14 +96,14 @@ Feature: Canada Toolkit SetFairUrl API Tests
     """
     Given def response = call read('RunnerHelper.feature@SetFairUrl'){FAIR_ID:<unauthorizedFair>}
     Then match response.responseStatus == 204
-    And match response.responseHeaders["Sbf-Ca-Reason"] == "RESOURCE_ID_NOT_VALID"
+    And match response.responseHeaders["Sbf-Ca-Reason"] == ["RESOURCE_ID_NOT_VALID"]
     Then def fairUrlAfterPutAttempt = call read('classpath:common/bookfairs/canada/MongoDBRunner.feature@RunAggregate'){collectionName: "fairs"}
     And match fairUrlBeforePut.document[0].onlineHomepage.fairUrl == fairUrlAfterPutAttempt.document[0].onlineHomepage.fairUrl
 
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | unauthorizedFair |
-      | azhou1@scholastic.com | password1 | 123456           |
+      | azhou1@scholastic.com | password1 | 5197091          |
 
   Scenario Outline: Validate when user sends an invalid request body
     Given def REQUEST_BODY =

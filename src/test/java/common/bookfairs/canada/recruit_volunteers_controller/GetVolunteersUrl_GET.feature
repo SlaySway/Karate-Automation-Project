@@ -18,7 +18,7 @@ Feature: Canada Toolkit GetVolunteersUrl API Tests
     ]
     """
     And def mongoResults = call read('classpath:common/bookfairs/canada/MongoDBRunner.feature@RunAggregate'){collectionName: "fairs"}
-    * match response.response.url contains mongoResults.document[0].onlineHomepage.volunteerUrl
+    * match response.response.url == mongoResults.document[0].onlineHomepage.volunteerUrl
 
     @QA
     Examples:
