@@ -247,8 +247,8 @@ Feature: GetFinancialForm GET Api tests
     And match currentDocument.sales.tenderTotals.purchaseOrders == getFinancialFormResponse.response.sales.tenderTotals.purchaseOrders
     And match currentDocument.sales.grossSales.taxExemptSales == getFinancialFormResponse.response.sales.grossSales.taxExemptSales
     And match currentDocument.sales.grossSales.taxableSales == getFinancialFormResponse.response.sales.grossSales.taxableSales
-#    And match currentDocument.sales.grossSales.total == getFinancialFormResponse.response.sales.grossSales.total
-#    And match currentDocument.sales.grossSales.taxTotal == getFinancialFormResponse.response.sales.grossSales.taxTotal
+    And match currentDocument.sales.grossSales.total == getFinancialFormResponse.response.sales.grossSales.total
+    And match currentDocument.sales.grossSales.taxTotal == getFinancialFormResponse.response.sales.grossSales.taxTotal
     And match currentDocument.sales.netSales.shareTheFairFunds.collected == getFinancialFormResponse.response.sales.netSales.shareTheFairFunds.collected
     And match currentDocument.sales.netSales.shareTheFairFunds.redeemed == getFinancialFormResponse.response.sales.netSales.shareTheFairFunds.redeemed
     Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"bookFairDataLoad", field:"fairId", value:"#(RESOURCE_ID)"}
@@ -270,9 +270,31 @@ Feature: GetFinancialForm GET Api tests
     * print (Math.abs(getFinancialFormResponse.response.earnings.scholasticDollars.due))
     * def schoolId = (getCMDMResponse.response.organization.bookfairAccountId).replaceFirst('^0+', '')
     * print schoolId
-#    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"profitBalanceDataLoad", field:"schoolId", value: #(/schoolId/) }
-#    * convertNumberDecimal(mongoJson.document)
-#    And def currentDocument = mongoJson.document
+    And def AGGREGATE_PIPELINE =
+    """
+    [
+    {
+    $match:{
+    "schoolId":"#(schoolId)"
+    }
+    }
+    ]
+    """
+    And def mongoResults = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@RunAggregate'){collectionName: "profitBalanceDataLoad"}
+    * convertNumberDecimal(mongoResults.document)
+    And def currentDocument = mongoResults.document
+#    * def checkIfExistingBalIsNull =
+#    """
+#      function(response){
+#      if (currentDocument == null){
+#      return response.spending.scholasticDollars.existingBalance = 0
+#      }
+#      else if (currentDocument != null){
+#      return response.spending.scholasticDollars.existingBalance
+#    """
+#    Given def getFinancialFormResponse = call read('RunnerHelper.feature@GetFinancialForm')
+#    * eval checkIfExistingBalIsNull(getFinancialFormResponse.response)
+#
 #    * def existingBal = currentDocument.voucherAmount + currentDocument.bookProfit
 #    * print existingBal
 #    Then match existingBal = getFinancialFormResponse.response.spending.scholasticDollars.existingBalance
@@ -282,7 +304,7 @@ Feature: GetFinancialForm GET Api tests
     * convertNumberDecimal(mongoJson.document)
     And def earningsDocument = mongoJson.document
     * print earningsDocument
-    And match getFinancialFormResponse.response.earnings.sales == ((earningsDocument.sales.grossSales.taxExemptSales + earningsDocument.sales.grossSales.taxableSales) - (earningsDocument.sales.scholasticDollars.totalRedeemed - earningsDocument.sales.scholasticDollars.taxCollected)* 0.5)
+    And match getFinancialFormResponse.response.earnings.sales == Math.round(((earningsDocument.sales.grossSales.taxExemptSales + earningsDocument.sales.grossSales.taxableSales) - (earningsDocument.sales.scholasticDollars.totalRedeemed - earningsDocument.sales.scholasticDollars.taxCollected)* 0.5)*100)/100
     * def checkDollarFairLevel =
     """
     function(response){
@@ -308,16 +330,30 @@ Feature: GetFinancialForm GET Api tests
     """
     Given def getFinancialFormResponse = call read('RunnerHelper.feature@GetFinancialForm')
     * eval checkDollarFairLevel(getFinancialFormResponse.response)
-    And match getFinancialFormResponse.response.earnings.scholasticDollars.earned == Math.ceil(((getFinancialFormResponse.response.earnings.sales) * getFinancialFormResponse.response.earnings.dollarFairLevel/100)*100)/100
+    And match getFinancialFormResponse.response.earnings.scholasticDollars.earned == Math.round(((getFinancialFormResponse.response.earnings.sales) * getFinancialFormResponse.response.earnings.dollarFairLevel/100)*100)/100
     And match getFinancialFormResponse.response.earnings.scholasticDollars.due == getFinancialFormResponse.response.spending.scholasticDollars.due
     And match getFinancialFormResponse.response.earnings.scholasticDollars.balance == getFinancialFormResponse.response.earnings.scholasticDollars.earned - (Math.abs(getFinancialFormResponse.response.earnings.scholasticDollars.due))
     And match getFinancialFormResponse.response.earnings.scholasticDollars.selected == earningsDocument.fairEarning.scholasticDollars.selected
     And match getFinancialFormResponse.response.earnings.scholasticDollars.max == getFinancialFormResponse.response.earnings.scholasticDollars.balance
     And match getFinancialFormResponse.response.earnings.cash.selected == earningsDocument.fairEarning.cash.selected
-    And match getFinancialFormResponse.response.earnings.cash.max == Math.floor(((getFinancialFormResponse.response.earnings.scholasticDollars.balance)* 0.5)*100)/100
+    * def cashMax =
+    """
+     function(response){
+     if(response.earnings.scholasticDollars.selected > 0) {
+     return (response.earnings.scholasticDollars.balance - response.earnings.scholasticDollars.selected)* 0.5;
+     }
+     else{
+     return (response.earnings.scholasticDollars.balance)* 0.5;
+     }
+     }
+    """
+    Given def getFinancialFormResponse = call read('RunnerHelper.feature@GetFinancialForm')
+    * eval cashMax(getFinancialFormResponse.response)
+    * def cashMaxVal = cashMax(getFinancialFormResponse.response)
+    And match getFinancialFormResponse.response.earnings.cash.max == cashMaxVal
 
     @QA
     Examples:
-      | USER_NAME             | PASSWORD  | RESOURCE_ID | FAIR_ID | SCHOOL_ID |
-      | azhou1@scholastic.com | password1 | 5694296     | 5694296 | schoolId  |
-
+      | USER_NAME              | PASSWORD  | RESOURCE_ID | FAIR_ID |
+      | azhou1@scholastic.com  | password1 | 5694296     | 5694296 |
+      | mtodaro@scholastic.com | passw0rd  | 5694314     | 5694314 |

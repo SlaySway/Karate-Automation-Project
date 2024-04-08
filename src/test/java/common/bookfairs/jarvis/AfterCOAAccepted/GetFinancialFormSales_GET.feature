@@ -18,25 +18,20 @@ Feature: GetFinancialFormSales GET Api tests
       | azhou1@scholastic.com  | password1 | 5694296     |
 
   @Happy
-  Scenario Outline: Validate with request payload for user:<USER_NAME> and fair:<RESOURCE_ID>
+  Scenario Outline: Validate with only those fields which are passed in request payload for user:<USER_NAME> and fair:<RESOURCE_ID>
     * def REQUEST_BODY = read('UpdateFinFormSalesRequest.json')[requestBodyJson]
     Given def updateFinFormSalesResponse = call read('RunnerHelper.feature@UpdateFinFormSales')
     Then match updateFinFormSalesResponse.responseStatus == 200
     Then def getFinancialFormSalesResponse = call read('RunnerHelper.feature@GetFinancialFormSales')
     And match getFinancialFormSalesResponse.responseStatus == 200
-    And match getFinancialFormSalesResponse.response.scholasticDollars.totalRedeemed == REQUEST_BODY.sales.scholasticDollars.totalRedeemed
-    And match getFinancialFormSalesResponse.response.scholasticDollars.taxExemptSales == REQUEST_BODY.sales.scholasticDollars.taxExemptSales
-    And match getFinancialFormSalesResponse.response.scholasticDollars.taxCollected == REQUEST_BODY.sales.scholasticDollars.taxCollected
-    And match getFinancialFormSalesResponse.response.tenderTotals.cashAndChecks == REQUEST_BODY.sales.tenderTotals.cashAndChecks
-    And match getFinancialFormSalesResponse.response.tenderTotals.creditCards == REQUEST_BODY.sales.tenderTotals.creditCards
-    And match getFinancialFormSalesResponse.response.tenderTotals.purchaseOrders == REQUEST_BODY.sales.tenderTotals.purchaseOrders
-    And match getFinancialFormSalesResponse.response.grossSales.taxExemptSales == REQUEST_BODY.sales.grossSales.taxExemptSales
-    And match getFinancialFormSalesResponse.response.grossSales.taxableSales == REQUEST_BODY.sales.grossSales.taxableSales
-    And match getFinancialFormSalesResponse.response.grossSales.total == REQUEST_BODY.sales.grossSales.taxExemptSales + REQUEST_BODY.sales.grossSales.taxableSales
-    * def taxTotal = getFinancialFormSalesResponse.response.grossSales.taxableSales - (getFinancialFormSalesResponse.response.grossSales.taxableSales/(1+getFinancialFormSalesResponse.response.taxRate/100.0))
-    And match getFinancialFormSalesResponse.response.grossSales.taxTotal == Math.ceil(taxTotal*100)/100
-    And match getFinancialFormSalesResponse.response.netSales.shareTheFairFunds.collected == REQUEST_BODY.sales.netSales.shareTheFairFunds.collected
-    And match getFinancialFormSalesResponse.response.netSales.shareTheFairFunds.redeemed == REQUEST_BODY.sales.netSales.shareTheFairFunds.redeemed
+    And match getFinancialFormSalesResponse.response.scholasticDollars.totalRedeemed == REQUEST_BODY.scholasticDollars.totalRedeemed
+    And match getFinancialFormSalesResponse.response.scholasticDollars.taxExemptSales == REQUEST_BODY.scholasticDollars.taxExemptSales
+    And match getFinancialFormSalesResponse.response.scholasticDollars.taxCollected == REQUEST_BODY.scholasticDollars.taxCollected
+    And match getFinancialFormSalesResponse.response.tenderTotals.cashAndChecks == REQUEST_BODY.tenderTotals.cashAndChecks
+    And match getFinancialFormSalesResponse.response.tenderTotals.creditCards == REQUEST_BODY.tenderTotals.creditCards
+    And match getFinancialFormSalesResponse.response.grossSales.taxExemptSales == REQUEST_BODY.grossSales.taxExemptSales
+    And match getFinancialFormSalesResponse.response.netSales.shareTheFairFunds.collected == REQUEST_BODY.netSales.shareTheFairFunds.collected
+    And match getFinancialFormSalesResponse.response.netSales.shareTheFairFunds.redeemed == REQUEST_BODY.netSales.shareTheFairFunds.redeemed
 
     @QA
     Examples:
@@ -100,8 +95,8 @@ Feature: GetFinancialFormSales GET Api tests
 
     @QA
     Examples:
-      | USER_NAME             | PASSWORD  | RESOURCE_ID | SBF_JARVIS_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296     | 5694309         |
+      | USER_NAME              | PASSWORD | RESOURCE_ID | SBF_JARVIS_FAIR |
+      | mtodaro@scholastic.com | passw0rd | 5694318     | 5694318         |
 
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to specific fair for user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -154,7 +149,7 @@ Feature: GetFinancialFormSales GET Api tests
       | hasAllFairs@testing.com                     | password1 | current     | 5694301       | Has all fairs                                |
       | hasUpcomingAndPastFairs@testing.com         | password1 | current     | 5694305       | Has upcoming and past fairs                  |
       | hasPastFairs@testing.com                    | password1 | current     | 5694307       | Has past fairs                               |
-      | hasRecentlyUpcomingAndPastFairs@testing.com | password1 | current     | 5694303       | Has recently ended, upcoming, and past fairs |
+      | hasRecentlyUpcomingAndPastFairs@testing.com | password1 | current     | 5694305       | Has recently ended, upcoming, and past fairs |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current WITH SBF_JARVIS for DO_NOT_SELECT mode with user:<USER_NAME>, fair:<RESOURCE_ID>, cookie fair:<SBF_JARVIS_FAIR>
@@ -188,7 +183,7 @@ Feature: GetFinancialFormSales GET Api tests
       | azhou1@scholastic.com | password1 | 5694296     |
 
   @Happy @Mongo
-  Scenario Outline: Validate with database for user <USER_NAME>, fair:<RESOURCE_ID>
+  Scenario Outline: Validate with database and verifying with calculations for user <USER_NAME>, fair:<RESOURCE_ID>
     * def convertNumberDecimal =
     """
     function(json){
@@ -218,19 +213,28 @@ Feature: GetFinancialFormSales GET Api tests
     And match currentDocument.sales.tenderTotals.cashAndChecks == getFinancialFormSalesResponse.response.tenderTotals.cashAndChecks
     And match currentDocument.sales.tenderTotals.creditCards == getFinancialFormSalesResponse.response.tenderTotals.creditCards
     And match currentDocument.sales.tenderTotals.purchaseOrders == getFinancialFormSalesResponse.response.tenderTotals.purchaseOrders
+    * def response = currentDocument.purchaseOrders
+    * def sum = 0
+    * eval response.forEach(function(item) { sum += item.amount })
+    * print sum
+    And match currentDocument.sales.tenderTotals.purchaseOrders == sum
     And match currentDocument.sales.grossSales.taxExemptSales == getFinancialFormSalesResponse.response.grossSales.taxExemptSales
     And match currentDocument.sales.grossSales.taxableSales == getFinancialFormSalesResponse.response.grossSales.taxableSales
-#    And match currentDocument.sales.grossSales.total == getFinancialFormSalesResponse.response.grossSales.total
-#    And match currentDocument.sales.grossSales.taxTotal == getFinancialFormSalesResponse.response.grossSales.taxTotal
-    And match currentDocument.sales.netSales.shareTheFairFunds.collected == getFinancialFormSalesResponse.response.netSales.shareTheFairFunds.collected
-    And match currentDocument.sales.netSales.shareTheFairFunds.redeemed == getFinancialFormSalesResponse.response.netSales.shareTheFairFunds.redeemed
+    * def totalCollected = currentDocument.sales.tenderTotals.cashAndChecks + currentDocument.sales.tenderTotals.creditCards + currentDocument.sales.tenderTotals.purchaseOrders + (currentDocument.sales.scholasticDollars.totalRedeemed * 0.5)
     Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"bookFairDataLoad", field:"fairId", value:"#(RESOURCE_ID)"}
     * convertNumberDecimal(mongoJson.document)
-    And def currentDocument = mongoJson.document
-    * def taxRate = (currentDocument.taxDetailTaxRate)/1000
+    And def taxRateValue = mongoJson.document
+    * def taxRate = (taxRateValue.taxDetailTaxRate)/1000
+    And match getFinancialFormSalesResponse.response.grossSales.taxableSales == Math.floor((totalCollected - currentDocument.sales.grossSales.taxExemptSales -(currentDocument.sales.netSales.shareTheFairFunds.collected - currentDocument.sales.netSales.shareTheFairFunds.redeemed))/(1+taxRate/100)*100)/100
+    And match currentDocument.sales.grossSales.taxTotal == getFinancialFormSalesResponse.response.grossSales.taxTotal
+    And match getFinancialFormSalesResponse.response.grossSales.taxTotal == Math.round(currentDocument.sales.grossSales.taxableSales * (taxRate/100)*100)/100
+    And match currentDocument.sales.grossSales.total == getFinancialFormSalesResponse.response.grossSales.total
+    And match getFinancialFormSalesResponse.response.grossSales.total == getFinancialFormSalesResponse.response.grossSales.taxExemptSales + getFinancialFormSalesResponse.response.grossSales.taxableSales + getFinancialFormSalesResponse.response.grossSales.taxTotal
+    And match currentDocument.sales.netSales.shareTheFairFunds.collected == getFinancialFormSalesResponse.response.netSales.shareTheFairFunds.collected
+    And match currentDocument.sales.netSales.shareTheFairFunds.redeemed == getFinancialFormSalesResponse.response.netSales.shareTheFairFunds.redeemed
     And match taxRate == getFinancialFormSalesResponse.response.taxRate
 
     @QA
     Examples:
-      | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5694296     |
+      | USER_NAME              | PASSWORD | RESOURCE_ID |
+      | mtodaro@scholastic.com | passw0rd | 5694318     |
