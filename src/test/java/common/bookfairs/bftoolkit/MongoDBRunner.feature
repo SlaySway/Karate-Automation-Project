@@ -82,7 +82,7 @@ Feature: Helper for accessing bftoolkit Mongo
   Scenario Outline: Test Mongo Query Aggregate
     * def DbUtils = Java.type('utils.MongoDBUtils')
     * def db = new DbUtils(uri, dbName, "not used")
-    * json document = db.findByFieldThenDeleteField("financials","_id","5694324","confirmation")
+    * json document = db.findByField("profitBalanceDataLoad","schoolId","337017")
     * print document
     * db.disconnect()
 

@@ -5,7 +5,6 @@ Feature: Helper for running fair_url_controller endpoints
     * string getFairUrlUri = "/api/user/fairs/<resourceId>/homepage/fair-url"
     * string setFairUrlUri = "/api/user/fairs/<resourceId>/homepage/fair-url"
 
-  # TODO: dev incomplete
   # Input: USER_NAME, PASSWORD, FAIR_ID
   # Output: response
   @GetFairUrl
@@ -15,7 +14,6 @@ Feature: Helper for running fair_url_controller endpoints
     * cookies { userEmail : '#(USER_NAME)'}
     Then method GET
 
-  # TODO: dev incomplete
   # Input: USER_NAME, PASSWORD, FAIR_ID, REQUEST_BODY
   # Output: response
   @SetFairUrl
