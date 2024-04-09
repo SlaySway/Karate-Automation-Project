@@ -1,8 +1,8 @@
-@UpdateVolunteersUrl
-Feature: Canada Toolkit Update Volunteer URL API Tests
+@GetCOAPDFLink
+Feature: Canada Toolkit Get COA PDF Link API Tests
 
   Background: Set config
-    * string updateVolunteersUrlUri = "/api/user/fairs/<resourceId>/homepage/volunteers"
+    * string getCOAPDFLinkUri = "/api/user/fairs/<resourceId>/coa/pdf-links"
 
   Scenario Outline: Validate update volunteer url sets the url in mongo for fair: <FAIRID_OR_CURRENT>
     * def REQUEST_BODY =

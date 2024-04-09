@@ -111,7 +111,7 @@ Feature: Canada Toolkit SetFairEvents API Tests
       | azhou1@scholastic.com | password1 | 5196693           |
 
   Scenario Outline: Validate when user doesn't exist
-    * replace getFairEventsUri.resourceId = FAIRID_OR_CURRENT
+    * replace setFairEventsUri.resourceId = FAIRID_OR_CURRENT
     * url CANADA_TOOLKIT_URL + setFairEventsUri
     Then method PUT
     * cookies { userEmail : '#(USER_NAME)'}

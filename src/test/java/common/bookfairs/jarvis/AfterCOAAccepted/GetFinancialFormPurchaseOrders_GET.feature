@@ -15,7 +15,7 @@ Feature: GetFinancialFormPurchaseOrders GET Api tests
       | USER_NAME              | PASSWORD  | RESOURCE_ID |
       | mtodaro@scholastic.com | passw0rd  | 5694318     |
       | mtodaro@scholastic.com | passw0rd  | current     |
-      | azhou1@scholastic.com  | password1 | 5694296     |
+      | azhou1@scholastic.com  | password2 | 5694296     |
 
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -26,7 +26,7 @@ Feature: GetFinancialFormPurchaseOrders GET Api tests
     @QA
     Examples:
       | USER_NAME           | PASSWORD  | RESOURCE_ID |
-      | nofairs@testing.com | password1 | current     |
+      | nofairs@testing.com | password2 | current     |
 
   @Unhappy
   Scenario Outline: Validate when user attempts to access a non-COA Accepted fair:<USER_NAME> and fair:<RESOURCE_ID>
@@ -37,7 +37,7 @@ Feature: GetFinancialFormPurchaseOrders GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5694300     |
+      | azhou1@scholastic.com | password2 | 5694300     |
 
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<RESOURCE_ID>
@@ -74,7 +74,7 @@ Feature: GetFinancialFormPurchaseOrders GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID | SBF_JARVIS_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296     | 5694309         |
+      | azhou1@scholastic.com | password2 | 5694296     | 5694309         |
 
 
   @Unhappy
@@ -86,7 +86,7 @@ Feature: GetFinancialFormPurchaseOrders GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5734325     |
+      | azhou1@scholastic.com | password2 | 5734325     |
 
   @Unhappy
   Scenario Outline: Validate when user uses an invalid fair ID for user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -97,7 +97,7 @@ Feature: GetFinancialFormPurchaseOrders GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | abc1234     |
+      | azhou1@scholastic.com | password2 | abc1234     |
 
   @Unhappy @ignore
   Scenario Outline: Validate when unsupported http method is called
@@ -112,7 +112,7 @@ Feature: GetFinancialFormPurchaseOrders GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID | SBF_JARVIS_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296     | 5694309         |
+      | azhou1@scholastic.com | password2 | 5694296     | 5694309         |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<RESOURCE_ID>, scenario:<SCENARIO>
