@@ -1,6 +1,5 @@
 {
   "updateSales": {
-    "sales": {
       "scholasticDollars": {
         "totalRedeemed": 10.50,
         "taxExemptSales": 9,
@@ -8,14 +7,11 @@
       },
       "tenderTotals": {
         "cashAndChecks": 7,
-        "creditCards": 6,
-        "purchaseOrders": 5
+        "creditCards": 6
       },
       "grossSales": {
         "total": 2,
-        "taxExemptSales": 4,
-        "taxableSales": 3,
-        "taxTotal": 5
+        "taxExemptSales": 4
       },
       "netSales": {
         "shareTheFairFunds": {
@@ -25,4 +21,3 @@
       }
     }
   }
-}

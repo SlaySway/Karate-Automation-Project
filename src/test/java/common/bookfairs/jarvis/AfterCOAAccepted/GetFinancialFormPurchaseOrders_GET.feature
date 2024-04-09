@@ -6,7 +6,7 @@ Feature: GetFinancialFormPurchaseOrders GET Api tests
     * def getFinancialFormPurchaseOrdersUri = "/bookfairs-jarvis/api/user/fairs/<resourceId>/financials/form/purchase-orders"
 
   @Happy
-  Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<RESOURCE_ID>
+  Scenario Outline: Validating for valid resourceId and user credentials for user:<USER_NAME> and fair:<RESOURCE_ID>
     Given def getFinancialFormPurchaseOrdersResponse = call read('RunnerHelper.feature@GetFinancialFormPurchaseOrders')
     Then match getFinancialFormPurchaseOrdersResponse.responseStatus == 200
 
