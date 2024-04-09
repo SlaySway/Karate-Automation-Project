@@ -14,7 +14,7 @@ Feature: GetFairWallets GET Api tests
     @QA
     Examples:
       | USER_NAME           | PASSWORD  | FAIRID_OR_CURRENT |
-      | nofairs@testing.com | password1 | current           |
+      | nofairs@testing.com | password2 | current           |
 
   @Unhappy
   Scenario Outline: Validate when user attempts to access a non-COA Accepted fair:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -25,7 +25,7 @@ Feature: GetFairWallets GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694300           |
+      | azhou1@scholastic.com | password2 | 5694300           |
 
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
@@ -64,7 +64,7 @@ Feature: GetFairWallets GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5734325           |
+      | azhou1@scholastic.com | password2 | 5734325           |
 
   @Unhappy
   Scenario Outline: Validate when user uses an invalid fair ID for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -75,7 +75,7 @@ Feature: GetFairWallets GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | abc1234           |
+      | azhou1@scholastic.com | password2 | abc1234           |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, scenario:<SCENARIO>
