@@ -7,7 +7,7 @@ Feature: GetFinancialFormStatus GET Api tests
     * def invalidGetFinFormStatus = "/bookfairs-jarvis/api/user/fairs/<resourceId>/financials/forms/stats"
 
   @Happy
-  Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<RESOURCE_ID>
+  Scenario Outline: Validating with valid resourceId and user credentials for user:<USER_NAME> and fair:<RESOURCE_ID>
     Given def getFinancialFormStatusResponse = call read('RunnerHelper.feature@GetFinancialFormStatus')
     Then match getFinancialFormStatusResponse.responseStatus == 200
     Given def getFinancialFormResponse = call read('RunnerHelper.feature@GetFinancialForm')
