@@ -53,7 +53,7 @@ Feature: GetSalesHistory API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  |
-      | azhou1@scholastic.com | password1 |
+      | azhou1@scholastic.com | password2 |
 
   @Unhappy
   Scenario Outline: Validate for internal server error
@@ -66,7 +66,7 @@ Feature: GetSalesHistory API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  |
-      | azhou1@scholastic.com | password1 |
+      | azhou1@scholastic.com | password2 |
 
   @Regression @ignore
   Scenario Outline: Validate regression using dynamic comparison || schoolId=<SCHOOL_ID>

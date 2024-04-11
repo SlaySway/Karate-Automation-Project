@@ -14,8 +14,8 @@ Feature: GetFairCOA API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
-      | azhou1@scholastic.com | password1 | current           |
+      | azhou1@scholastic.com | password2 | 5694296           |
+      | azhou1@scholastic.com | password2 | current           |
 
   @Regression
   Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIR_ID>
@@ -35,7 +35,7 @@ Feature: GetFairCOA API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password2 | 5694296           |
 
   Scenario Outline: Validate GetCOA API with a valid fairId and invalid login session
     And replace getCOAUri.fairIdOrCurrent = FAIRID_OR_CURRENT
@@ -47,7 +47,7 @@ Feature: GetFairCOA API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password2 | 5694296           |
 
   Scenario Outline: Validate with invalid fairId and valid SCHL cookie
     And replace getCOAUri.fairIdOrCurrent = FAIRID_OR_CURRENT
@@ -61,7 +61,7 @@ Feature: GetFairCOA API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 51345             |
+      | azhou1@scholastic.com | password2 | 51345             |
 
   Scenario Outline: Validate with current keyword valid SCHL and invalid fairsession
     * def sbf_jarvis = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
@@ -74,7 +74,7 @@ Feature: GetFairCOA API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | current           |
+      | azhou1@scholastic.com | password2 | current           |
 
   Scenario Outline: Validate without path param
     And replace getCOAUri.fairIdOrCurrent = FAIRID_OR_CURRENT
@@ -85,7 +85,7 @@ Feature: GetFairCOA API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 |                   |
+      | azhou1@scholastic.com | password2 |                   |
 
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -121,5 +121,5 @@ Feature: GetFairCOA API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | abc1234           |
+      | azhou1@scholastic.com | password2 | abc1234           |
 

@@ -20,8 +20,8 @@ Feature: PostCOApdfLink API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
-      | azhou1@scholastic.com | password1 | 5694296           | azhou1@scholastic.com | test    |
-      | azhou1@scholastic.com | password1 | current           | azhou1@scholastic.com | TEST3   |
+      | azhou1@scholastic.com | password2 | 5694296           | azhou1@scholastic.com | test    |
+      | azhou1@scholastic.com | password2 | current           | azhou1@scholastic.com | TEST3   |
 
   @Regression
   Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIR_ID>
@@ -47,7 +47,7 @@ Feature: PostCOApdfLink API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
-      | azhou1@scholastic.com | password1 | 5694296           | azhou1@scholastic.com | test    |
+      | azhou1@scholastic.com | password2 | 5694296           | azhou1@scholastic.com | test    |
 
   Scenario Outline: Validate PostCOApdfLink API with a valid fairId SCHL and Session Cookie
     * def requestBody =
@@ -64,7 +64,7 @@ Feature: PostCOApdfLink API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
-      | azhou1@scholastic.com | password1 | 5694296           | azhou1@scholastic.com | test    |
+      | azhou1@scholastic.com | password2 | 5694296           | azhou1@scholastic.com | test    |
 
   Scenario Outline: Validate PostCOApdfLink API with current keyword SCHL and Session Cookie
     * def getCookie = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
@@ -82,7 +82,7 @@ Feature: PostCOApdfLink API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
-      | azhou1@scholastic.com | password1 | current           | azhou1@scholastic.com | test    |
+      | azhou1@scholastic.com | password2 | current           | azhou1@scholastic.com | test    |
 
   Scenario Outline: Validate with invalid fairId and valid login session
     * def requestBody =
@@ -104,7 +104,7 @@ Feature: PostCOApdfLink API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
-      | azhou1@scholastic.com | password1 | 6598              | azhou1@scholastic.com | test    |
+      | azhou1@scholastic.com | password2 | 6598              | azhou1@scholastic.com | test    |
 
   Scenario Outline: Validate with invalid login session and a valid fairId
     * def requestBody =
@@ -124,7 +124,7 @@ Feature: PostCOApdfLink API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
-      | azhou1@scholastic.com | password1 | 5775209           | azhou1@scholastic.com | test    |
+      | azhou1@scholastic.com | password2 | 5775209           | azhou1@scholastic.com | test    |
 
   Scenario Outline: Validate PostCOApdfLink API with invalid keyword and SCHL cookie
     * def requestBody =
@@ -145,7 +145,7 @@ Feature: PostCOApdfLink API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
-      | azhou1@scholastic.com | password1 | testing           | azhou1@scholastic.com | test    |
+      | azhou1@scholastic.com | password2 | testing           | azhou1@scholastic.com | test    |
 
   Scenario Outline: Validate with invalid login session and a valid fairId
     * def requestBody =
@@ -166,7 +166,7 @@ Feature: PostCOApdfLink API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
-      | azhou1@scholastic.com | password1 | 5775209           | azhou1@scholastic.com | test    |
+      | azhou1@scholastic.com | password2 | 5775209           | azhou1@scholastic.com | test    |
 
   Scenario Outline: Validate PostCOApdfLink API with SCHL Session Cookie and no request payload
     * def requestBody = ""
@@ -176,7 +176,7 @@ Feature: PostCOApdfLink API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EMAIL                 | MESSAGE |
-      | azhou1@scholastic.com | password1 | 5775209           | azhou1@scholastic.com | test    |
+      | azhou1@scholastic.com | password2 | 5775209           | azhou1@scholastic.com | test    |
 
 
   @Unhappy
@@ -202,4 +202,4 @@ Feature: PostCOApdfLink API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | abc1234           |
+      | azhou1@scholastic.com | password2 | abc1234           |

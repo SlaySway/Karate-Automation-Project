@@ -44,7 +44,7 @@ Feature: FairFinderByFairId API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password2 | 5694296           |
 
   #Delete this scenario after DEC release
   @Regression
@@ -67,7 +67,7 @@ Feature: FairFinderByFairId API automation tests
     @QA
     Examples:
       | USER_NAME              | PASSWORD | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password2 | 5694296           |
 
   #Enable this scenario after DEC release
   @ignore @Regression
@@ -91,4 +91,4 @@ Feature: FairFinderByFairId API automation tests
     @QA
     Examples:
       | USER_NAME              | PASSWORD | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password2 | 5694296           |

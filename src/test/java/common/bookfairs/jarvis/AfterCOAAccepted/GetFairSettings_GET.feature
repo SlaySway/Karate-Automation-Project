@@ -106,8 +106,8 @@ Feature: GetFairSettings GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR | SBF_JARVIS_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296           | 5694296       | 5694309         |
-      | azhou1@scholastic.com | password1 | current           | 5694296       | 5694296         |
+      | azhou1@scholastic.com | password2 | 5694296           | 5694296       | 5694309         |
+      | azhou1@scholastic.com | password2 | current           | 5694296       | 5694296         |
 
   @Regression
   Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIRID_OR_CURRENT>
@@ -122,7 +122,7 @@ Feature: GetFairSettings GET Api tests
 
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password2 | 5694296           |
 
   @Happy
   Scenario Outline: Validate successful response for valid request for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -152,4 +152,4 @@ Feature: GetFairSettings GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password2 | 5694296           |

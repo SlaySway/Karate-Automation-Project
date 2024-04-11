@@ -74,7 +74,7 @@ Feature: Helper for accessing bftoolkit Mongo
 
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password2 | 5694296           |
 
 
   # Will be kept here as reference
@@ -88,5 +88,5 @@ Feature: Helper for accessing bftoolkit Mongo
 
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694329           |
+      | azhou1@scholastic.com | password2 | 5694329           |
 

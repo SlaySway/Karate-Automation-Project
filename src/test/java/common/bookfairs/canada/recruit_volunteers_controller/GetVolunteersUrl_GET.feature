@@ -23,7 +23,7 @@ Feature: Canada Toolkit GetVolunteersUrl API Tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5196693           |
+      | azhou1@scholastic.com | password2 | 5196693           |
 
   Scenario Outline: Validate no authorization cookie provided for get events for fair: <FAIRID_OR_CURRENT>
     * replace getVolunteersUrlUri.resourceId = FAIRID_OR_CURRENT
@@ -35,7 +35,7 @@ Feature: Canada Toolkit GetVolunteersUrl API Tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5196693           |
+      | azhou1@scholastic.com | password2 | 5196693           |
 
   Scenario Outline: Validate "current" default fair selection to get events for fair: <FAIRID_OR_CURRENT>
     * replace getVolunteersUrlUri.resourceId = FAIRID_OR_CURRENT
@@ -48,4 +48,4 @@ Feature: Canada Toolkit GetVolunteersUrl API Tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR |
-      | azhou1@scholastic.com | password1 | current           | 5196693       |
+      | azhou1@scholastic.com | password2 | current           | 5196693       |

@@ -150,7 +150,7 @@ Feature: UpdateFinFormSales PUT Api tests
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID | EXPECTED_FAIR | SBF_JARVIS_FAIR |
       | azhou1@scholastic.com | password2 | 5694296     | 5694296       | 5694309         |
-      | azhou1@scholastic.com | password1 | current     | 5694296       | 5694296         |
+      | azhou1@scholastic.com | password2 | current     | 5694296       | 5694296         |
 
   @Unhappy
   Scenario Outline: Validate when current is used without SBF_JARVIS user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -166,7 +166,7 @@ Feature: UpdateFinFormSales PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | current     |
+      | azhou1@scholastic.com | password2 | current     |
 
   @Happy @Mongo
   Scenario Outline: Validate mongo is updated in appropriate fields for user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -212,4 +212,4 @@ Feature: UpdateFinFormSales PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5694296     |
+      | azhou1@scholastic.com | password2 | 5694296     |
