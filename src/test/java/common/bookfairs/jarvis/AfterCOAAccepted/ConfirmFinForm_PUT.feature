@@ -1,4 +1,4 @@
-@ConfirmFinForm @PerformanceEnhancement
+@ConfirmFinForm @PerformanceEnhancement @4bfinfrom
 Feature: ConfirmFinForm PUT Api tests
 
   Background: Set config

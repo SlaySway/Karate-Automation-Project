@@ -1,4 +1,4 @@
-@GetFinancialFormPurchaseOrders @PerformanceEnhancement
+@GetFinancialFormPurchaseOrders @PerformanceEnhancement @4bfinfrom
 Feature: GetFinancialFormPurchaseOrders GET Api tests
 
   Background: Set config
