@@ -40,7 +40,7 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5694300     |
+      | azhou1@scholastic.com | password2 | 5694300     |
 
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<RESOURCE_ID>
@@ -80,7 +80,7 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5734325     |
+      | azhou1@scholastic.com | password2 | 5734325     |
 
   @Unhappy
   Scenario Outline: Validate when user uses invalid fair ID for user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -92,7 +92,7 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | abc1234     |
+      | azhou1@scholastic.com | password2 | abc1234     |
 
   @Unhappy
   Scenario Outline: Validate when unsupported http method is called
@@ -107,7 +107,7 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID | SBF_JARVIS_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296     | 5694309         |
+      | azhou1@scholastic.com | password2 | 5694296     | 5694309         |
 
   @Unhappy
   Scenario Outline: Validate for internal server error
@@ -121,7 +121,7 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID | SBF_JARVIS_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296     | 5694309         |
+      | azhou1@scholastic.com | password2 | 5694296     | 5694309         |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<RESOURCE_ID>
@@ -133,7 +133,7 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID | EXPECTED_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296     | 5694296       |
+      | azhou1@scholastic.com | password2 | 5694296     | 5694296       |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current WITH SBF_JARVIS for user:<USER_NAME>, fair:<RESOURCE_ID>, cookie fair:<SBF_JARVIS_FAIR>
@@ -149,8 +149,8 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID | EXPECTED_FAIR | SBF_JARVIS_FAIR | requestBodyJson |
-      | azhou1@scholastic.com | password1 | 5694296     | 5694296       | 5694309         | validPayload    |
-      | azhou1@scholastic.com | password1 | current     | 5694296       | 5694296         | validPayload    |
+      | azhou1@scholastic.com | password2 | 5694296     | 5694296       | 5694309         | validPayload    |
+      | azhou1@scholastic.com | password2 | current     | 5694296       | 5694296         | validPayload    |
 
   @Unhappy
   Scenario Outline: Validate when current is used without SBF_JARVIS user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -166,7 +166,7 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | current     |
+      | azhou1@scholastic.com | password2 | current     |
 
   @Unhappy
   Scenario Outline: Validate when current is used without SBF_JARVIS user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -182,7 +182,7 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | current     |
+      | azhou1@scholastic.com | password2 | current     |
 
   @Unhappy
   Scenario Outline: Validate when invalid request body for user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -193,7 +193,7 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID | requestBodyJson |
-      | azhou1@scholastic.com | password1 | 5694296     | invalidAmount   |
+      | azhou1@scholastic.com | password2 | 5694296     | invalidAmount   |
 
   @Unhappy @ignore
   Scenario Outline: Validate when user exceeds maximum(10) purchase orders list inputs i.e., 11 fairs:<USER_NAME>, fair:<RESOURCE_ID>
@@ -336,4 +336,4 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5694296     |
+      | azhou1@scholastic.com | password2 | 5694296     |

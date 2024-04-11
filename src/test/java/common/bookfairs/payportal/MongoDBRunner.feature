@@ -46,7 +46,7 @@ Feature: Helper for accessing Payportal Mongo
 
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694329           |
+      | azhou1@scholastic.com | password2 | 5694329           |
 
   # Will be kept here as reference
   @ignore
@@ -78,4 +78,4 @@ Feature: Helper for accessing Payportal Mongo
 
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694329           |
+      | azhou1@scholastic.com | password2 | 5694329           |

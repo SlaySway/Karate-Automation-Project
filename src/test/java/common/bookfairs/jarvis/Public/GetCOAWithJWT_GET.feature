@@ -32,7 +32,7 @@ Feature: GetCOAWithJWT API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password2 | 5694296           |
 
   #Delete this scenraio after the DEC release
   @Regression
@@ -62,7 +62,7 @@ Feature: GetCOAWithJWT API automation tests
     @QA
     Examples:
       | USER_NAME              | PASSWORD | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password2 | 5694296           |
 
   #Enable this after the DEC release
   @ignore @Regression
@@ -92,4 +92,4 @@ Feature: GetCOAWithJWT API automation tests
     @QA
     Examples:
       | USER_NAME              | PASSWORD | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password2 | 5694296           |

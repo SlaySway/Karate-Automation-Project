@@ -54,8 +54,8 @@ Feature: PostRequestChange API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
-      | azhou1@scholastic.com | password1 | 5694296           | Test1             | Email      |
-      | azhou1@scholastic.com | password1 | current           | And               | Phn        |
+      | azhou1@scholastic.com | password2 | 5694296           | Test1             | Email      |
+      | azhou1@scholastic.com | password2 | current           | And               | Phn        |
 
   Scenario Outline: Validate with invalid login session and a valid fairId
     * def requestBody =
@@ -78,8 +78,8 @@ Feature: PostRequestChange API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
-      | azhou1@scholastic.com | password1 | 5775209           | Test1             | Email      |
-      | azhou1@scholastic.com | password1 | current           | And               | Phn        |
+      | azhou1@scholastic.com | password2 | 5775209           | Test1             | Email      |
+      | azhou1@scholastic.com | password2 | current           | And               | Phn        |
 
   Scenario Outline: Validate with valid login session and a invalid fairId
     * def requestBody =
@@ -103,7 +103,7 @@ Feature: PostRequestChange API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
-      | azhou1@scholastic.com | password1 | 57752ui           | Test1             | Email      |
+      | azhou1@scholastic.com | password2 | 57752ui           | Test1             | Email      |
 
 
   Scenario Outline: Validate with current keyword valid SCHL and invalid fairsession
@@ -128,7 +128,7 @@ Feature: PostRequestChange API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | additionalDetails | Cnt_Method |
-      | azhou1@scholastic.com | password1 | current           | Test1             | Email      |
+      | azhou1@scholastic.com | password2 | current           | Test1             | Email      |
 
   Scenario Outline: Validate PostCOApdfLink API with SCHL Session Cookie and no request payload
     * def requestBody = ""
@@ -138,7 +138,7 @@ Feature: PostRequestChange API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5775209           |
+      | azhou1@scholastic.com | password2 | 5775209           |
 
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
@@ -162,4 +162,4 @@ Feature: PostRequestChange API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | requestBody |
-      | azhou1@scholastic.com | password1 | abc1234           | {}          |
+      | azhou1@scholastic.com | password2 | abc1234           | {}          |

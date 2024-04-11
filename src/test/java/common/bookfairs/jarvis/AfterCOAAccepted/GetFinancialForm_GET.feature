@@ -97,7 +97,7 @@ Feature: GetFinancialForm GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | abc1234     |
+      | azhou1@scholastic.com | password2 | abc1234     |
 
   @Unhappy
   Scenario Outline: Validate when unsupported http method is called

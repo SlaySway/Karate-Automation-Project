@@ -79,7 +79,7 @@ Feature: EmailChairPerson API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | MSG                     | FIRST_NAME | LAST_NAME | PHONE      |
-      | azhou1@scholastic.com | password1 | 5694296           | Sending an email to BFC | Ravindra   | Pallerla  | 7321211111 |
+      | azhou1@scholastic.com | password2 | 5694296           | Sending an email to BFC | Ravindra   | Pallerla  | 7321211111 |
 
   Scenario Outline: Validate request when email is missing
     * replace EmailChairPersonURL.fairId = FAIRID_OR_CURRENT
@@ -102,7 +102,7 @@ Feature: EmailChairPerson API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | MSG                     | FIRST_NAME | LAST_NAME | PHONE      |
-      | azhou1@scholastic.com | password1 | 5694296           | Sending an email to BFC | Ravindra   | Pallerla  | 7321211111 |
+      | azhou1@scholastic.com | password2 | 5694296           | Sending an email to BFC | Ravindra   | Pallerla  | 7321211111 |
 
   Scenario Outline: Validate request when email is invalid || <USER_NAME>
     * replace EmailChairPersonURL.fairId = FAIRID_OR_CURRENT
@@ -127,7 +127,7 @@ Feature: EmailChairPerson API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | MSG                     | FIRST_NAME | LAST_NAME | PHONE      |
-      | azhou1@scholastic.com | password1 | 5694296           | Sending an email to BFC | Ravindra   | Pallerla  | 7321211111 |
+      | azhou1@scholastic.com | password2 | 5694296           | Sending an email to BFC | Ravindra   | Pallerla  | 7321211111 |
 
   Scenario Outline: Validate request with valid fair and input
     * replace EmailChairPersonURL.fairId = FAIRID_OR_CURRENT
@@ -152,4 +152,4 @@ Feature: EmailChairPerson API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | MSG                     | FIRST_NAME | LAST_NAME | PHONE      |
-      | azhou1@scholastic.com | password1 | 5694296           | Sending an email to BFC | Ravindra   | Pallerla  | 7321211111 |
+      | azhou1@scholastic.com | password2 | 5694296           | Sending an email to BFC | Ravindra   | Pallerla  | 7321211111 |

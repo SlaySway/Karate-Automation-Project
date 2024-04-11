@@ -29,9 +29,9 @@ Feature: Canada Toolkit Update Volunteer URL API Tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | volunteerUrl       |
-      | azhou1@scholastic.com | password1 | 5196693           | automationTesting1 |
-      | azhou1@scholastic.com | password1 | 5196693           | automationTesting2 |
-      | azhou1@scholastic.com | password1 | 5196693           | automationTesting3 |
+      | azhou1@scholastic.com | password2 | 5196693           | automationTesting1 |
+      | azhou1@scholastic.com | password2 | 5196693           | automationTesting2 |
+      | azhou1@scholastic.com | password2 | 5196693           | automationTesting3 |
 
 
   Scenario Outline: Validate no authorization cookie provided for update volunteer url for fair: <FAIRID_OR_CURRENT>
@@ -51,7 +51,7 @@ Feature: Canada Toolkit Update Volunteer URL API Tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5196693           |
+      | azhou1@scholastic.com | password2 | 5196693           |
 
   Scenario Outline: Validate user cannot set volunteer url for a fair user has no access to. user:<USER_NAME>, fair: <FAIRID_OR_CURRENT>
     * def AGGREGATE_PIPELINE =
@@ -80,7 +80,7 @@ Feature: Canada Toolkit Update Volunteer URL API Tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | unauthorizedFair |
-      | azhou1@scholastic.com | password1 | 5197091          |
+      | azhou1@scholastic.com | password2 | 5197091          |
 
   Scenario Outline: Validate when user sends an invalid request body
     Given def REQUEST_BODY =
@@ -93,7 +93,7 @@ Feature: Canada Toolkit Update Volunteer URL API Tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5196693           |
+      | azhou1@scholastic.com | password2 | 5196693           |
 
   Scenario Outline: Validate when user sends an invalid request type
     Given def REQUEST_BODY = ""
@@ -103,7 +103,7 @@ Feature: Canada Toolkit Update Volunteer URL API Tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5196693           |
+      | azhou1@scholastic.com | password2 | 5196693           |
 
   Scenario Outline: Validate when user doesn't exist
     * replace updateVolunteersUrlUri.resourceId = FAIRID_OR_CURRENT

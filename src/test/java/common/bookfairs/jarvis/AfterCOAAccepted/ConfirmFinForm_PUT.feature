@@ -136,7 +136,7 @@ Feature: ConfirmFinForm PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | current     |
+      | azhou1@scholastic.com | password2 | current     |
 
   @Happy @Mongo
   Scenario Outline: Validate service when user tries to resubmit the finform for a fair || user <USER_NAME>, fair:<RESOURCE_ID>
@@ -173,5 +173,5 @@ Feature: ConfirmFinForm PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5694296     |
+      | azhou1@scholastic.com | password2 | 5694296     |
 

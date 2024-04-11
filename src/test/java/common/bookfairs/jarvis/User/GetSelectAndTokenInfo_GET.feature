@@ -81,7 +81,7 @@ Feature: GetSelectionAndTokenInfo API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID | SBF_JARVIS_FAIR | SCHOOL_ID | mode   |
-      | azhou1@scholastic.com | password1 | 5694296     | 5694309         | 1033128   | SELECT |
+      | azhou1@scholastic.com | password2 | 5694296     | 5694309         | 1033128   | SELECT |
 
   @Unhappy
   Scenario Outline: Validate for internal server error
@@ -95,7 +95,7 @@ Feature: GetSelectionAndTokenInfo API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID | SBF_JARVIS_FAIR | SCHOOL_ID | mode   |
-      | azhou1@scholastic.com | password1 | 5694296     | 5694309         | 1033128   | SELECT |
+      | azhou1@scholastic.com | password2 | 5694296     | 5694309         | 1033128   | SELECT |
 
   @Regression @ignore
   Scenario Outline: Validate regression using dynamic comparison || schoolId=<SCHOOL_ID>

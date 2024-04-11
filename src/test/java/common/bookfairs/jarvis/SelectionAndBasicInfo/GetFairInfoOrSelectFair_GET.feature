@@ -64,7 +64,7 @@ Feature: GetFairInfoOrSelectFair GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | current     |
+      | azhou1@scholastic.com | password2 | current     |
 
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to specific fair for user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -80,7 +80,7 @@ Feature: GetFairInfoOrSelectFair GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5734325     |
+      | azhou1@scholastic.com | password2 | 5734325     |
 
   @Unhappy
   Scenario Outline: Validate when user uses invalid fair ID for user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -96,7 +96,7 @@ Feature: GetFairInfoOrSelectFair GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | abc1234     |
+      | azhou1@scholastic.com | password2 | abc1234     |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for user:<USER_NAME>, fair:<RESOURCE_ID>, scenario:<SCENARIO>
@@ -123,7 +123,7 @@ Feature: GetFairInfoOrSelectFair GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | ENABLE_SWITCH_EXPECTED |
-      | azhou1@scholastic.com | password1 | true                   |
+      | azhou1@scholastic.com | password2 | true                   |
       | onefair@testing.com   | password1 | false                  |
 
   @Happy
@@ -134,7 +134,7 @@ Feature: GetFairInfoOrSelectFair GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5694296     |
+      | azhou1@scholastic.com | password2 | 5694296     |
 
 # Testing with fairSelectionMode set to DO_NOT_SELECT:
 
@@ -146,7 +146,7 @@ Feature: GetFairInfoOrSelectFair GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5694296     |
+      | azhou1@scholastic.com | password2 | 5694296     |
 
   @Happy @GetFairInfo
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -209,7 +209,7 @@ Feature: GetFairInfoOrSelectFair GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5734325     |
+      | azhou1@scholastic.com | password2 | 5734325     |
 
   @Unhappy @GetFairInfo
   Scenario Outline: Validate when user uses invalid fair ID for user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -225,7 +225,7 @@ Feature: GetFairInfoOrSelectFair GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | abc1234     |
+      | azhou1@scholastic.com | password2 | abc1234     |
 
   @Happy @GetFairInfo
   Scenario Outline: Validate when user inputs different configurations for fairId/current WITH SBF_JARVIS for DO_NOT_SELECT mode with user:<USER_NAME>, fair:<RESOURCE_ID>, cookie fair:<SBF_JARVIS_FAIR>
@@ -242,8 +242,8 @@ Feature: GetFairInfoOrSelectFair GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID | EXPECTED_FAIR | SBF_JARVIS_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296     | 5694296       | 5694300         |
-      | azhou1@scholastic.com | password1 | current     | 5694296       | 5694296         |
+      | azhou1@scholastic.com | password2 | 5694296     | 5694296       | 5694300         |
+      | azhou1@scholastic.com | password2 | current     | 5694296       | 5694296         |
 
   @Happy @GetFairInfo
   Scenario Outline: Validate when user inputs different configurations for fairId/current for user:<USER_NAME>, fair:<RESOURCE_ID>
@@ -253,7 +253,7 @@ Feature: GetFairInfoOrSelectFair GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID | EXPECTED_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296     | 5694296       |
+      | azhou1@scholastic.com | password2 | 5694296     | 5694296       |
 
   @Happy @GetFairInfo
   Scenario Outline: Validate when user inputs current for GetFairInfo user:<USER_NAME>, fair:<RESOURCE_ID>
@@ -263,6 +263,6 @@ Feature: GetFairInfoOrSelectFair GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  |
-      | azhou1@scholastic.com | password1 |
+      | azhou1@scholastic.com | password2 |
 
 
