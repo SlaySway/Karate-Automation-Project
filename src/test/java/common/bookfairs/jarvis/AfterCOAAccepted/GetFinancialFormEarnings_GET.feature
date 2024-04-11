@@ -7,7 +7,7 @@ Feature: GetFinancialFormEarnings GET Api tests
     * def invalidGetFinFormEarningsUri = "/bookfairs-jarvis/api/user/fairs/<resourceId>/financial/forms/earn"
 
   @Happy
-  Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<RESOURCE_ID>
+  Scenario Outline: Validating with valid resourceId and user credentials for user:<USER_NAME> and fair:<RESOURCE_ID>
     Given def getFinancialFormEarningsResponse = call read('RunnerHelper.feature@GetFinancialFormEarnings')
     Then match getFinancialFormEarningsResponse.responseStatus == 200
 
@@ -19,7 +19,7 @@ Feature: GetFinancialFormEarnings GET Api tests
       | azhou1@scholastic.com  | password2 | 5694296     |
 
     @Happy
-    Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<RESOURCE_ID>
+    Scenario Outline: Validate response with request payload for user:<USER_NAME> and fair:<RESOURCE_ID>
       * def REQUEST_BODY = { scholasticDollars:{selected:1}, cash:{selected:2} }
       Given def updateFinFormEarningsResponse = call read('RunnerHelper.feature@UpdateFinFormEarnings')
       Then match updateFinFormEarningsResponse.responseStatus == 200
