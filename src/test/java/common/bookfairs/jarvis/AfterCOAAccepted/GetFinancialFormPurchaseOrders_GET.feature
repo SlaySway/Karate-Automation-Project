@@ -26,7 +26,7 @@ Feature: GetFinancialFormPurchaseOrders GET Api tests
     @QA
     Examples:
       | USER_NAME           | PASSWORD  | RESOURCE_ID |
-      | nofairs@testing.com | password2 | current     |
+      | nofairs@testing.com | password1 | current     |
 
   @Unhappy
   Scenario Outline: Validate when user attempts to access a non-COA Accepted fair:<USER_NAME> and fair:<RESOURCE_ID>
@@ -123,8 +123,8 @@ Feature: GetFinancialFormPurchaseOrders GET Api tests
     @QA
     Examples:
       | USER_NAME                                   | PASSWORD  | RESOURCE_ID | EXPECTED_FAIR | SCENARIO                                     |
-      | azhou1@scholastic.com                       | password1 | 5694296     | 5694296       | Return path parameter fairId information     |
-      | azhou1@scholastic.com                       | password1 | current     | 5694296       | Has current, upcoming, and past fairs        |
+      | azhou1@scholastic.com                       | password2 | 5694296     | 5694296       | Return path parameter fairId information     |
+      | azhou1@scholastic.com                       | password2 | current     | 5694296       | Has current, upcoming, and past fairs        |
       | hasAllFairs@testing.com                     | password1 | current     | 5694301       | Has all fairs                                |
       | hasUpcomingAndPastFairs@testing.com         | password1 | current     | 5694305       | Has upcoming and past fairs                  |
       | hasPastFairs@testing.com                    | password1 | current     | 5694307       | Has past fairs                               |
@@ -143,8 +143,8 @@ Feature: GetFinancialFormPurchaseOrders GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID | EXPECTED_FAIR | SBF_JARVIS_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296     | 5694296       | 5694309         |
-      | azhou1@scholastic.com | password1 | current     | 5694296       | 5694296         |
+      | azhou1@scholastic.com | password2 | 5694296     | 5694296       | 5694309         |
+      | azhou1@scholastic.com | password2 | current     | 5694296       | 5694296         |
 
   @Regression @ignore
   Scenario Outline: Validate regression using dynamic comparison || fairId=<RESOURCE_ID>
@@ -159,7 +159,7 @@ Feature: GetFinancialFormPurchaseOrders GET Api tests
 
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5694296     |
+      | azhou1@scholastic.com | password2 | 5694296     |
 
   @Happy @Mongo
   Scenario Outline: Validate invoice flow for user <USER_NAME>, fair:<RESOURCE_ID>
@@ -194,4 +194,4 @@ Feature: GetFinancialFormPurchaseOrders GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5694296     |
+      | azhou1@scholastic.com | password2 | 5694296     |

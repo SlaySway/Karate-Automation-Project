@@ -72,7 +72,7 @@ Feature: UpdateFairHomepage PUT Api tests
     @QA
     Examples:
       | USER_NAME           | PASSWORD  | FAIRID_OR_CURRENT |
-      | nofairs@testing.com | password2 | 5694296           |
+      | nofairs@testing.com | password1 | 5694296           |
 
   @Unhappy
   Scenario Outline: Validate when user attempts to access a non-COA Accepted fair:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
