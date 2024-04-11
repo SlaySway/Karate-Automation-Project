@@ -60,7 +60,7 @@ Feature: Canada Toolkit GetFairEvents API Tests
     * url CANADA_TOOLKIT_URL + getFairEventsUri
     Then method GET
     Then match responseStatus == 204
-    Then match responseHeaders['Sbf-Ca-Reason'] == "NO_USER_EMAIL"
+    Then match responseHeaders['Sbf-Ca-Reason'] == ["NO_USER_EMAIL"]
 
     @QA
     Examples:
@@ -70,7 +70,7 @@ Feature: Canada Toolkit GetFairEvents API Tests
   Scenario Outline: Validate "current" default fair selection to get events for fair: <FAIRID_OR_CURRENT>
     Given def response = call read('RunnerHelper.feature@GetFairEvents'){FAIR_ID:<FAIRID_OR_CURRENT>}
     Then match response.responseStatus == 200
-    Then match responseHeaders['Sbf-Ca-Resource-Id'] == EXPECTED_FAIR
+    Then match response.responseHeaders['Sbf-Ca-Resource-Id'] == ['#(EXPECTED_FAIR)']
 
     @QA
     Examples:

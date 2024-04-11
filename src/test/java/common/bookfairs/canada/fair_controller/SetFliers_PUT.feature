@@ -89,7 +89,7 @@ Feature: Canada Toolkit set fliers API tests
     * request REQUEST_BODY
     Then method PUT
     Then match responseStatus == 204
-    Then match responseHeaders['Sbf-Ca-Reason'] == "NO_USER_EMAIL"
+    Then match responseHeaders['Sbf-Ca-Reason'] == ["NO_USER_EMAIL"]
 
     @QA
     Examples:

@@ -51,11 +51,26 @@ Feature: Canada Toolkit SetFairEvents API Tests
       | azhou1@scholastic.com | password1 | 5196693           | noEvents    |
 
   Scenario Outline: Validate no authorization cookie provided for put events for fair: <FAIRID_OR_CURRENT>
-    * replace getFairEventsUri.resourceId = FAIRID_OR_CURRENT
+    * def REQUEST_BODY =
+    """
+    {
+        "date": "2021-03-12",
+        "category": "Family Event",
+        "title": "Breakfast and Books",
+        "startTime": "06:30:00",
+        "endTime": "07:30:00",
+        "detailMessage": {
+          "english":"Random event, should never show up",
+          "french": "Since this is an unhappy path test"
+        }
+      }
+    """
+    * request REQUEST_BODY
+    * replace setFairEventsUri.resourceId = FAIRID_OR_CURRENT
     * url CANADA_TOOLKIT_URL + setFairEventsUri
     Then method PUT
     Then match responseStatus == 204
-    Then match responseHeaders['Sbf-Ca-Reason'] == "NO_USER_EMAIL"
+    Then match responseHeaders['Sbf-Ca-Reason'] == ["NO_USER_EMAIL"]
 
     @QA
     Examples:
@@ -101,7 +116,10 @@ Feature: Canada Toolkit SetFairEvents API Tests
 
 
   Scenario Outline: Validate when user sends an invalid request body
-    Given def REQUEST_BODY = ""
+    Given def REQUEST_BODY =
+    """
+
+    """
     And def response = call read('RunnerHelper.feature@SetFairEvents'){FAIR_ID:<FAIRID_OR_CURRENT>}
     Then match response.responseStatus == 400
 
@@ -115,9 +133,24 @@ Feature: Canada Toolkit SetFairEvents API Tests
     * url CANADA_TOOLKIT_URL + setFairEventsUri
     Then method PUT
     * cookies { userEmail : '#(USER_NAME)'}
+    * def REQUEST_BODY =
+    """
+    {
+        "date": "2021-03-12",
+        "category": "Family Event",
+        "title": "Breakfast and Books",
+        "startTime": "06:30:00",
+        "endTime": "07:30:00",
+        "detailMessage": {
+          "english":"Random event, should never show up",
+          "french": "Since this is an unhappy path test"
+        }
+      }
+    """
+    * request REQUEST_BODY
     Then match responseStatus == 404
 
     @QA
     Examples:
       | USER_NAME                  | FAIRID_OR_CURRENT |
-      | idon'texist@scholastic.com | 5196693           |
+      | idontexist@scholastic.com | 5196693           |
