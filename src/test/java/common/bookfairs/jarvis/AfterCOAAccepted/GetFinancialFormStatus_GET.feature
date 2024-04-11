@@ -30,7 +30,7 @@ Feature: GetFinancialFormStatus GET Api tests
     @QA
     Examples:
       | USER_NAME           | PASSWORD  | RESOURCE_ID |
-      | nofairs@testing.com | password2 | current     |
+      | nofairs@testing.com | password1 | current     |
 
   @Unhappy
   Scenario Outline: Validate when user attempts to access a non-COA Accepted fair:<USER_NAME> and fair:<RESOURCE_ID>
@@ -164,7 +164,7 @@ Feature: GetFinancialFormStatus GET Api tests
     @QA
     Examples:
       | USER_NAME              | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com  | password1 | 5694296     |
+      | azhou1@scholastic.com  | password2 | 5694296     |
       | mtodaro@scholastic.com | passw0rd  | 5694318     |
 
 
