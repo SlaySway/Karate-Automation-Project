@@ -203,8 +203,8 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
 
     @QA
     Examples:
-      | USER_NAME              | PASSWORD | RESOURCE_ID |  | requestBodyJson      |
-      | mtodaro@scholastic.com | passw0rd | 5694314     |  | ElevenPurchaseOrders |
+      | USER_NAME              | PASSWORD | RESOURCE_ID | requestBodyJson      |
+      | mtodaro@scholastic.com | passw0rd | 5694314     | ElevenPurchaseOrders |
 
   @Happy @Mongo
   Scenario Outline: Validate mongo is updated in appropriate fields for user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -225,115 +225,140 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
         }
     }
     """
-    * def updatePurchaseOrdersList =
-    """
-    function(currentDocument, updatedFields){
-      let updatedPOs = new Map(updatedFields.map(purchaseOrder=>[purchaseOrder.number, purchaseOrder]));
-      let currentPOs = new Map(currentDocument.map(purchaseOrder=>[purchaseOrder.number, purchaseOrder]));
-      let purchaseOrderSchema = {
-        "number" : "1",
-        "amount" : "2",
-        "contactName" : "3",
-        "agencyName" : "4",
-        "address" : "5",
-        "city" : "6",
-        "state" : "7",
-        "zipcode" : "8"
-      };
-      updatedPOs.forEach((updatedFields, updateOrCreatePurchaseNumber) => {
-          const purchaseOrderToUpdateOrCreate = currentPOs.get(updateOrCreatePurchaseNumber)
-          if(purchaseOrderToUpdateOrCreate){
-              purchaseOrderToUpdateOrCreate.keySet().forEach(key => {
-                  if(Object.keys(purchaseOrderSchema).includes(key)){
-                      purchaseOrderToUpdateOrCreate[key] = updatedFields[key]
-                  }
-              })
-          }else{
-              let newEntry = {}
-              Object.keys(purchaseOrderSchema).forEach(key => {
-                  if(Object.keys(purchaseOrderSchema).includes(key)){
-                      newEntry[key] = updatedFields[key]
-                  }
-              })
-              currentPOs.set(updateOrCreatePurchaseNumber, newEntry)
-          }
-      })
-     return Array.from(currentPOs.values())
-    }
-    """
+    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(RESOURCE_ID)"}
+    * print mongoJson.document
+    * convertNumberDecimal(mongoJson.document)
+    * print mongoJson.document
+    And def originalPurchaseOrderList = mongoJson.document.purchaseOrders
     * def REQUEST_BODY =
     """
     {
-  "list": [
-    {
-      "number": "1hjttest9877",
-      "amount": 1,
-      "contactName": "Rew Sss",
-      "agencyName": "NY DOE",
-      "address": "507 Broadway",
-      "city": "New Yrk",
-      "state": "NY",
-      "zipcode": "10011"
-    },
-    {
-      "number": "2tesyt6i",
-      "amount": 0,
-      "contactName": "And tests",
-      "agencyName": "NYC DOE",
-      "address": "550 road",
-      "city": "New York",
-      "state": "NY",
-      "zipcode": "10012"
+      "list": [
+        {
+          "number": "automationPurchaseOrder1",
+          "amount": 1,
+          "contactName": "Automation Robot",
+          "agencyName": "NY DOE",
+          "address": "507 Broadway",
+          "city": "New Jersey",
+          "state": "NJ",
+          "zipcode": "10011"
+        },
+        {
+          "number": "automationPurchaseOrder2",
+          "amount": 2,
+          "contactName": "Automation RobotFriend",
+          "agencyName": "NYC DOE",
+          "address": "550 Road",
+          "city": "New York",
+          "state": "NY",
+          "zipcode": "10012"
+        }
+      ]
     }
-  ]
-}
     """
-    Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(RESOURCE_ID)"}
-    * convertNumberDecimal(mongoJson.document)
-    And def expectedDocument = mongoJson.document
-    * def newPurchaseOrdersList = updatePurchaseOrdersList(expectedDocument.purchaseOrders, REQUEST_BODY.list)
-    And set expectedDocument.purchaseOrders = newPurchaseOrdersList
     Given def updateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
     Then match updateFinFormPurchaseOrdersResponse.responseStatus == 200
     Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(RESOURCE_ID)"}
     * convertNumberDecimal(mongoJson.document)
-    And match mongoJson.document contains expectedDocument
+    And match mongoJson.document.purchaseOrders == REQUEST_BODY.list
     * def REQUEST_BODY =
     """
     {
-  "list": [
-    {
-      "number": "1hjtkhjktest9877",
-      "amount": 1,
-      "contactName": "Postman Sss",
-      "agencyName": "NY DOE",
-      "address": "507 Bradway",
-      "city": "New Yrk",
-      "state": "XY",
-      "zipcode": "10013"
-    },
-    {
-      "number": "2tesyt6i",
-      "amount": 0,
-      "contactName": "TTesting tests",
-      "agencyName": "NYC DEO",
-      "address": "559 road",
-      "city": "New York",
-      "state": "YZ",
-      "zipcode": "10050"
+      "list" : "#(originalPurchaseOrderList)"
     }
-  ]
-}
     """
-    And def expectedDocument = mongoJson.document
-    And set expectedDocument.purchaseOrders = updatePurchaseOrdersList(expectedDocument.purchaseOrders, REQUEST_BODY.list)
-    Given def UpdateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
-    Then match UpdateFinFormPurchaseOrdersResponse.responseStatus == 200
+    Given def updateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
+    Then match updateFinFormPurchaseOrdersResponse.responseStatus == 200
     Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(RESOURCE_ID)"}
     * convertNumberDecimal(mongoJson.document)
-    And match mongoJson.document contains expectedDocument
+    And match mongoJson.document.purchaseOrders == REQUEST_BODY.list
 
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
       | azhou1@scholastic.com | password2 | 5694296     |
+
+  Scenario Outline: Validate when user uses max limits of fields:<USER_NAME>, fair:<RESOURCE_ID>
+    * def convertValuesToThatOfJson =
+    """
+    function(jsonToChange, jsonOfChanges){
+      for(let field in jsonOfChanges){
+          jsonToChange[field] = jsonOfChanges[field]
+        }
+    }
+    """
+    * def jsonOfChanges = read('UpdateFinFormPurchaseOrdersRequests.json')[replaceValuesWithJson]
+    * def REQUEST_BODY =
+    """
+    {
+      "list": [
+        {
+          "number": "automationPurchaseOrder1",
+          "amount": 1,
+          "contactName": "Automation Robot",
+          "agencyName": "NY DOE",
+          "address": "507 Broadway",
+          "city": "New Jersey",
+          "state": "NJ",
+          "zipcode": "10011"
+        }
+      ]
+    }
+    """
+    * convertValuesToThatOfJson(REQUEST_BODY.list[0],jsonOfChanges)
+    Given def updateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
+    Then match updateFinFormPurchaseOrdersResponse.responseStatus == 200
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | RESOURCE_ID | replaceValuesWithJson |
+      | azhou1@scholastic.com | password2 | 5694296     | maxLengths            |
+
+  Scenario Outline: Validate when user has invalid field:<USER_NAME>, fair:<RESOURCE_ID>, invalid_field: <replaceValuesWithJson>
+    * def convertValuesToThatOfJson =
+    """
+    function(jsonToChange, jsonOfChanges){
+      for(let field in jsonOfChanges){
+          jsonToChange[field] = jsonOfChanges[field]
+        }
+    }
+    """
+    * def jsonOfChanges = read('UpdateFinFormPurchaseOrdersRequests.json')[replaceValuesWithJson]
+    * def REQUEST_BODY =
+    """
+    {
+      "list": [
+        {
+          "number": "automationPurchaseOrder1",
+          "amount": 1,
+          "contactName": "Automation Robot",
+          "agencyName": "NY DOE",
+          "address": "507 Broadway",
+          "city": "New Jersey",
+          "state": "NJ",
+          "zipcode": "10011"
+        }
+      ]
+    }
+    """
+    * convertValuesToThatOfJson(REQUEST_BODY.list[0],jsonOfChanges)
+    Given def updateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
+    Then match updateFinFormPurchaseOrdersResponse.responseStatus == 400
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | RESOURCE_ID | replaceValuesWithJson        |
+      | azhou1@scholastic.com | password2 | 5694296     | overCharLimitNumber          |
+      | azhou1@scholastic.com | password2 | 5694296     | nonAlphanumericalNumber      |
+      | azhou1@scholastic.com | password2 | 5694296     | overLimitAmount              |
+      | azhou1@scholastic.com | password2 | 5694296     | overCharLimitContactName     |
+      | azhou1@scholastic.com | password2 | 5694296     | nonAlphanumericalContactName |
+      | azhou1@scholastic.com | password2 | 5694296     | overCharLimitAgencyName      |
+      | azhou1@scholastic.com | password2 | 5694296     | nonAlphanumericalAgencyName  |
+      | azhou1@scholastic.com | password2 | 5694296     | overCharLimitAddress         |
+      | azhou1@scholastic.com | password2 | 5694296     | nonAlphanumericalAddress     |
+      | azhou1@scholastic.com | password2 | 5694296     | overCharLimitCity            |
+      | azhou1@scholastic.com | password2 | 5694296     | nonAlphanumericalCity        |
+      | azhou1@scholastic.com | password2 | 5694296     | alphaZipcode                 |
+      | azhou1@scholastic.com | password2 | 5694296     | underCharMinZipcode          |
