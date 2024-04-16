@@ -179,7 +179,7 @@ Feature: GetFinancialFormEarnings GET Api tests
       | azhou1@scholastic.com | password1 | 5694296     |
 
   @Happy @Mongo
-  Scenario Outline: Validate invoice flow for user <USER_NAME>, fair:<RESOURCE_ID>
+  Scenario Outline: Validate earnings data with database and calculations for user <USER_NAME>, fair:<RESOURCE_ID>
     * def convertNumberDecimal =
     """
     function(json){
