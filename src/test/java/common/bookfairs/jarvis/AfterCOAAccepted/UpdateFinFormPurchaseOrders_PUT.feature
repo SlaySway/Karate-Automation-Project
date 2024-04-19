@@ -352,6 +352,7 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
       | azhou1@scholastic.com | password2 | 5694296     | overCharLimitNumber          |
       | azhou1@scholastic.com | password2 | 5694296     | nonAlphanumericalNumber      |
       | azhou1@scholastic.com | password2 | 5694296     | overLimitAmount              |
+      | azhou1@scholastic.com | password2 | 5694296     | overCharLimitAmount          |
       | azhou1@scholastic.com | password2 | 5694296     | overCharLimitContactName     |
       | azhou1@scholastic.com | password2 | 5694296     | nonAlphanumericalContactName |
       | azhou1@scholastic.com | password2 | 5694296     | overCharLimitAgencyName      |
@@ -362,3 +363,71 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
       | azhou1@scholastic.com | password2 | 5694296     | nonAlphanumericalCity        |
       | azhou1@scholastic.com | password2 | 5694296     | alphaZipcode                 |
       | azhou1@scholastic.com | password2 | 5694296     | underCharMinZipcode          |
+
+  Scenario Outline: Validate when user has null for mandatory fields:<USER_NAME>, fair:<RESOURCE_ID>, nulled_field: <mandatoryField>
+    * def REQUEST_BODY =
+    """
+    {
+      "list": [
+        {
+          "number": "automationPurchaseOrder1",
+          "amount": 1,
+          "contactName": "Automation Robot",
+          "agencyName": "NY DOE",
+          "address": "507 Broadway",
+          "city": "New Jersey",
+          "state": "NJ",
+          "zipcode": "10011"
+        }
+      ]
+    }
+    """
+    * REQUEST_BODY.list[0][mandatoryField] = null
+    Given def updateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
+    Then match updateFinFormPurchaseOrdersResponse.responseStatus == 400
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | RESOURCE_ID | mandatoryField |
+      | azhou1@scholastic.com | password2 | 5694296     | number         |
+      | azhou1@scholastic.com | password2 | 5694296     | amount         |
+      | azhou1@scholastic.com | password2 | 5694296     | contactName    |
+      | azhou1@scholastic.com | password2 | 5694296     | agencyName     |
+      | azhou1@scholastic.com | password2 | 5694296     | address        |
+      | azhou1@scholastic.com | password2 | 5694296     | city           |
+      | azhou1@scholastic.com | password2 | 5694296     | state          |
+      | azhou1@scholastic.com | password2 | 5694296     | zipcode        |
+
+  Scenario Outline: Validate when user inputs "" for mandatory fields:<USER_NAME>, fair:<RESOURCE_ID>, empty_field: <mandatoryField>
+    * def REQUEST_BODY =
+    """
+    {
+      "list": [
+        {
+          "number": "automationPurchaseOrder1",
+          "amount": 1,
+          "contactName": "Automation Robot",
+          "agencyName": "NY DOE",
+          "address": "507 Broadway",
+          "city": "New Jersey",
+          "state": "NJ",
+          "zipcode": "10011"
+        }
+      ]
+    }
+    """
+    * REQUEST_BODY.list[0][mandatoryField] = ""
+    Given def updateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
+    Then match updateFinFormPurchaseOrdersResponse.responseStatus == 400
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | RESOURCE_ID | mandatoryField |
+      | azhou1@scholastic.com | password2 | 5694296     | number         |
+      | azhou1@scholastic.com | password2 | 5694296     | amount         |
+      | azhou1@scholastic.com | password2 | 5694296     | contactName    |
+      | azhou1@scholastic.com | password2 | 5694296     | agencyName     |
+      | azhou1@scholastic.com | password2 | 5694296     | address        |
+      | azhou1@scholastic.com | password2 | 5694296     | city           |
+      | azhou1@scholastic.com | password2 | 5694296     | state          |
+      | azhou1@scholastic.com | password2 | 5694296     | zipcode        |
