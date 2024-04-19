@@ -22,61 +22,89 @@
         "agencyName": "XYZ DOE",
         "address": "55 way",
         "city": "GG hh",
-        "state": "bb",
+        "state": "AS",
         "zipcode": "10092"
       }
     ]
   },
-  "maxLengths" : {
-        "number": "1234567890123456789012345",
-        "amount": 999999.99,
-        "contactName": "123456789012345678901234567890",
-        "agencyName": "123456789012345678901234567890",
-        "address": "123456789012345678901234567890",
-        "city": "12345678901234567890",
+  "twoValidPurchaseOrders": {
+    "list": [
+      {
+        "number": "automationPurchaseOrder1",
+        "amount": 1,
+        "contactName": "Automation Robot",
+        "agencyName": "NY DOE",
+        "address": "507 Broadway",
+        "city": "New Jersey",
+        "state": "NJ",
+        "zipcode": "10011"
+      },
+      {
+        "number": "automationPurchaseOrder2",
+        "amount": 2,
+        "contactName": "Automation RobotFriend",
+        "agencyName": "NYC DOE",
+        "address": "550 Road",
+        "city": "New York",
         "state": "NY",
-        "zipcode": "12345"
+        "zipcode": "10012"
+      }
+    ]
   },
-  "overCharLimitNumber" : {
-        "number": "12345678901234567890123456"
+  "emptyList": {
+    "list": [
+    ]
   },
-  "nonAlphanumericalNumber" : {
-        "number": 1.1
+  "maxLengths": {
+    "number": "1234567890123456789012345",
+    "amount": 999999.99,
+    "contactName": "123456789012345678901234567890",
+    "agencyName": "123456789012345678901234567890",
+    "address": "123456789012345678901234567890",
+    "city": "12345678901234567890",
+    "state": "NY",
+    "zipcode": "12345"
   },
-  "overLimitAmount" : {
-    "amount":1000000.00
+  "overCharLimitNumber": {
+    "number": "12345678901234567890123456"
   },
-  "overCharLimitAmount" : {
+  "nonAlphanumericalNumber": {
+    "number": 1.1
+  },
+  "overLimitAmount": {
+    "amount": 1000000.00
+  },
+  "overCharLimitAmount": {
     "amount": 999999.999
   },
-  "overCharLimitContactName" : {
+  "overCharLimitContactName": {
     "contactName": "1234567890123456789012345678901"
   },
-  "nonAlphanumericalContactName" : {
-    "contactName":1.1
+  "nonAlphanumericalContactName": {
+    "contactName": 1.1
   },
-  "overCharLimitAgencyName" : {
+  "overCharLimitAgencyName": {
     "agencyName": "1234567890123456789012345678901"
   },
-  "nonAlphanumericalAgencyName" : {
-    "agencyName":1.1
+  "nonAlphanumericalAgencyName": {
+    "agencyName": 1.1
   },
-  "overCharLimitAddress" : {
+  "overCharLimitAddress": {
     "address": "1234567890123456789012345678901"
   },
-  "nonAlphanumericalAddress" : {
-    "address":1.1
+  "nonAlphanumericalAddress": {
+    "address": 1.1
   },
-  "overCharLimitCity" : {
+  "overCharLimitCity": {
     "city": "123456789012345678901"
   },
-  "nonAlphanumericalCity" : {
-    "city":1.1
+  "nonAlphanumericalCity": {
+    "city": 1.1
   },
-  "alphaZipcode" : {
+  "alphaZipcode": {
     "zipcode": "abced"
   },
-  "underCharMinZipcode" : {
+  "underCharMinZipcode": {
     "zipcode": "1"
   },
   "ElevenPurchaseOrders": {

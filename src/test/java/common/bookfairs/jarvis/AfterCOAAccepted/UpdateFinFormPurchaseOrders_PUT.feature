@@ -207,7 +207,7 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
       | mtodaro@scholastic.com | passw0rd | 5694314     | ElevenPurchaseOrders |
 
   @Happy @Mongo
-  Scenario Outline: Validate mongo is updated in appropriate fields for user:<USER_NAME> and fair:<RESOURCE_ID>
+  Scenario Outline: Validate mongo is updated in purchase order field for user:<USER_NAME>, fair:<RESOURCE_ID>, request scenario: <requestBody>
     * def convertNumberDecimal =
     """
     function(json){
@@ -226,37 +226,9 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     }
     """
     Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(RESOURCE_ID)"}
-    * print mongoJson.document
     * convertNumberDecimal(mongoJson.document)
-    * print mongoJson.document
     And def originalPurchaseOrderList = mongoJson.document.purchaseOrders
-    * def REQUEST_BODY =
-    """
-    {
-      "list": [
-        {
-          "number": "automationPurchaseOrder1",
-          "amount": 1,
-          "contactName": "Automation Robot",
-          "agencyName": "NY DOE",
-          "address": "507 Broadway",
-          "city": "New Jersey",
-          "state": "NJ",
-          "zipcode": "10011"
-        },
-        {
-          "number": "automationPurchaseOrder2",
-          "amount": 2,
-          "contactName": "Automation RobotFriend",
-          "agencyName": "NYC DOE",
-          "address": "550 Road",
-          "city": "New York",
-          "state": "NY",
-          "zipcode": "10012"
-        }
-      ]
-    }
-    """
+    * def REQUEST_BODY = read('UpdateFinFormPurchaseOrdersRequests.json')[requestBody]
     Given def updateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
     Then match updateFinFormPurchaseOrdersResponse.responseStatus == 200
     Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(RESOURCE_ID)"}
@@ -276,8 +248,10 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
 
     @QA
     Examples:
-      | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password2 | 5694296     |
+      | USER_NAME             | PASSWORD  | RESOURCE_ID | requestBody            |
+      | azhou1@scholastic.com | password2 | 5694296     | twoValidPurchaseOrders |
+      | azhou1@scholastic.com | password2 | 5694296     | validPayload           |
+      | azhou1@scholastic.com | password2 | 5694296     | emptyList              |
 
   Scenario Outline: Validate when user uses max limits of fields:<USER_NAME>, fair:<RESOURCE_ID>
     * def convertValuesToThatOfJson =
