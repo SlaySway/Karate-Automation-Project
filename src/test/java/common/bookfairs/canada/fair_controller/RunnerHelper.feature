@@ -4,7 +4,6 @@ Feature: Helper for running event_controller endpoints
   Background: Set config
     * string setFliersUri = "/api/user/fairs/<resourceId>/fliers"
 
-  # TODO: dev incomplete
   # Input: USER_NAME, PASSWORD, FAIR_ID
   # Output: response
   @SetFliers
