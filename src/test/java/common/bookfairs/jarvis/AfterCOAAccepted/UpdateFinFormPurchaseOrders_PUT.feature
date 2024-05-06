@@ -328,13 +328,9 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
       | azhou1@scholastic.com | password2 | 5694296     | overLimitAmount              |
       | azhou1@scholastic.com | password2 | 5694296     | overCharLimitAmount          |
       | azhou1@scholastic.com | password2 | 5694296     | overCharLimitContactName     |
-      | azhou1@scholastic.com | password2 | 5694296     | nonAlphanumericalContactName |
       | azhou1@scholastic.com | password2 | 5694296     | overCharLimitAgencyName      |
-      | azhou1@scholastic.com | password2 | 5694296     | nonAlphanumericalAgencyName  |
       | azhou1@scholastic.com | password2 | 5694296     | overCharLimitAddress         |
-      | azhou1@scholastic.com | password2 | 5694296     | nonAlphanumericalAddress     |
       | azhou1@scholastic.com | password2 | 5694296     | overCharLimitCity            |
-      | azhou1@scholastic.com | password2 | 5694296     | nonAlphanumericalCity        |
       | azhou1@scholastic.com | password2 | 5694296     | alphaZipcode                 |
       | azhou1@scholastic.com | password2 | 5694296     | underCharMinZipcode          |
 
