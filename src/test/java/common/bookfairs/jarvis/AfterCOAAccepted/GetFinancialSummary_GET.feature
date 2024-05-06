@@ -1,4 +1,4 @@
-@GetFinancialSummary @PerformanceEnhancement
+@GetFinancialSummary @PerformanceEnhancement @4bfinfrom
 Feature: GetFinancialSummary GET Api tests
 
   Background: Set config

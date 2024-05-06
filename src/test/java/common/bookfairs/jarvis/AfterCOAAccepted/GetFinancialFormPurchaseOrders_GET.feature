@@ -1,4 +1,4 @@
-@GetFinancialFormPurchaseOrders @PerformanceEnhancement
+@GetFinancialFormPurchaseOrders @PerformanceEnhancement @4bfinfrom
 Feature: GetFinancialFormPurchaseOrders GET Api tests
 
   Background: Set config
@@ -162,7 +162,7 @@ Feature: GetFinancialFormPurchaseOrders GET Api tests
       | azhou1@scholastic.com | password2 | 5694296     |
 
   @Happy @Mongo
-  Scenario Outline: Validate invoice flow for user <USER_NAME>, fair:<RESOURCE_ID>
+  Scenario Outline: Validate purchaseOrders data with database and calculations for user <USER_NAME>, fair:<RESOURCE_ID>
     * def convertNumberDecimal =
     """
     function(json){

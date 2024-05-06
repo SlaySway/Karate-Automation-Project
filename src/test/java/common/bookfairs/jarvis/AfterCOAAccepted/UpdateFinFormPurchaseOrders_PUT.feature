@@ -1,4 +1,4 @@
-@UpdateFinFormPurchaseOrders @PerformanceEnhancement
+@UpdateFinFormPurchaseOrders @PerformanceEnhancement @4bfinfrom
 Feature: UpdateFinFormPurchaseOrders PUT Api tests
 
   Background: Set config

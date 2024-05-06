@@ -1,4 +1,4 @@
-@GetFinancialFormStatus @PerformanceEnhancement
+@GetFinancialFormStatus @PerformanceEnhancement @4bfinfrom
 Feature: GetFinancialFormStatus GET Api tests
 
   Background: Set config

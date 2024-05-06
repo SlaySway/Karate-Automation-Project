@@ -1,4 +1,4 @@
-@UpdateFinFormSales @PerformanceEnhancement
+@UpdateFinFormSales @PerformanceEnhancement @4bfinfrom
 Feature: UpdateFinFormSales PUT Api tests
 
   Background: Set config
