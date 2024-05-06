@@ -13,8 +13,8 @@ Feature: GetCOAdates API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
-      | azhou1@scholastic.com | password1 | current           |
+      | azhou1@scholastic.com | password2 | 5694296           |
+      | azhou1@scholastic.com | password2 | current           |
 
   @Regression
   Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIR_ID>
@@ -33,7 +33,7 @@ Feature: GetCOAdates API automation tests
 
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password2 | 5694296           |
 
   Scenario Outline: Validate GetCOAdates API with a valid fairId SCHL and Session Cookie
     * def getCOAdatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOAdates')
@@ -43,7 +43,7 @@ Feature: GetCOAdates API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password2 | 5694296           |
 
   Scenario Outline: Validate GetCOAdates API with current keyword SCHL and Session Cookie
     * def getCOAdatesResponse = call read('classpath:common/bookfairs/jarvis/BeforeCOAAccepted/RunnerHelper.feature@GetCOAdates')
@@ -53,7 +53,7 @@ Feature: GetCOAdates API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | current           |
+      | azhou1@scholastic.com | password2 | current           |
 
   Scenario Outline: Validate with invalid fairId and valid SCHL and session cookie
     And replace getCOAdatesUri.fairIdOrCurrent = FAIRID_OR_CURRENT
@@ -67,7 +67,7 @@ Feature: GetCOAdates API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5565              |
+      | azhou1@scholastic.com | password2 | 5565              |
 
   Scenario Outline: Validate with invalid fairId and valid SCHL and session cookie
     And replace getCOAdatesUri.fairIdOrCurrent = FAIRID_OR_CURRENT
@@ -81,7 +81,7 @@ Feature: GetCOAdates API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | abc1              |
+      | azhou1@scholastic.com | password2 | abc1              |
 
   Scenario Outline: Validate with invalid login session and a valid fairId
     And replace getCOAdatesUri.fairIdOrCurrent = FAIRID_OR_CURRENT
@@ -94,7 +94,7 @@ Feature: GetCOAdates API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password2 | 5694296           |
 
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -130,4 +130,4 @@ Feature: GetCOAdates API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | abc1234           |
+      | azhou1@scholastic.com | password2 | abc1234           |

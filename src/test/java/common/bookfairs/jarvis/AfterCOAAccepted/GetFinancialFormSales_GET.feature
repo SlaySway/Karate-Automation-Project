@@ -1,4 +1,4 @@
-@GetFinancialFormSales @PerformanceEnhancement
+@GetFinancialFormSales @PerformanceEnhancement @4bfinfrom
 Feature: GetFinancialFormSales GET Api tests
 
   Background: Set config
@@ -59,7 +59,7 @@ Feature: GetFinancialFormSales GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5694300     |
+      | azhou1@scholastic.com | password2 | 5694300     |
 
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<RESOURCE_ID>
@@ -107,7 +107,7 @@ Feature: GetFinancialFormSales GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5734325     |
+      | azhou1@scholastic.com | password2 | 5734325     |
 
   @Unhappy
   Scenario Outline: Validate when user uses an invalid fair ID for user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -118,7 +118,7 @@ Feature: GetFinancialFormSales GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | abc1234     |
+      | azhou1@scholastic.com | password2 | abc1234     |
 
   @Unhappy
   Scenario Outline: Validate when unsupported http method is called
@@ -133,7 +133,7 @@ Feature: GetFinancialFormSales GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID | SBF_JARVIS_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296     | 5694309         |
+      | azhou1@scholastic.com | password2 | 5694296     | 5694309         |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<RESOURCE_ID>, scenario:<SCENARIO>
@@ -164,8 +164,8 @@ Feature: GetFinancialFormSales GET Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID | EXPECTED_FAIR | SBF_JARVIS_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296     | 5694296       | 5694309         |
-      | azhou1@scholastic.com | password1 | current     | 5694296       | 5694296         |
+      | azhou1@scholastic.com | password2 | 5694296     | 5694296       | 5694309         |
+      | azhou1@scholastic.com | password2 | current     | 5694296       | 5694296         |
 
   @Regression @ignore
   Scenario Outline: Validate regression using dynamic comparison || fairId=<RESOURCE_ID>
@@ -180,7 +180,7 @@ Feature: GetFinancialFormSales GET Api tests
 
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5694296     |
+      | azhou1@scholastic.com | password2 | 5694296     |
 
   @Happy @Mongo
   Scenario Outline: Validate with database and verifying with calculations for user <USER_NAME>, fair:<RESOURCE_ID>

@@ -1,4 +1,4 @@
-@UpdateFinFormPurchaseOrders @PerformanceEnhancement
+@UpdateFinFormPurchaseOrders @PerformanceEnhancement @4bfinfrom
 Feature: UpdateFinFormPurchaseOrders PUT Api tests
 
   Background: Set config
@@ -16,7 +16,7 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5694296     |
+      | azhou1@scholastic.com | password2 | 5694296     |
 
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -40,7 +40,7 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5694300     |
+      | azhou1@scholastic.com | password2 | 5694300     |
 
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<RESOURCE_ID>
@@ -80,7 +80,7 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5734325     |
+      | azhou1@scholastic.com | password2 | 5734325     |
 
   @Unhappy
   Scenario Outline: Validate when user uses invalid fair ID for user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -92,7 +92,7 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | abc1234     |
+      | azhou1@scholastic.com | password2 | abc1234     |
 
   @Unhappy
   Scenario Outline: Validate when unsupported http method is called
@@ -107,7 +107,7 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID | SBF_JARVIS_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296     | 5694309         |
+      | azhou1@scholastic.com | password2 | 5694296     | 5694309         |
 
   @Unhappy
   Scenario Outline: Validate for internal server error
@@ -121,7 +121,7 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID | SBF_JARVIS_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296     | 5694309         |
+      | azhou1@scholastic.com | password2 | 5694296     | 5694309         |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<RESOURCE_ID>
@@ -133,7 +133,7 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID | EXPECTED_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296     | 5694296       |
+      | azhou1@scholastic.com | password2 | 5694296     | 5694296       |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current WITH SBF_JARVIS for user:<USER_NAME>, fair:<RESOURCE_ID>, cookie fair:<SBF_JARVIS_FAIR>
@@ -149,8 +149,8 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID | EXPECTED_FAIR | SBF_JARVIS_FAIR | requestBodyJson |
-      | azhou1@scholastic.com | password1 | 5694296     | 5694296       | 5694309         | validPayload    |
-      | azhou1@scholastic.com | password1 | current     | 5694296       | 5694296         | validPayload    |
+      | azhou1@scholastic.com | password2 | 5694296     | 5694296       | 5694309         | validPayload    |
+      | azhou1@scholastic.com | password2 | current     | 5694296       | 5694296         | validPayload    |
 
   @Unhappy
   Scenario Outline: Validate when current is used without SBF_JARVIS user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -166,7 +166,7 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | current     |
+      | azhou1@scholastic.com | password2 | current     |
 
   @Unhappy
   Scenario Outline: Validate when current is used without SBF_JARVIS user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -182,7 +182,7 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | current     |
+      | azhou1@scholastic.com | password2 | current     |
 
   @Unhappy
   Scenario Outline: Validate when invalid request body for user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -193,7 +193,7 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID | requestBodyJson |
-      | azhou1@scholastic.com | password1 | 5694296     | invalidAmount   |
+      | azhou1@scholastic.com | password2 | 5694296     | invalidAmount   |
 
   @Unhappy @ignore
   Scenario Outline: Validate when user exceeds maximum(10) purchase orders list inputs i.e., 11 fairs:<USER_NAME>, fair:<RESOURCE_ID>
@@ -203,11 +203,11 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
 
     @QA
     Examples:
-      | USER_NAME              | PASSWORD | RESOURCE_ID |  | requestBodyJson      |
-      | mtodaro@scholastic.com | passw0rd | 5694314     |  | ElevenPurchaseOrders |
+      | USER_NAME              | PASSWORD | RESOURCE_ID | requestBodyJson      |
+      | mtodaro@scholastic.com | passw0rd | 5694314     | ElevenPurchaseOrders |
 
   @Happy @Mongo
-  Scenario Outline: Validate mongo is updated in appropriate fields for user:<USER_NAME> and fair:<RESOURCE_ID>
+  Scenario Outline: Validate mongo is updated in purchase order field for user:<USER_NAME>, fair:<RESOURCE_ID>, request scenario: <requestBody>
     * def convertNumberDecimal =
     """
     function(json){
@@ -225,115 +225,179 @@ Feature: UpdateFinFormPurchaseOrders PUT Api tests
         }
     }
     """
-    * def updatePurchaseOrdersList =
-    """
-    function(currentDocument, updatedFields){
-      let updatedPOs = new Map(updatedFields.map(purchaseOrder=>[purchaseOrder.number, purchaseOrder]));
-      let currentPOs = new Map(currentDocument.map(purchaseOrder=>[purchaseOrder.number, purchaseOrder]));
-      let purchaseOrderSchema = {
-        "number" : "1",
-        "amount" : "2",
-        "contactName" : "3",
-        "agencyName" : "4",
-        "address" : "5",
-        "city" : "6",
-        "state" : "7",
-        "zipcode" : "8"
-      };
-      updatedPOs.forEach((updatedFields, updateOrCreatePurchaseNumber) => {
-          const purchaseOrderToUpdateOrCreate = currentPOs.get(updateOrCreatePurchaseNumber)
-          if(purchaseOrderToUpdateOrCreate){
-              purchaseOrderToUpdateOrCreate.keySet().forEach(key => {
-                  if(Object.keys(purchaseOrderSchema).includes(key)){
-                      purchaseOrderToUpdateOrCreate[key] = updatedFields[key]
-                  }
-              })
-          }else{
-              let newEntry = {}
-              Object.keys(purchaseOrderSchema).forEach(key => {
-                  if(Object.keys(purchaseOrderSchema).includes(key)){
-                      newEntry[key] = updatedFields[key]
-                  }
-              })
-              currentPOs.set(updateOrCreatePurchaseNumber, newEntry)
-          }
-      })
-     return Array.from(currentPOs.values())
-    }
-    """
-    * def REQUEST_BODY =
-    """
-    {
-  "list": [
-    {
-      "number": "1hjttest9877",
-      "amount": 1,
-      "contactName": "Rew Sss",
-      "agencyName": "NY DOE",
-      "address": "507 Broadway",
-      "city": "New Yrk",
-      "state": "NY",
-      "zipcode": "10011"
-    },
-    {
-      "number": "2tesyt6i",
-      "amount": 0,
-      "contactName": "And tests",
-      "agencyName": "NYC DOE",
-      "address": "550 road",
-      "city": "New York",
-      "state": "NY",
-      "zipcode": "10012"
-    }
-  ]
-}
-    """
     Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(RESOURCE_ID)"}
     * convertNumberDecimal(mongoJson.document)
-    And def expectedDocument = mongoJson.document
-    * def newPurchaseOrdersList = updatePurchaseOrdersList(expectedDocument.purchaseOrders, REQUEST_BODY.list)
-    And set expectedDocument.purchaseOrders = newPurchaseOrdersList
+    And def originalPurchaseOrderList = mongoJson.document.purchaseOrders
+    * def REQUEST_BODY = read('UpdateFinFormPurchaseOrdersRequests.json')[requestBody]
     Given def updateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
     Then match updateFinFormPurchaseOrdersResponse.responseStatus == 200
     Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(RESOURCE_ID)"}
     * convertNumberDecimal(mongoJson.document)
-    And match mongoJson.document contains expectedDocument
+    And match mongoJson.document.purchaseOrders == REQUEST_BODY.list
     * def REQUEST_BODY =
     """
     {
-  "list": [
-    {
-      "number": "1hjtkhjktest9877",
-      "amount": 1,
-      "contactName": "Postman Sss",
-      "agencyName": "NY DOE",
-      "address": "507 Bradway",
-      "city": "New Yrk",
-      "state": "XY",
-      "zipcode": "10013"
-    },
-    {
-      "number": "2tesyt6i",
-      "amount": 0,
-      "contactName": "TTesting tests",
-      "agencyName": "NYC DEO",
-      "address": "559 road",
-      "city": "New York",
-      "state": "YZ",
-      "zipcode": "10050"
+      "list" : "#(originalPurchaseOrderList)"
     }
-  ]
-}
     """
-    And def expectedDocument = mongoJson.document
-    And set expectedDocument.purchaseOrders = updatePurchaseOrdersList(expectedDocument.purchaseOrders, REQUEST_BODY.list)
-    Given def UpdateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
-    Then match UpdateFinFormPurchaseOrdersResponse.responseStatus == 200
+    Given def updateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
+    Then match updateFinFormPurchaseOrdersResponse.responseStatus == 200
     Then def mongoJson = call read('classpath:common/bookfairs/bftoolkit/MongoDBRunner.feature@FindDocumentByField') {collection:"financials", field:"_id", value:"#(RESOURCE_ID)"}
     * convertNumberDecimal(mongoJson.document)
-    And match mongoJson.document contains expectedDocument
+    And match mongoJson.document.purchaseOrders == REQUEST_BODY.list
 
     @QA
     Examples:
-      | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5694296     |
+      | USER_NAME             | PASSWORD  | RESOURCE_ID | requestBody            |
+      | azhou1@scholastic.com | password2 | 5694296     | twoValidPurchaseOrders |
+      | azhou1@scholastic.com | password2 | 5694296     | validPayload           |
+      | azhou1@scholastic.com | password2 | 5694296     | emptyList              |
+
+  Scenario Outline: Validate when user uses max limits of fields:<USER_NAME>, fair:<RESOURCE_ID>
+    * def convertValuesToThatOfJson =
+    """
+    function(jsonToChange, jsonOfChanges){
+      for(let field in jsonOfChanges){
+          jsonToChange[field] = jsonOfChanges[field]
+        }
+    }
+    """
+    * def jsonOfChanges = read('UpdateFinFormPurchaseOrdersRequests.json')[replaceValuesWithJson]
+    * def REQUEST_BODY =
+    """
+    {
+      "list": [
+        {
+          "number": "automationPurchaseOrder1",
+          "amount": 1,
+          "contactName": "Automation Robot",
+          "agencyName": "NY DOE",
+          "address": "507 Broadway",
+          "city": "New Jersey",
+          "state": "NJ",
+          "zipcode": "10011"
+        }
+      ]
+    }
+    """
+    * convertValuesToThatOfJson(REQUEST_BODY.list[0],jsonOfChanges)
+    Given def updateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
+    Then match updateFinFormPurchaseOrdersResponse.responseStatus == 200
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | RESOURCE_ID | replaceValuesWithJson |
+      | azhou1@scholastic.com | password2 | 5694296     | maxLengths            |
+
+  Scenario Outline: Validate when user has invalid field:<USER_NAME>, fair:<RESOURCE_ID>, invalid_field: <replaceValuesWithJson>
+    * def convertValuesToThatOfJson =
+    """
+    function(jsonToChange, jsonOfChanges){
+      for(let field in jsonOfChanges){
+          jsonToChange[field] = jsonOfChanges[field]
+        }
+    }
+    """
+    * def jsonOfChanges = read('UpdateFinFormPurchaseOrdersRequests.json')[replaceValuesWithJson]
+    * def REQUEST_BODY =
+    """
+    {
+      "list": [
+        {
+          "number": "automationPurchaseOrder1",
+          "amount": 1,
+          "contactName": "Automation Robot",
+          "agencyName": "NY DOE",
+          "address": "507 Broadway",
+          "city": "New Jersey",
+          "state": "NJ",
+          "zipcode": "10011"
+        }
+      ]
+    }
+    """
+    * convertValuesToThatOfJson(REQUEST_BODY.list[0],jsonOfChanges)
+    Given def updateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
+    Then match updateFinFormPurchaseOrdersResponse.responseStatus == 400
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | RESOURCE_ID | replaceValuesWithJson        |
+      | azhou1@scholastic.com | password2 | 5694296     | overCharLimitNumber          |
+      | azhou1@scholastic.com | password2 | 5694296     | nonAlphanumericalNumber      |
+      | azhou1@scholastic.com | password2 | 5694296     | overLimitAmount              |
+      | azhou1@scholastic.com | password2 | 5694296     | overCharLimitAmount          |
+      | azhou1@scholastic.com | password2 | 5694296     | overCharLimitContactName     |
+      | azhou1@scholastic.com | password2 | 5694296     | overCharLimitAgencyName      |
+      | azhou1@scholastic.com | password2 | 5694296     | overCharLimitAddress         |
+      | azhou1@scholastic.com | password2 | 5694296     | overCharLimitCity            |
+      | azhou1@scholastic.com | password2 | 5694296     | alphaZipcode                 |
+      | azhou1@scholastic.com | password2 | 5694296     | underCharMinZipcode          |
+
+  Scenario Outline: Validate when user has null for mandatory fields:<USER_NAME>, fair:<RESOURCE_ID>, nulled_field: <mandatoryField>
+    * def REQUEST_BODY =
+    """
+    {
+      "list": [
+        {
+          "number": "automationPurchaseOrder1",
+          "amount": 1,
+          "contactName": "Automation Robot",
+          "agencyName": "NY DOE",
+          "address": "507 Broadway",
+          "city": "New Jersey",
+          "state": "NJ",
+          "zipcode": "10011"
+        }
+      ]
+    }
+    """
+    * REQUEST_BODY.list[0][mandatoryField] = null
+    Given def updateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
+    Then match updateFinFormPurchaseOrdersResponse.responseStatus == 400
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | RESOURCE_ID | mandatoryField |
+      | azhou1@scholastic.com | password2 | 5694296     | number         |
+      | azhou1@scholastic.com | password2 | 5694296     | amount         |
+      | azhou1@scholastic.com | password2 | 5694296     | contactName    |
+      | azhou1@scholastic.com | password2 | 5694296     | agencyName     |
+      | azhou1@scholastic.com | password2 | 5694296     | address        |
+      | azhou1@scholastic.com | password2 | 5694296     | city           |
+      | azhou1@scholastic.com | password2 | 5694296     | state          |
+      | azhou1@scholastic.com | password2 | 5694296     | zipcode        |
+
+  Scenario Outline: Validate when user inputs "" for mandatory fields:<USER_NAME>, fair:<RESOURCE_ID>, empty_field: <mandatoryField>
+    * def REQUEST_BODY =
+    """
+    {
+      "list": [
+        {
+          "number": "automationPurchaseOrder1",
+          "amount": 1,
+          "contactName": "Automation Robot",
+          "agencyName": "NY DOE",
+          "address": "507 Broadway",
+          "city": "New Jersey",
+          "state": "NJ",
+          "zipcode": "10011"
+        }
+      ]
+    }
+    """
+    * REQUEST_BODY.list[0][mandatoryField] = ""
+    Given def updateFinFormPurchaseOrdersResponse = call read('RunnerHelper.feature@UpdateFinFormPurchaseOrders')
+    Then match updateFinFormPurchaseOrdersResponse.responseStatus == 400
+
+    @QA
+    Examples:
+      | USER_NAME             | PASSWORD  | RESOURCE_ID | mandatoryField |
+      | azhou1@scholastic.com | password2 | 5694296     | number         |
+      | azhou1@scholastic.com | password2 | 5694296     | amount         |
+      | azhou1@scholastic.com | password2 | 5694296     | contactName    |
+      | azhou1@scholastic.com | password2 | 5694296     | agencyName     |
+      | azhou1@scholastic.com | password2 | 5694296     | address        |
+      | azhou1@scholastic.com | password2 | 5694296     | city           |
+      | azhou1@scholastic.com | password2 | 5694296     | state          |
+      | azhou1@scholastic.com | password2 | 5694296     | zipcode        |

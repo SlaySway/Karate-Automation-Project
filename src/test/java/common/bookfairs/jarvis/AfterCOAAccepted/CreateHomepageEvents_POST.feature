@@ -27,7 +27,7 @@ Feature: CreateHomepageEvents POST Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694300           |
+      | azhou1@scholastic.com | password2 | 5694300           |
 
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
@@ -71,7 +71,7 @@ Feature: CreateHomepageEvents POST Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | current           |
+      | azhou1@scholastic.com | password2 | current           |
 
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to specific fair for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -83,7 +83,7 @@ Feature: CreateHomepageEvents POST Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5734325           |
+      | azhou1@scholastic.com | password2 | 5734325           |
 
   @Unhappy
   Scenario Outline: Validate when user uses an invalid fair ID for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -95,7 +95,7 @@ Feature: CreateHomepageEvents POST Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | abc1234           |
+      | azhou1@scholastic.com | password2 | abc1234           |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<FAIRID_OR_CURRENT>
@@ -107,7 +107,7 @@ Feature: CreateHomepageEvents POST Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296           | 5694296       |
+      | azhou1@scholastic.com | password2 | 5694296           | 5694296       |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current WITH SBF_JARVIS for DO_NOT_SELECT mode with user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, cookie fair:<SBF_JARVIS_FAIR>
@@ -123,8 +123,8 @@ Feature: CreateHomepageEvents POST Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR | SBF_JARVIS_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296           | 5694296       | 5694309         |
-      | azhou1@scholastic.com | password1 | current           | 5694296       | 5694296         |
+      | azhou1@scholastic.com | password2 | 5694296           | 5694296       | 5694309         |
+      | azhou1@scholastic.com | password2 | current           | 5694296       | 5694296         |
 
   @Unhappy
   Scenario Outline: Validate when invalid request body for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -135,4 +135,4 @@ Feature: CreateHomepageEvents POST Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password2 | 5694296           |

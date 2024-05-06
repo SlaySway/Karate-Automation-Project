@@ -13,8 +13,8 @@ Feature: GetCOApdfLink API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
-      | azhou1@scholastic.com | password1 | current           |
+      | azhou1@scholastic.com | password2 | 5694296           |
+      | azhou1@scholastic.com | password2 | current           |
 
 
   Scenario Outline: Validate GetCOApdfLink API with a valid fairId invalid SCHL cookie
@@ -28,7 +28,7 @@ Feature: GetCOApdfLink API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password2 | 5694296           |
 
   Scenario Outline: Validate GetCOApdfLink API with invalid fairID and valid login session
     And replace getCOApdfLinkUri.fairIdOrCurrent = FAIRID_OR_CURRENT
@@ -41,7 +41,7 @@ Feature: GetCOApdfLink API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 56335             |
+      | azhou1@scholastic.com | password2 | 56335             |
 
   Scenario Outline: Validate with current keyword or valid fairId valid login session and invalid session cookie
     * def sbf_jarvis = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
@@ -54,8 +54,8 @@ Feature: GetCOApdfLink API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | current           |
-      | azhou1@scholastic.com | password1 | 5775209           |
+      | azhou1@scholastic.com | password2 | current           |
+      | azhou1@scholastic.com | password2 | 5775209           |
 
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -91,5 +91,5 @@ Feature: GetCOApdfLink API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | abc1234           |
+      | azhou1@scholastic.com | password2 | abc1234           |
 

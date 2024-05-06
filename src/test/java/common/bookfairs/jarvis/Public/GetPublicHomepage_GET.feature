@@ -12,7 +12,7 @@ Feature: GetPublicHomepage API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | WEB_URL |
-      | azhou1@scholastic.com | password1 | 5694296           |         |
+      | azhou1@scholastic.com | password2 | 5694296           |         |
 
   Scenario Outline: Validate request when manadtory path parameter 'webUrl' is invalid
     Given url BOOKFAIRS_JARVIS_URL + getPublicHomepageUrl
@@ -23,7 +23,7 @@ Feature: GetPublicHomepage API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | WEB_URL |
-      | azhou1@scholastic.com | password1 | 5694296           | abc123  |
+      | azhou1@scholastic.com | password2 | 5694296           | abc123  |
 
   Scenario Outline: Validate request when optioanl query parameter 'fairId' is invalid
     Given url BOOKFAIRS_JARVIS_URL + getPublicHomepageUrl
@@ -46,7 +46,7 @@ Feature: GetPublicHomepage API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | WEB_URL              |
-      | azhou1@scholastic.com | password1 | 5694296           | iAmAnAutomationssUrl |
+      | azhou1@scholastic.com | password2 | 5694296           | iAmAnAutomationssUrl |
 
   Scenario Outline: Validate request when optioanl query parameter 'fairId' is valid
     Given url BOOKFAIRS_JARVIS_URL + getPublicHomepageUrl
@@ -59,7 +59,7 @@ Feature: GetPublicHomepage API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | WEB_URL            |
-      | azhou1@scholastic.com | password1 | 5694296           | iAmAnAutomationUrl |
+      | azhou1@scholastic.com | password2 | 5694296           | iAmAnAutomationUrl |
 
   #Enable this scenario after DEC release
   @ignore @Regression
@@ -86,4 +86,4 @@ Feature: GetPublicHomepage API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | WEB_URL            |
-      | azhou1@scholastic.com | password1 | 5694296           | iAmAnAutomationUrl |
+      | azhou1@scholastic.com | password2 | 5694296           | iAmAnAutomationUrl |

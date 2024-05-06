@@ -55,18 +55,18 @@ Feature: PutBlackoutDates API automation tests
 
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | requestBodyJsonPath                          |
-      | azhou1@scholastic.com | password1 | 5694296           | emptyBlackoutDates                           |
-      | azhou1@scholastic.com | password1 | 5694296           | emptyDeliveryDatesPopulatedElevenPickupDates |
-      | azhou1@scholastic.com | password1 | 5694296           | populatedElevenDeliveryDatesEmptyPickupDates |
-      | azhou1@scholastic.com | password1 | 5694296           | populatedElevenBlackoutDates                 |
-      | azhou1@scholastic.com | password1 | 5694296           | blackoutDayBeforeFairAndAfterFair            |
-      | azhou1@scholastic.com | password1 | 5694296           | swapDates                                    |
-      | azhou1@scholastic.com | password1 | 5694296           | arbitraryDates                               |
-      | azhou1@scholastic.com | password1 | 5694296           | swapDates                                    |
-      | azhou1@scholastic.com | password1 | 5694296           | swapDates                                    |
-      | azhou1@scholastic.com | password1 | 5694296           | swapDates                                    |
-      | azhou1@scholastic.com | password1 | 5694296           | swapDates                                    |
-      | azhou1@scholastic.com | password1 | 5694296           | swapDates                                    |
+      | azhou1@scholastic.com | password2 | 5694296           | emptyBlackoutDates                           |
+      | azhou1@scholastic.com | password2 | 5694296           | emptyDeliveryDatesPopulatedElevenPickupDates |
+      | azhou1@scholastic.com | password2 | 5694296           | populatedElevenDeliveryDatesEmptyPickupDates |
+      | azhou1@scholastic.com | password2 | 5694296           | populatedElevenBlackoutDates                 |
+      | azhou1@scholastic.com | password2 | 5694296           | blackoutDayBeforeFairAndAfterFair            |
+      | azhou1@scholastic.com | password2 | 5694296           | swapDates                                    |
+      | azhou1@scholastic.com | password2 | 5694296           | arbitraryDates                               |
+      | azhou1@scholastic.com | password2 | 5694296           | swapDates                                    |
+      | azhou1@scholastic.com | password2 | 5694296           | swapDates                                    |
+      | azhou1@scholastic.com | password2 | 5694296           | swapDates                                    |
+      | azhou1@scholastic.com | password2 | 5694296           | swapDates                                    |
+      | azhou1@scholastic.com | password2 | 5694296           | swapDates                                    |
 
 
   Scenario Outline: Validate regression using dynamic comparison || fairId=<FAIRID_OR_CURRENT>
@@ -99,8 +99,8 @@ Feature: PutBlackoutDates API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
-      | azhou1@scholastic.com | password1 | current           |
+      | azhou1@scholastic.com | password2 | 5694296           |
+      | azhou1@scholastic.com | password2 | current           |
 
   Scenario Outline: Validate PutBlackoutDates API with invalid login session and valid fairId
     * def requestBody =
@@ -126,7 +126,7 @@ Feature: PutBlackoutDates API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password2 | 5694296           |
 
   Scenario Outline: Validate PutBlackoutDates API with valid login session and a invalid fairId
     * def requestBody =
@@ -153,7 +153,7 @@ Feature: PutBlackoutDates API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 57752YU           |
+      | azhou1@scholastic.com | password2 | 57752YU           |
 
   Scenario Outline: Validate with current keyword valid SCHL and invalid fairsession
     * def requestBody =
@@ -180,7 +180,7 @@ Feature: PutBlackoutDates API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | current           |
+      | azhou1@scholastic.com | password2 | current           |
 
   Scenario Outline: Validate PutBlackoutDates API with SCHL Session Cookie and no request payload
     * def requestBody = ""
@@ -190,7 +190,7 @@ Feature: PutBlackoutDates API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5775209           |
+      | azhou1@scholastic.com | password2 | 5775209           |
 
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -225,4 +225,4 @@ Feature: PutBlackoutDates API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | requestBody |
-      | azhou1@scholastic.com | password1 | abc1234           | {}          |
+      | azhou1@scholastic.com | password2 | abc1234           | {}          |

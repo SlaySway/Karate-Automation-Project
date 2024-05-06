@@ -1,4 +1,4 @@
-@SubmitFinForm @PerformanceEnhancement
+@SubmitFinForm @PerformanceEnhancement @4bfinfrom
 Feature: SubmitFinForm PUT Api tests
 
   Background: Set config
@@ -28,7 +28,7 @@ Feature: SubmitFinForm PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5694300     |
+      | azhou1@scholastic.com | password2 | 5694300     |
 
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<RESOURCE_ID>
@@ -68,7 +68,7 @@ Feature: SubmitFinForm PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | 5734325     |
+      | azhou1@scholastic.com | password2 | 5734325     |
 
   @Unhappy
   Scenario Outline: Validate when user uses invalid fair ID for user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -80,7 +80,7 @@ Feature: SubmitFinForm PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | abc1234     |
+      | azhou1@scholastic.com | password2 | abc1234     |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<RESOURCE_ID>
@@ -92,7 +92,7 @@ Feature: SubmitFinForm PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID | EXPECTED_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296     | 5694296       |
+      | azhou1@scholastic.com | password2 | 5694296     | 5694296       |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current WITH SBF_JARVIS for user:<USER_NAME>, fair:<RESOURCE_ID>, cookie fair:<SBF_JARVIS_FAIR>
@@ -108,8 +108,8 @@ Feature: SubmitFinForm PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID | EXPECTED_FAIR | SBF_JARVIS_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296     | 5694296       | 5694309         |
-      | azhou1@scholastic.com | password1 | current     | 5694296       | 5694296         |
+      | azhou1@scholastic.com | password2 | 5694296     | 5694296       | 5694309         |
+      | azhou1@scholastic.com | password2 | current     | 5694296       | 5694296         |
 
   @Unhappy
   Scenario Outline: Validate when current is used without SBF_JARVIS user:<USER_NAME> and fair:<RESOURCE_ID>
@@ -125,4 +125,4 @@ Feature: SubmitFinForm PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | RESOURCE_ID |
-      | azhou1@scholastic.com | password1 | current     |
+      | azhou1@scholastic.com | password2 | current     |

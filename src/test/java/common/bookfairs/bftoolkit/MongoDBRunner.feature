@@ -74,7 +74,7 @@ Feature: Helper for accessing bftoolkit Mongo
 
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password2 | 5694296           |
 
 
   # Will be kept here as reference
@@ -82,11 +82,11 @@ Feature: Helper for accessing bftoolkit Mongo
   Scenario Outline: Test Mongo Query Aggregate
     * def DbUtils = Java.type('utils.MongoDBUtils')
     * def db = new DbUtils(uri, dbName, "not used")
-    * json document = db.findByFieldThenDeleteField("financials","_id","5694324","confirmation")
+    * json document = db.findByField("profitBalanceDataLoad","schoolId","337017")
     * print document
     * db.disconnect()
 
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694329           |
+      | azhou1@scholastic.com | password2 | 5694329           |
 

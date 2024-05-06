@@ -45,11 +45,11 @@ Feature: UpdateFairHomepage PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | requestBody            |
-      | azhou1@scholastic.com | password1 | 5694296           | volunteerRequestBody   |
-      | azhou1@scholastic.com | password1 | 5694296           | contactRequestBody     |
-      | azhou1@scholastic.com | password1 | 5694296           | fairInfoRequestBody    |
-      | azhou1@scholastic.com | password1 | 5694296           | homepageUrlRequestBody |
-      | azhou1@scholastic.com | password1 | 5694296           | toggleFairFinderBody   |
+      | azhou1@scholastic.com | password2 | 5694296           | volunteerRequestBody   |
+      | azhou1@scholastic.com | password2 | 5694296           | contactRequestBody     |
+      | azhou1@scholastic.com | password2 | 5694296           | fairInfoRequestBody    |
+      | azhou1@scholastic.com | password2 | 5694296           | homepageUrlRequestBody |
+      | azhou1@scholastic.com | password2 | 5694296           | toggleFairFinderBody   |
 
   @Unhappy
   Scenario Outline: Validate when invalid request body for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -60,7 +60,7 @@ Feature: UpdateFairHomepage PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694296           |
+      | azhou1@scholastic.com | password2 | 5694296           |
 
   @Unhappy
   Scenario Outline: Validate when user doesn't have access to CPTK for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -84,7 +84,7 @@ Feature: UpdateFairHomepage PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5694300           |
+      | azhou1@scholastic.com | password2 | 5694300           |
 
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
@@ -124,7 +124,7 @@ Feature: UpdateFairHomepage PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5734325           |
+      | azhou1@scholastic.com | password2 | 5734325           |
 
   @Unhappy
   Scenario Outline: Validate when user uses invalid fair ID for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -136,7 +136,7 @@ Feature: UpdateFairHomepage PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | abc1234           |
+      | azhou1@scholastic.com | password2 | abc1234           |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current for CONFIRMED fairs:<USER_NAME>, fair:<FAIRID_OR_CURRENT>
@@ -148,7 +148,7 @@ Feature: UpdateFairHomepage PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296           | 5694296       |
+      | azhou1@scholastic.com | password2 | 5694296           | 5694296       |
 
   @Happy
   Scenario Outline: Validate when user inputs different configurations for fairId/current WITH SBF_JARVIS for user:<USER_NAME>, fair:<FAIRID_OR_CURRENT>, cookie fair:<SBF_JARVIS_FAIR>
@@ -164,8 +164,8 @@ Feature: UpdateFairHomepage PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | EXPECTED_FAIR | SBF_JARVIS_FAIR |
-      | azhou1@scholastic.com | password1 | 5694296           | 5694296       | 5694309         |
-      | azhou1@scholastic.com | password1 | current           | 5694296       | 5694296         |
+      | azhou1@scholastic.com | password2 | 5694296           | 5694296       | 5694309         |
+      | azhou1@scholastic.com | password2 | current           | 5694296       | 5694296         |
 
   @Unhappy
   Scenario Outline: Validate when current is used without SBF_JARVIS user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -181,4 +181,4 @@ Feature: UpdateFairHomepage PUT Api tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | current           |
+      | azhou1@scholastic.com | password2 | current           |

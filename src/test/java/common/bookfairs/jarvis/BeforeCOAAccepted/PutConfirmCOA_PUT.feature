@@ -13,8 +13,8 @@ Feature: PutCOAConfirm API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5633533           |
-      | azhou1@scholastic.com | password1 | current           |
+      | azhou1@scholastic.com | password2 | 5633533           |
+      | azhou1@scholastic.com | password2 | current           |
 
   Scenario Outline: Validate PutConfirmCOA API with invalid login session and valid fairId
     And replace putConfirmCOAUri.fairIdOrCurrent = FAIRID_OR_CURRENT
@@ -26,7 +26,7 @@ Feature: PutCOAConfirm API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5633533           |
+      | azhou1@scholastic.com | password2 | 5633533           |
 
   Scenario Outline: Validate PutConfirmCOA with current keyword valid SCHL and invalid fairsession
     * def sbf_jarvis = call read('classpath:common/bookfairs/jarvis/SelectionAndBasicInfo/RunnerHelper.feature@SelectFair')
@@ -39,7 +39,7 @@ Feature: PutCOAConfirm API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | current           |
+      | azhou1@scholastic.com | password2 | current           |
 
   Scenario Outline: Validate with invalid fairId or current keyword
     And replace putConfirmCOAUri.fairIdOrCurrent = FAIRID_OR_CURRENT
@@ -53,7 +53,7 @@ Feature: PutCOAConfirm API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 56335             |
+      | azhou1@scholastic.com | password2 | 56335             |
 
   @Unhappy
   Scenario Outline: Validate when SCHL cookie is not passed for fair:<FAIRID_OR_CURRENT>
@@ -77,7 +77,7 @@ Feature: PutCOAConfirm API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | abc1234           |
+      | azhou1@scholastic.com | password2 | abc1234           |
 
 
   @Happy
@@ -99,7 +99,7 @@ Feature: PutCOAConfirm API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5697025           |
+      | azhou1@scholastic.com | password2 | 5697025           |
 
   @Unhappy
   Scenario Outline: Verify that coa confirm sends 404 if fair doesn't exist on SQL database for user:<USER_NAME> and fair:<FAIRID_OR_CURRENT>
@@ -109,7 +109,7 @@ Feature: PutCOAConfirm API automation tests
     @QA
     Examples:
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT |
-      | azhou1@scholastic.com | password1 | 5695332           |
+      | azhou1@scholastic.com | password2 | 5695332           |
 
 
 

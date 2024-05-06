@@ -66,7 +66,7 @@ Feature: CreateSession GET api tests
 
 
   @Happy
-  Scenario Outline: Verify GetSessionInfo returns proper sales amounts for user: <USER_NAME> and fair: <FAIRID>
+  Scenario Outline: Verify GetSessionInfo returns field values for user: <USER_NAME> and fair: <FAIRID>
     Given def createSessionResponse = call read('RunnerHelper.feature@CreateSession')
     Then match createSessionResponse.responseStatus == 200
     And def AGGREGATE_PIPELINE =
@@ -132,8 +132,26 @@ Feature: CreateSession GET api tests
     """
     And def mongoResults = call read('classpath:common/bookfairs/payportal/MongoDBRunner.feature@RunAggregate'){collectionName: "transaction"}
     Then match createSessionResponse.response.sales == mongoResults.document[0]
+    # only validating sales
+    # add isFairEnded validation
 
     @QA
     Examples:
       | FAIRID  | USER_NAME              | PASSWORD |
       | 5694329 | mtodaro@scholastic.com | passw0rd |
+
+  @Unhappy
+  Scenario Outline: Verify user cannot access payportal 10 days after fair end date
+
+    @QA
+    Examples:
+      | TRANSACTION_TYPE | FAIRID  | USER_NAME              | PASSWORD |
+      | sale             | 5694329 | mtodaro@scholastic.com | passw0rd |
+
+  @Unhappy
+  Scenario Outline: Verify user can access payportal until 10 days after fair end date
+
+    @QA
+    Examples:
+      | TRANSACTION_TYPE | FAIRID  | USER_NAME              | PASSWORD |
+      | sale             | 5694329 | mtodaro@scholastic.com | passw0rd |
