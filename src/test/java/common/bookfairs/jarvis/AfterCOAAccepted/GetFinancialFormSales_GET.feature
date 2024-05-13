@@ -13,7 +13,6 @@ Feature: GetFinancialFormSales GET Api tests
     @QA
     Examples:
       | USER_NAME              | PASSWORD  | RESOURCE_ID |
-      | mtodaro@scholastic.com | passw0rd  | 5694314     |
       | mtodaro@scholastic.com | passw0rd  | current     |
       | azhou1@scholastic.com  | password1 | 5694296     |
 

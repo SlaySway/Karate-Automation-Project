@@ -354,6 +354,5 @@ Feature: GetFinancialForm GET Api tests
 
     @QA
     Examples:
-      | USER_NAME              | PASSWORD  | RESOURCE_ID | FAIR_ID |
-      | azhou1@scholastic.com  | password2 | 5694296     | 5694296 |
-      | mtodaro@scholastic.com | passw0rd  | 5694314     | 5694314 |
+      | USER_NAME             | PASSWORD  | RESOURCE_ID | FAIR_ID |
+      | azhou1@scholastic.com | password2 | 5694296     | 5694296 |
