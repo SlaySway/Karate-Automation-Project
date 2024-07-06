@@ -25,7 +25,7 @@ Feature: GetPublicHomepage API automation tests
       | USER_NAME             | PASSWORD  | FAIRID_OR_CURRENT | WEB_URL |
       | azhou1@scholastic.com | password2 | 5694296           | abc123  |
 
-  Scenario Outline: Validate request when optioanl query parameter 'fairId' is invalid
+  Scenario Outline: 500
     Given url BOOKFAIRS_JARVIS_URL + getPublicHomepageUrl
     And path WEB_URL
     And param fairId = FAIRID_OR_CURRENT
